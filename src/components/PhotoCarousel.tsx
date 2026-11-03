@@ -125,7 +125,7 @@ export const PhotoCarousel: React.FC = () => {
           {/* Active Image with Pre-rendered Clean Frame & smooth crossfade */}
           <img
             src={currentSlide.imageSrc}
-            alt="Dokumentasi Terapi Bekam Bogor"
+            alt={`Dokumentasi Terapi Bekam Bogor - Foto ${currentIndex + 1} dari ${totalSlides}`}
             width={1200}
             height={675}
             decoding="async"
@@ -246,7 +246,7 @@ export const PhotoCarousel: React.FC = () => {
           >
             <img
               src={currentSlide.imageSrc}
-              alt="Foto Dokumentasi Terapi Bekam Penuh"
+              alt={`Dokumentasi Terapi Bekam Bogor Resolusi Penuh - Foto ${currentIndex + 1} dari ${totalSlides}`}
               className="max-h-[82vh] max-w-[95vw] sm:max-w-[85vw] object-contain rounded-2xl shadow-2xl select-none"
             />
 

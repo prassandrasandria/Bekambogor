@@ -378,11 +378,16 @@ export const TransportCalculator: React.FC<TransportCalculatorProps> = ({ onSele
 
                 {/* 1. Area Input Manual */}
                 <div className="relative">
+                  <label htmlFor="input-alamat-pasien" className="sr-only">
+                    Ketik Alamat Pasien atau Tautan Google Maps
+                  </label>
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                     <Search className="w-4 h-4" />
                   </div>
                   <input
+                    id="input-alamat-pasien"
                     type="text"
+                    aria-label="Ketik alamat manual pasien atau tautan Google Maps"
                     value={locationInput}
                     onChange={(e) => setLocationInput(e.target.value)}
                     onKeyDown={(e) => {
@@ -489,14 +494,18 @@ export const TransportCalculator: React.FC<TransportCalculatorProps> = ({ onSele
                   {/* Distance Slider for Manual Adjustment - Clean styling */}
                   <div className="space-y-1.5">
                     <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-500">Sesuaikan Jarak Manual:</span>
+                      <label htmlFor="input-slider-jarak" className="text-slate-600 font-semibold cursor-pointer">
+                        Sesuaikan Jarak Manual:
+                      </label>
                       <span className="font-bold text-emerald-800">Biaya transport Rp 2.500 / Km (Pulang Pergi)</span>
                     </div>
                     <input
+                      id="input-slider-jarak"
                       type="range"
                       min="1"
                       max="50"
                       step="1"
+                      aria-label="Sesuaikan Jarak Manual (km)"
                       value={distanceKm}
                       onChange={(e) => {
                         setDistanceKm(Number(e.target.value));

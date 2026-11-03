@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Bekam Bogor",
+    "description": "Layanan terapi bekam panggilan steril dan sunnah khusus ikhwan se-Bogor dan sekitarnya.",
+    "documentationUrl": "https://bekambogor.my.id/llms.txt",
+    "logoUrl": "https://bekambogor.my.id/logo.png",
+    "contact": {
+      "phone": "+6285163518070",
+      "url": "https://bekambogor.my.id"
+    }
+  },
+  "entries": [
+    {
+      "identifier": "id.my.bekambogor.cupping-service",
+      "displayName": "Layanan Terapi Bekam Panggilan Bogor",
+      "type": "service",
+      "description": "Layanan terapi bekam panggilan ke rumah pasien atau terapi di rumah terapis di Kp. Leuwisadeng, Bogor khusus ikhwan.",
+      "url": "https://bekambogor.my.id/#paket-layanan",
+      "representativeQueries": [
+        "bekam panggilan bogor",
+        "jasa bekam terdekat leuwiliang",
+        "biaya bekam basah bogor",
+        "jadwal bekam sunnah hijriyyah",
+        "terapis bekam ikhwan bogor"
+      ]
+    },
+    {
+      "identifier": "id.my.bekambogor.transport-calculator",
+      "displayName": "Kalkulator Biaya Transport Bekam",
+      "type": "tool",
+      "description": "Perhitungan otomatis jarak dan biaya transport panggilan terapis bekam ke rumah pasien dengan tarif transparan Rp 2.500/km (PP).",
+      "url": "https://bekambogor.my.id/#kalkulator-transport",
+      "representativeQueries": [
+        "hitung biaya transport bekam bogor",
+        "ongkos bekam panggilan leuwisadeng bogor",
+        "jarak terapis bekam ke rumah pasien"
+      ]
+    },
+    {
+      "identifier": "id.my.bekambogor.sunnah-calendar",
+      "displayName": "Jadwal Bekam Sunnah Nabawi",
+      "type": "dataset",
+      "description": "Penanggalan tanggal 17, 19, 21 Hijriyyah setiap bulan untuk waktu afdhal berbekam.",
+      "url": "https://bekambogor.my.id/#jadwal-sunnah",
+      "representativeQueries": [
+        "kapan jadwal bekam sunnah bulan ini",
+        "tanggal sunnah bekam 17 19 21 hijriyyah",
+        "hari terbaik bekam menurut nabi"
+      ]
+    }
+  ]
+}

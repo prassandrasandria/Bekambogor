@@ -456,20 +456,24 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
               {formData.serviceType === 'panggilan' && (
                 <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="font-bold text-slate-700">Perkiraan Jarak dari Kp. Leuwisadeng:</span>
+                    <label htmlFor="booking-distance-slider" className="font-bold text-slate-700 cursor-pointer">
+                      Perkiraan Jarak dari Kp. Leuwisadeng:
+                    </label>
                     <span className="font-extrabold text-emerald-700">{formData.distanceKm} km (PP: {formData.distanceKm * 2} km)</span>
                   </div>
                   <input
+                    id="booking-distance-slider"
                     type="range"
                     min="1"
                     max="50"
+                    aria-label="Perkiraan Jarak Tempuh Panggilan (km)"
                     value={formData.distanceKm}
                     onChange={(e) => setFormData({ ...formData, distanceKm: Number(e.target.value) })}
                     className="w-full accent-emerald-600 h-2 bg-slate-200 rounded-lg cursor-pointer"
                   />
                   <div className="text-[11px] text-slate-500 flex justify-between">
                     <span>Biaya Transport: Rp {transportCost.toLocaleString('id-ID')}</span>
-                    <span>(Rp 1.500/km PP)</span>
+                    <span>(Rp 2.500/km PP)</span>
                   </div>
                 </div>
               )}
@@ -480,7 +484,7 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
                   
                   {/* Nama Lengkap */}
                   <div className="sm:col-span-8 space-y-1">
-                    <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                    <label htmlFor="booking-fullname" className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between cursor-pointer">
                       <span>Nama Pasien (Ikhwan) *</span>
                       {validationErrors.fullName && (
                         <span className="text-[10px] text-rose-600 font-bold lowercase">{validationErrors.fullName}</span>
@@ -491,7 +495,9 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
                         <User className="w-4 h-4" />
                       </div>
                       <input
+                        id="booking-fullname"
                         type="text"
+                        aria-label="Nama Lengkap Pasien"
                         placeholder="Contoh: Muhammad Ihsan"
                         value={formData.fullName}
                         onChange={(e) => {
@@ -511,14 +517,16 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
 
                   {/* Usia Pasien */}
                   <div className="sm:col-span-4 space-y-1">
-                    <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                    <label htmlFor="booking-age" className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between cursor-pointer">
                       <span>Usia *</span>
                       {validationErrors.age && (
                         <span className="text-[10px] text-rose-600 font-bold lowercase">Wajib</span>
                       )}
                     </label>
                     <input
+                      id="booking-age"
                       type="number"
+                      aria-label="Usia Pasien"
                       min="7"
                       max="99"
                       placeholder="Contoh: 35"
@@ -540,7 +548,7 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
 
                 {/* No WhatsApp */}
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                  <label htmlFor="booking-phone" className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between cursor-pointer">
                     <span>No. WhatsApp Aktif *</span>
                     {validationErrors.phone && (
                       <span className="text-[10px] text-rose-600 font-bold lowercase">{validationErrors.phone}</span>
@@ -551,7 +559,9 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
                       <Phone className="w-4 h-4" />
                     </div>
                     <input
+                      id="booking-phone"
                       type="tel"
+                      aria-label="Nomor WhatsApp Aktif"
                       placeholder="Contoh: 081234567890"
                       value={formData.phone}
                       onChange={(e) => {
@@ -571,7 +581,7 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
 
                 {/* Mandatory Address (Alamat Pasien / Link Maps) */}
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                  <label htmlFor="booking-address" className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between cursor-pointer">
                     <span>
                       {formData.serviceType === 'panggilan'
                         ? 'Alamat Lengkap / Patokan Rumah / Link Maps Pasien *'
@@ -586,6 +596,8 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
                       <MapPin className="w-4 h-4" />
                     </div>
                     <textarea
+                      id="booking-address"
+                      aria-label="Alamat Pasien atau Tautan Google Maps"
                       rows={2}
                       placeholder={
                         formData.serviceType === 'panggilan'
@@ -645,8 +657,10 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
                   </div>
 
                   <input
+                    id="booking-selected-date"
                     type="date"
                     required
+                    aria-label="Pilih Tanggal Reservasi"
                     value={formData.selectedDate}
                     onChange={(e) => setFormData({ ...formData, selectedDate: e.target.value })}
                     className="w-full p-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
@@ -655,12 +669,13 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
 
                 {/* Custom Sesi Waktu Dropdown */}
                 <div className="space-y-1.5 relative" ref={timeDropdownRef}>
-                  <label className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                  <label id="booking-time-label" className="text-xs font-bold text-slate-800 uppercase tracking-wider">
                     Sesi Waktu *
                   </label>
 
                   <button
                     type="button"
+                    aria-labelledby="booking-time-label"
                     onClick={() => setIsTimeDropdownOpen(!isTimeDropdownOpen)}
                     className={`w-full p-2.5 rounded-xl border text-left flex items-center justify-between text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                       isTimeDropdownOpen
@@ -713,13 +728,15 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
 
               {/* Medical Screening Checkboxes */}
               <div className="space-y-1.5">
-                <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                <span className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
                   Skrining Riwayat Kesehatan (Beri tanda jika ada)
-                </label>
+                </span>
                 <div className="grid grid-cols-2 gap-2 text-xs text-slate-700">
-                  <label className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <label htmlFor="cond-diabetes" className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
                     <input
+                      id="cond-diabetes"
                       type="checkbox"
+                      aria-label="Riwayat Diabetes / Gula"
                       checked={formData.hasMedicalConditions.diabetes}
                       onChange={(e) => setFormData({
                         ...formData,
@@ -730,9 +747,11 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
                     <span>Diabetes / Gula</span>
                   </label>
 
-                  <label className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <label htmlFor="cond-hypertension" className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
                     <input
+                      id="cond-hypertension"
                       type="checkbox"
+                      aria-label="Riwayat Darah Tinggi / Hipertensi"
                       checked={formData.hasMedicalConditions.highBloodPressure}
                       onChange={(e) => setFormData({
                         ...formData,
@@ -743,9 +762,11 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
                     <span>Darah Tinggi</span>
                   </label>
 
-                  <label className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <label htmlFor="cond-blood-thinners" className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
                     <input
+                      id="cond-blood-thinners"
                       type="checkbox"
+                      aria-label="Konsumsi Obat Pengencer Darah"
                       checked={formData.hasMedicalConditions.bloodThinners}
                       onChange={(e) => setFormData({
                         ...formData,
@@ -756,9 +777,11 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
                     <span>Obat Pengencer Darah</span>
                   </label>
 
-                  <label className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <label htmlFor="cond-heart" className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
                     <input
+                      id="cond-heart"
                       type="checkbox"
+                      aria-label="Riwayat Penyakit Jantung"
                       checked={formData.hasMedicalConditions.heartDisease}
                       onChange={(e) => setFormData({
                         ...formData,
@@ -773,11 +796,13 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
 
               {/* Specific Health Notes */}
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                <label htmlFor="booking-health-notes" className="text-xs font-bold text-slate-800 uppercase tracking-wider block cursor-pointer">
                   Keluhan Pasien / Catatan Khusus
                 </label>
                 <input
+                  id="booking-health-notes"
                   type="text"
+                  aria-label="Keluhan Pasien atau Catatan Khusus"
                   placeholder="Contoh: Pegal leher, pusing, masuk angin, ingin fokus titik sunnah..."
                   value={formData.healthNotes}
                   onChange={(e) => setFormData({ ...formData, healthNotes: e.target.value })}

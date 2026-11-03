@@ -108,6 +108,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Sidebar Drawer: Desktop Fixed, Mobile Slide-out */}
       <aside
+        aria-label="Sidebar Navigasi"
         className={`fixed inset-y-0 left-0 z-55 w-72 max-w-[82vw] bg-white border-r border-slate-200 flex flex-col justify-between shadow-2xl lg:shadow-none transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
@@ -145,8 +146,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
 
-        {/* Middle: Navigation Links */}
-        <div className="flex-1 overflow-y-auto p-3 space-y-1">
+        {/* Middle: Semantic Navigation Landmark */}
+        <nav aria-label="Menu Navigasi Utama" className="flex-1 overflow-y-auto p-3 space-y-1">
           <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 py-1">
             Menu Navigasi
           </div>
@@ -188,7 +189,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <ExternalLink className="w-3.5 h-3.5 text-slate-400 shrink-0" />
             </a>
           </div>
-        </div>
+        </nav>
 
         {/* Bottom: Fast Action Button */}
         <div className="p-4 border-t border-slate-100 bg-slate-50/70 space-y-2">
