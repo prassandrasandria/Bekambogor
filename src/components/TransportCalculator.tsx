@@ -305,7 +305,7 @@ export const TransportCalculator: React.FC<TransportCalculatorProps> = ({ onSele
             Kalkulator Biaya Transport
           </h2>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            Masukkan alamat rumah Anda atau gunakan tombol GPS lokasi otomatis. Sistem akan menganalisis jarak dari rumah terapis di <strong>Kp. Leuwisadeng</strong> dan menghitung rincian biaya transport <strong>Rp 1.500 / km (Pulang-Pergi / PP)</strong> secara transparan.
+            Masukkan alamat rumah Anda atau gunakan tombol GPS lokasi otomatis. Sistem akan menganalisis jarak dari rumah terapis di <strong>Kp. Leuwisadeng</strong> dan menghitung rincian biaya transport <strong>Rp 2.500 / km (Pulang-Pergi / PP)</strong> secara transparan.
           </p>
         </div>
 
@@ -334,7 +334,7 @@ export const TransportCalculator: React.FC<TransportCalculatorProps> = ({ onSele
                   </div>
                   <div>
                     <h4 className="font-bold text-sm text-slate-900">Bekam Panggilan (Ke Rumah Pasien)</h4>
-                    <p className="text-xs text-slate-500 mt-0.5">Terapis datang membawa peralatan lengkap steril. Biaya transport transparan Rp 1.500/km (PP).</p>
+                    <p className="text-xs text-slate-500 mt-0.5">Terapis datang membawa peralatan lengkap steril. Biaya transport transparan Rp 2.500/km (PP).</p>
                   </div>
                 </button>
 
