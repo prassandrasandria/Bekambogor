@@ -30,13 +30,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
           <div className="flex items-center gap-4 text-[11px]">
             <span className="hidden md:inline">🕒 Setiap Hari 08.00 - 21.00 WIB</span>
             <a 
-              href="https://wa.me/6281280007890?text=Assalamu%27alaikum%20Admin%20Bekam%20Bogor%2C%20saya%20ingin%20konsultasi%20jadwal%20bekam."
+              href="https://wa.me/6285163518070?text=Assalamu%27alaikum%20Admin%20Bekam%20Bogor%2C%20saya%20ingin%20konsultasi%20jadwal%20bekam."
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium text-emerald-200 hover:text-white flex items-center gap-1 transition-colors"
             >
               <MessageCircle className="w-3.5 h-3.5 text-emerald-300" />
-              <span>WhatsApp CS: 0812-8000-7890</span>
+              <span>WhatsApp CS: 0851-6351-8070</span>
             </a>
           </div>
         </div>

@@ -28,7 +28,10 @@ export const SunnahScheduleBanner: React.FC<SunnahScheduleBannerProps> = ({ onSe
             <span>Update Otomatis Tiap Bulan Kalender Hijriyyah</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white mb-3">
-            Jadwal Hari Sunnah Bekam (17, 19, 21 Hijriyyah)
+            Jadwal Hari Sunnah Bekam
+            <span className="block text-emerald-300 text-xl sm:text-3xl font-bold mt-1">
+              (17, 19, 21 Hijriyyah)
+            </span>
           </h2>
           <p className="text-emerald-100/90 text-sm sm:text-base leading-relaxed">
             Rasulullah SAW menganjurkan berbekam pada tanggal <strong>17, 19, dan 21</strong> setiap bulan Hijriyyah sebagai sarana kesembuhan berbagai penyakit. Kalender di bawah ini otomatis menghitung tanggal masehi terdekat.
@@ -85,9 +88,14 @@ export const SunnahScheduleBanner: React.FC<SunnahScheduleBannerProps> = ({ onSe
                   }`}
                 >
                   {item.isNext && (
-                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-900 font-black text-[10px] px-3.5 py-0.5 rounded-full shadow-md flex items-center gap-1 uppercase tracking-wider">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      SUNNAH TERDEKAT ({item.daysUntil === 0 ? 'HARI INI' : `${item.daysUntil} Hari Lagi`})
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-950 font-black px-4 py-1 rounded-2xl shadow-lg border border-amber-300 flex items-center gap-1.5 whitespace-nowrap">
+                      <Sparkles className="w-3.5 h-3.5 text-slate-950 shrink-0" />
+                      <div className="text-center leading-tight">
+                        <span className="block text-[10px] uppercase font-black tracking-wider">Sunnah Terdekat</span>
+                        <span className="block text-[11px] font-extrabold text-amber-950">
+                          {item.daysUntil === 0 ? 'Hari Ini' : `${item.daysUntil} hari lagi`}
+                        </span>
+                      </div>
                     </div>
                   )}
 

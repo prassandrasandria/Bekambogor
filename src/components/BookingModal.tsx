@@ -1,7 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { X, Calendar, Clock, MapPin, User, Phone, ShieldCheck, Heart, CheckCircle2, Car, Home } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  X,
+  Calendar,
+  Clock,
+  MapPin,
+  User,
+  Phone,
+  ShieldCheck,
+  CheckCircle2,
+  Car,
+  Home,
+  ChevronDown,
+  Check,
+  Sparkles,
+  Sun,
+  Sunset,
+  Moon,
+  AlertCircle
+} from 'lucide-react';
 import { servicePackages, THERAPIST_INFO, calculateTransportCost } from '../data/treatments';
-import { BookingFormData, ServicePackage } from '../types';
+import { BookingFormData } from '../types';
 import { WhatsAppIcon } from './WhatsAppIcon';
 
 interface BookingModalProps {
@@ -12,6 +30,7 @@ interface BookingModalProps {
   initialDistanceKm?: number;
   initialDate?: string;
   initialSymptom?: string;
+  initialAddress?: string;
 }
 
 export const BookingModal: React.FC<BookingModalProps> = ({
@@ -21,10 +40,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   initialServiceType = 'panggilan',
   initialDistanceKm = 5,
   initialDate,
-  initialSymptom
+  initialSymptom,
+  initialAddress
 }) => {
   const [formData, setFormData] = useState<BookingFormData>({
     fullName: '',
+    age: '',
     phone: '',
     serviceType: initialServiceType,
     servicePackageId: initialPackageId || servicePackages[1].id,
@@ -33,7 +54,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     totalCost: 0,
     selectedDate: initialDate || new Date(Date.now() + 86400000).toISOString().split('T')[0],
     selectedTimeSlot: 'Pagi (08:30 - 10:30 WIB)',
-    address: '',
+    address: initialAddress || '',
     healthNotes: initialSymptom ? `Keluhan: ${initialSymptom}` : '',
     hasMedicalConditions: {
       diabetes: false,
@@ -43,6 +64,18 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     }
   });
 
+  // Validation errors
+  const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
+  const [formAlertMessage, setFormAlertMessage] = useState<string | null>(null);
+
+  // Custom Dropdowns state
+  const [isPackageDropdownOpen, setIsPackageDropdownOpen] = useState(false);
+  const [isTimeDropdownOpen, setIsTimeDropdownOpen] = useState(false);
+
+  const packageDropdownRef = useRef<HTMLDivElement>(null);
+  const timeDropdownRef = useRef<HTMLDivElement>(null);
+  const modalBodyRef = useRef<HTMLDivElement>(null);
+
   const [bookingSubmitted, setBookingSubmitted] = useState(false);
   const [generatedWaUrl, setGeneratedWaUrl] = useState('');
 
@@ -50,6 +83,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const transportCost = calculateTransportCost(formData.distanceKm, formData.serviceType);
   const totalCost = selectedPackage.price + transportCost;
 
+  // Sync initial props
   useEffect(() => {
     if (initialPackageId) {
       setFormData(prev => ({ ...prev, servicePackageId: initialPackageId }));
@@ -66,20 +100,85 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     if (initialSymptom) {
       setFormData(prev => ({ ...prev, healthNotes: initialSymptom }));
     }
-  }, [initialPackageId, initialServiceType, initialDistanceKm, initialDate, initialSymptom]);
+    if (initialAddress) {
+      setFormData(prev => ({ ...prev, address: initialAddress }));
+    }
+  }, [initialPackageId, initialServiceType, initialDistanceKm, initialDate, initialSymptom, initialAddress]);
+
+  // Handle outside click to close dropdowns
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (packageDropdownRef.current && !packageDropdownRef.current.contains(e.target as Node)) {
+        setIsPackageDropdownOpen(false);
+      }
+      if (timeDropdownRef.current && !timeDropdownRef.current.contains(e.target as Node)) {
+        setIsTimeDropdownOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
   const timeSlots = [
-    'Pagi (08:30 - 10:30 WIB)',
-    'Siang (10:30 - 12:30 WIB)',
-    'Ba\'da Dzuhur (13:30 - 15:30 WIB)',
-    'Sore (16:00 - 18:00 WIB)',
-    'Malam Ba\'da Isya (19:30 - 21:00 WIB)'
+    { label: 'Pagi (08:30 - 10:30 WIB)', period: 'Pagi', icon: <Sun className="w-4 h-4 text-amber-500" /> },
+    { label: 'Siang (10:30 - 12:30 WIB)', period: 'Siang', icon: <Sun className="w-4 h-4 text-amber-600" /> },
+    { label: 'Ba\'da Dzuhur (13:30 - 15:30 WIB)', period: 'Siang', icon: <Clock className="w-4 h-4 text-emerald-600" /> },
+    { label: 'Sore (16:00 - 18:00 WIB)', period: 'Sore', icon: <Sunset className="w-4 h-4 text-orange-500" /> },
+    { label: 'Malam Ba\'da Isya (19:30 - 21:00 WIB)', period: 'Malam', icon: <Moon className="w-4 h-4 text-indigo-500" /> }
   ];
+
+  const validateForm = () => {
+    const errors: { [key: string]: string } = {};
+
+    if (!formData.fullName.trim()) {
+      errors.fullName = 'Nama pasien wajib diisi';
+    }
+
+    if (!formData.age.trim()) {
+      errors.age = 'Usia pasien wajib diisi';
+    } else {
+      const ageNum = parseInt(formData.age, 10);
+      if (isNaN(ageNum) || ageNum < 5 || ageNum > 100) {
+        errors.age = 'Masukkan usia yang valid (contoh: 35)';
+      }
+    }
+
+    if (!formData.phone.trim()) {
+      errors.phone = 'No. WhatsApp aktif wajib diisi';
+    } else if (formData.phone.trim().replace(/\D/g, '').length < 9) {
+      errors.phone = 'Masukkan no. WhatsApp minimal 9-13 digit';
+    }
+
+    if (!formData.address.trim()) {
+      errors.address = formData.serviceType === 'panggilan'
+        ? 'Alamat lengkap / share location pasien wajib diisi untuk panggilan'
+        : 'Alamat domisili atau kelurahan pasien wajib diisi';
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const isValid = validateForm();
+    if (!isValid) {
+      setFormAlertMessage('⚠️ Peringatan: Mohon lengkapi data wajib (Nama, Usia, No. WhatsApp, dan Alamat) sebelum melanjutkan ke WhatsApp.');
+      if (modalBodyRef.current) {
+        modalBodyRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    setFormAlertMessage(null);
 
     const conditionsList = [];
     if (formData.hasMedicalConditions.diabetes) conditionsList.push('Diabetes/Gula');
@@ -90,47 +189,60 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     const conditionsText = conditionsList.length > 0 ? conditionsList.join(', ') : 'Tidak ada (Normal)';
 
     const transportInfoText = formData.serviceType === 'panggilan'
-      ? `Rp ${transportCost.toLocaleString('id-ID')} (${formData.distanceKm} km x 2 PP x Rp 1.500)`
+      ? `Rp ${transportCost.toLocaleString('id-ID')} (${formData.distanceKm} km x Rp 2.500)`
       : 'Rp 0 (Gratis Transport - Datang ke Rumah Terapis Leuwisadeng)';
 
-    const message = `*FORMULIR PENDAFTARAN BEKAM BOGOR*
+    const message = `*FORMULIR RESERVASI TERAPI BEKAM BOGOR*
 ---------------------------------------
-👤 *Nama Pasien:* ${formData.fullName} (Ikhwan)
-📱 *No. WhatsApp:* ${formData.phone}
+👤 *Nama Pasien:* ${formData.fullName.trim()} (Ikhwan)
+🎂 *Usia Pasien:* ${formData.age.trim()} tahun
+📱 *No. WhatsApp:* ${formData.phone.trim()}
 🏠 *Tipe Layanan:* ${formData.serviceType === 'panggilan' ? 'Bekam Panggilan (Ke Rumah Pasien)' : 'Datang ke Rumah Terapis (Kp. Leuwisadeng)'}
-${formData.serviceType === 'panggilan' ? `📍 *Alamat Lengkap:* ${formData.address || '-'}\n🚗 *Jarak Tempuh:* ${formData.distanceKm} km (PP: ${formData.distanceKm * 2} km)\n💰 *Biaya Transport:* ${transportInfoText}\n` : `🏡 *Lokasi Terapi:* Kp. Leuwisadeng RT 01 RW 03 Kec. Leuwisadeng\n`}
+📍 *Alamat Pasien:* ${formData.address.trim()}
+${formData.serviceType === 'panggilan' ? `🚗 *Jarak Tempuh:* ${formData.distanceKm} km (Pulang Pergi)\n💰 *Biaya Transport:* ${transportInfoText}\n` : `🏡 *Lokasi Terapi:* Kp. Leuwisadeng RT 01 RW 03 Kec. Leuwisadeng\n`}
 📦 *Paket Bekam:* ${selectedPackage.name} (Rp ${selectedPackage.price.toLocaleString('id-ID')})
 📅 *Hari/Tanggal:* ${formData.selectedDate}
 ⏰ *Sesi Waktu:* ${formData.selectedTimeSlot}
 💵 *TOTAL BIAYA:* Rp ${totalCost.toLocaleString('id-ID')}
 
 🩺 *Kondisi Kesehatan:* ${conditionsText}
-📝 *Catatan Keluhan:* ${formData.healthNotes || 'Ingin bekam rutin sunnah & stamina'}
+📝 *Catatan Keluhan:* ${formData.healthNotes.trim() || 'Ingin bekam rutin sunnah & stamina'}
 ---------------------------------------
-Mohon konfirmasi ketersediaan jadwal terapis. Terima kasih.`;
+Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formulir di atas. Terima kasih.`;
 
     const waLink = `${THERAPIST_INFO.whatsappUrl}?text=${encodeURIComponent(message)}`;
     setGeneratedWaUrl(waLink);
     setBookingSubmitted(true);
+
+    // Directly open WhatsApp with pre-filled form
+    window.open(waLink, '_blank');
+  };
+
+  const handleQuickDateSelect = (daysAhead: number) => {
+    const d = new Date();
+    d.setDate(d.getDate() + daysAhead);
+    const dateStr = d.toISOString().split('T')[0];
+    setFormData(prev => ({ ...prev, selectedDate: dateStr }));
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-      <div className="relative bg-white rounded-3xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-200 my-8">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+      <div className="relative bg-white rounded-3xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-visible animate-in fade-in zoom-in-95 duration-200 my-8">
         
         {/* Header */}
-        <div className="bg-gradient-to-r from-emerald-700 to-teal-800 text-white p-6 flex items-start justify-between">
+        <div className="bg-gradient-to-r from-emerald-800 to-teal-900 text-white p-6 rounded-t-3xl flex items-start justify-between">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-900/60 text-emerald-200 text-[11px] font-bold uppercase tracking-wider mb-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-300" />
-              Khusus Ikhwan (Laki-laki)
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 text-[11px] font-bold uppercase tracking-wider mb-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              Layanan Steril &amp; Profesional
             </div>
-            <h3 className="text-xl sm:text-2xl font-black">Formulir Pendaftaran Bekam</h3>
+            <h3 className="text-xl sm:text-2xl font-black">Formulir Reservasi Terapi Bekam</h3>
             <p className="text-xs text-emerald-100 mt-0.5">
               {THERAPIST_INFO.tagline} • Ditangani {THERAPIST_INFO.certification}
             </p>
           </div>
           <button
+            type="button"
             onClick={onClose}
             className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
             aria-label="Tutup"
@@ -140,24 +252,38 @@ Mohon konfirmasi ketersediaan jadwal terapis. Terima kasih.`;
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 sm:p-7 max-h-[75vh] overflow-y-auto">
+        <div ref={modalBodyRef} className="p-5 sm:p-7 max-h-[78vh] overflow-y-auto">
           
+          {/* Validation Alert Banner */}
+          {formAlertMessage && !bookingSubmitted && (
+            <div className="mb-4 p-3.5 rounded-2xl bg-rose-50 border-2 border-rose-300 text-rose-800 text-xs flex items-start gap-2.5 animate-in shake duration-300">
+              <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-bold text-rose-900">{formAlertMessage}</p>
+                <p className="text-[11px] text-rose-700 mt-0.5">Semua data bertanda bintang (*) wajib dilengkapi agar jadwal dapat dikonfirmasi oleh terapis.</p>
+              </div>
+            </div>
+          )}
+
           {bookingSubmitted ? (
             <div className="text-center py-4 space-y-5">
-              <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
-                <CheckCircle2 className="w-8 h-8" />
+              <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
+                <CheckCircle2 className="w-10 h-10" />
               </div>
               <div>
-                <h4 className="text-xl font-bold text-slate-900">Pendaftaran Siap Dikirim!</h4>
-                <p className="text-xs text-slate-600 mt-1">
-                  Atas nama <strong>{formData.fullName}</strong> untuk tanggal <strong>{formData.selectedDate}</strong>.
+                <h4 className="text-xl font-bold text-slate-900">Formulir Siap Terkirim ke WhatsApp!</h4>
+                <p className="text-xs text-slate-600 mt-1 max-w-md mx-auto">
+                  Data pendaftaran atas nama <strong>{formData.fullName}</strong> ({formData.age} thn) telah disiapkan dengan format rapi. Jika halaman WhatsApp belum terbuka otomatis, silakan klik tombol di bawah:
                 </p>
               </div>
 
-              <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-left text-xs space-y-1.5">
-                <p><strong>Paket:</strong> {selectedPackage.name}</p>
-                <p><strong>Layanan:</strong> {formData.serviceType === 'panggilan' ? `Bekam Panggilan (${formData.distanceKm} km)` : 'Datang ke Rumah Terapis (Leuwisadeng)'}</p>
-                <p><strong>Total Estimasi:</strong> <strong className="text-emerald-800 text-sm">Rp {totalCost.toLocaleString('id-ID')}</strong></p>
+              <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-left text-xs space-y-2">
+                <p><strong>👤 Pasien:</strong> {formData.fullName} ({formData.age} tahun)</p>
+                <p><strong>📦 Paket:</strong> {selectedPackage.name}</p>
+                <p><strong>🚗 Layanan:</strong> {formData.serviceType === 'panggilan' ? `Bekam Panggilan (${formData.distanceKm} km)` : 'Datang ke Rumah Terapis (Leuwisadeng)'}</p>
+                <p><strong>📍 Alamat:</strong> {formData.address}</p>
+                <p><strong>📅 Jadwal:</strong> {formData.selectedDate} • {formData.selectedTimeSlot}</p>
+                <p className="pt-1 border-t border-emerald-200"><strong>💵 Total Biaya:</strong> <strong className="text-emerald-800 text-sm">Rp {totalCost.toLocaleString('id-ID')}</strong></p>
               </div>
 
               <div className="pt-2 flex flex-col sm:flex-row gap-2.5 justify-center">
@@ -165,85 +291,178 @@ Mohon konfirmasi ketersediaan jadwal terapis. Terima kasih.`;
                   href={generatedWaUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-white bg-emerald-700 hover:bg-emerald-800 shadow-md text-xs sm:text-sm"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white bg-emerald-700 hover:bg-emerald-800 shadow-md text-sm transition-all cursor-pointer"
                 >
-                  <WhatsAppIcon className="w-4 h-4 text-white" />
-                  <span>Kirim ke WhatsApp Terapis</span>
+                  <WhatsAppIcon className="w-5 h-5 text-white" />
+                  <span>Buka WhatsApp Sekarang</span>
                 </a>
                 <button
+                  type="button"
                   onClick={() => {
                     setBookingSubmitted(false);
                     onClose();
                   }}
-                  className="px-4 py-2.5 rounded-xl font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 text-xs"
+                  className="px-4 py-3 rounded-xl font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 text-xs cursor-pointer"
                 >
                   Tutup
                 </button>
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5" noValidate>
               
               {/* Service Type Selection */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                  Pilih Lokasi Terapi
+                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                  <span>Pilih Lokasi Terapi</span>
+                  <span className="text-[10px] text-emerald-700 font-semibold">Bogor &amp; Sekitarnya</span>
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => setFormData({ ...formData, serviceType: 'panggilan' })}
-                    className={`p-3 rounded-xl border text-xs font-bold transition-all text-center cursor-pointer ${
+                    className={`p-3 rounded-2xl border text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${
                       formData.serviceType === 'panggilan'
-                        ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600'
+                        ? 'border-emerald-600 bg-emerald-50 text-emerald-900 ring-2 ring-emerald-600/30 shadow-xs'
                         : 'border-slate-200 text-slate-600 hover:bg-slate-50'
                     }`}
                   >
-                    🚗 Panggilan ke Rumah Pasien
+                    <Car className="w-4 h-4 text-emerald-600" />
+                    <span>🚗 Panggilan ke Rumah</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setFormData({ ...formData, serviceType: 'ke_rumah_terapis' })}
-                    className={`p-3 rounded-xl border text-xs font-bold transition-all text-center cursor-pointer ${
+                    className={`p-3 rounded-2xl border text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${
                       formData.serviceType === 'ke_rumah_terapis'
-                        ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600'
+                        ? 'border-emerald-600 bg-emerald-50 text-emerald-900 ring-2 ring-emerald-600/30 shadow-xs'
                         : 'border-slate-200 text-slate-600 hover:bg-slate-50'
                     }`}
                   >
-                    🏡 Di Rumah Terapis (Gratis Transport)
+                    <Home className="w-4 h-4 text-emerald-600" />
+                    <span>🏡 Di Rumah Terapis</span>
+                    <span className="text-[9px] text-emerald-700 font-extrabold uppercase">Gratis Transport</span>
                   </button>
                 </div>
               </div>
 
-              {/* Package Selector */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                  Paket Terapi Bekam
+              {/* Custom Designed Package Dropdown */}
+              <div className="space-y-1.5 relative" ref={packageDropdownRef}>
+                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                  <span>Pilihan Paket Bekam *</span>
+                  <span className="text-[10px] text-emerald-700 font-semibold">
+                    {selectedPackage.cupCount}
+                  </span>
                 </label>
-                <select
-                  value={formData.servicePackageId}
-                  onChange={(e) => setFormData({ ...formData, servicePackageId: e.target.value })}
-                  className="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+
+                {/* Dropdown Trigger Button */}
+                <button
+                  type="button"
+                  onClick={() => setIsPackageDropdownOpen(!isPackageDropdownOpen)}
+                  className={`w-full p-3.5 rounded-2xl border text-left flex items-center justify-between transition-all cursor-pointer ${
+                    isPackageDropdownOpen
+                      ? 'border-emerald-600 ring-2 ring-emerald-600/30 bg-white shadow-md'
+                      : 'border-slate-200 hover:border-emerald-300 bg-white hover:bg-slate-50/50 shadow-2xs'
+                  }`}
                 >
-                  {servicePackages.map((pkg) => (
-                    <option key={pkg.id} value={pkg.id}>
-                      {pkg.name} — Rp {pkg.price.toLocaleString('id-ID')} ({pkg.cupCount})
-                    </option>
-                  ))}
-                </select>
+                  <div className="flex items-center gap-3 truncate">
+                    <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 font-bold text-xs">
+                      {selectedPackage.cupCount.includes('17') || selectedPackage.cupCount.includes('Full') ? '17' : selectedPackage.cupCount.includes('11') || selectedPackage.cupCount.includes('Punggung') ? '11' : '0'}
+                    </div>
+                    <div className="truncate">
+                      <div className="font-extrabold text-xs sm:text-sm text-slate-900 truncate flex items-center gap-2">
+                        <span>{selectedPackage.name}</span>
+                        {selectedPackage.isPopular && (
+                          <span className="bg-amber-400 text-slate-900 text-[9px] font-extrabold px-1.5 py-0.2 rounded">
+                            Favorit
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-[11px] text-slate-500 truncate">
+                        {selectedPackage.cupCount} • {selectedPackage.durationMinutes} menit
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="font-black text-xs sm:text-sm text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg">
+                      Rp {selectedPackage.price.toLocaleString('id-ID')}
+                    </span>
+                    <ChevronDown
+                      className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                        isPackageDropdownOpen ? 'rotate-180 text-emerald-600' : ''
+                      }`}
+                    />
+                  </div>
+                </button>
+
+                {/* Custom Options Menu */}
+                {isPackageDropdownOpen && (
+                  <div className="absolute top-full left-0 right-0 mt-1.5 bg-white rounded-2xl border border-slate-200 shadow-2xl z-40 overflow-hidden divide-y divide-slate-100 animate-in fade-in zoom-in-95 duration-150">
+                    {servicePackages.map((pkg) => {
+                      const isSelected = pkg.id === formData.servicePackageId;
+                      return (
+                        <div
+                          key={pkg.id}
+                          onClick={() => {
+                            setFormData({ ...formData, servicePackageId: pkg.id });
+                            setIsPackageDropdownOpen(false);
+                          }}
+                          className={`p-3.5 flex items-start justify-between gap-3 cursor-pointer transition-all ${
+                            isSelected
+                              ? 'bg-emerald-50/90 text-emerald-950 font-semibold'
+                              : 'hover:bg-slate-50 text-slate-800'
+                          }`}
+                        >
+                          <div className="space-y-0.5">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-xs sm:text-sm text-slate-900">
+                                {pkg.name}
+                              </span>
+                              {pkg.isPopular && (
+                                <span className="bg-amber-400 text-slate-900 text-[9px] font-extrabold px-1.5 py-0.2 rounded">
+                                  Favorit
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-[11px] text-slate-500 line-clamp-1">
+                              {pkg.tagline}
+                            </p>
+                            <span className="inline-block text-[10px] font-bold text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded">
+                              {pkg.cupCount}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-2 shrink-0 self-center">
+                            <span className="font-black text-xs text-emerald-800">
+                              Rp {pkg.price.toLocaleString('id-ID')}
+                            </span>
+                            {isSelected ? (
+                              <div className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center">
+                                <Check className="w-3.5 h-3.5" />
+                              </div>
+                            ) : (
+                              <div className="w-5 h-5 rounded-full border border-slate-300" />
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
 
               {/* Distance Slider (Only for Panggilan) */}
               {formData.serviceType === 'panggilan' && (
                 <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="font-bold text-slate-700">Perkiraan Jarak dari Leuwisadeng:</span>
+                    <span className="font-bold text-slate-700">Perkiraan Jarak dari Kp. Leuwisadeng:</span>
                     <span className="font-extrabold text-emerald-700">{formData.distanceKm} km (PP: {formData.distanceKm * 2} km)</span>
                   </div>
                   <input
                     type="range"
                     min="1"
-                    max="40"
+                    max="50"
                     value={formData.distanceKm}
                     onChange={(e) => setFormData({ ...formData, distanceKm: Number(e.target.value) })}
                     className="w-full accent-emerald-600 h-2 bg-slate-200 rounded-lg cursor-pointer"
@@ -255,94 +474,250 @@ Mohon konfirmasi ketersediaan jadwal terapis. Terima kasih.`;
                 </div>
               )}
 
-              {/* Date & Time Slot */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Mandatory Personal Data: Nama, Usia, No. WhatsApp */}
+              <div className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                  
+                  {/* Nama Lengkap */}
+                  <div className="sm:col-span-8 space-y-1">
+                    <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                      <span>Nama Pasien (Ikhwan) *</span>
+                      {validationErrors.fullName && (
+                        <span className="text-[10px] text-rose-600 font-bold lowercase">{validationErrors.fullName}</span>
+                      )}
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <User className="w-4 h-4" />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Contoh: Muhammad Ihsan"
+                        value={formData.fullName}
+                        onChange={(e) => {
+                          setFormData({ ...formData, fullName: e.target.value });
+                          if (validationErrors.fullName) {
+                            setValidationErrors(prev => ({ ...prev, fullName: '' }));
+                          }
+                        }}
+                        className={`w-full pl-9 pr-3 py-2.5 rounded-xl border text-xs sm:text-sm focus:outline-none transition-all ${
+                          validationErrors.fullName
+                            ? 'border-rose-400 bg-rose-50/30 ring-2 ring-rose-500/20'
+                            : 'border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500'
+                        }`}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Usia Pasien */}
+                  <div className="sm:col-span-4 space-y-1">
+                    <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                      <span>Usia *</span>
+                      {validationErrors.age && (
+                        <span className="text-[10px] text-rose-600 font-bold lowercase">Wajib</span>
+                      )}
+                    </label>
+                    <input
+                      type="number"
+                      min="7"
+                      max="99"
+                      placeholder="Contoh: 35"
+                      value={formData.age}
+                      onChange={(e) => {
+                        setFormData({ ...formData, age: e.target.value });
+                        if (validationErrors.age) {
+                          setValidationErrors(prev => ({ ...prev, age: '' }));
+                        }
+                      }}
+                      className={`w-full p-2.5 rounded-xl border text-xs sm:text-sm text-center focus:outline-none transition-all ${
+                        validationErrors.age
+                          ? 'border-rose-400 bg-rose-50/30 ring-2 ring-rose-500/20'
+                          : 'border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500'
+                      }`}
+                    />
+                  </div>
+                </div>
+
+                {/* No WhatsApp */}
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    Pilih Tanggal
+                  <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                    <span>No. WhatsApp Aktif *</span>
+                    {validationErrors.phone && (
+                      <span className="text-[10px] text-rose-600 font-bold lowercase">{validationErrors.phone}</span>
+                    )}
                   </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                      <Phone className="w-4 h-4" />
+                    </div>
+                    <input
+                      type="tel"
+                      placeholder="Contoh: 081234567890"
+                      value={formData.phone}
+                      onChange={(e) => {
+                        setFormData({ ...formData, phone: e.target.value });
+                        if (validationErrors.phone) {
+                          setValidationErrors(prev => ({ ...prev, phone: '' }));
+                        }
+                      }}
+                      className={`w-full pl-9 pr-3 py-2.5 rounded-xl border text-xs sm:text-sm focus:outline-none transition-all ${
+                        validationErrors.phone
+                          ? 'border-rose-400 bg-rose-50/30 ring-2 ring-rose-500/20'
+                          : 'border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500'
+                      }`}
+                    />
+                  </div>
+                </div>
+
+                {/* Mandatory Address (Alamat Pasien / Link Maps) */}
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                    <span>
+                      {formData.serviceType === 'panggilan'
+                        ? 'Alamat Lengkap / Patokan Rumah / Link Maps Pasien *'
+                        : 'Alamat Domisili Pasien (Kecamatan / Kelurahan) *'}
+                    </span>
+                    {validationErrors.address && (
+                      <span className="text-[10px] text-rose-600 font-bold lowercase">Wajib diisi</span>
+                    )}
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 pt-3 pointer-events-none text-slate-400">
+                      <MapPin className="w-4 h-4" />
+                    </div>
+                    <textarea
+                      rows={2}
+                      placeholder={
+                        formData.serviceType === 'panggilan'
+                          ? 'Contoh: Perumahan Yasmin Sektor 3 No. 15, dekat Masjid Al-Ikhlas, atau tempel link Google Maps...'
+                          : 'Contoh: Leuwiliang / Dramaga Bogor'
+                      }
+                      value={formData.address}
+                      onChange={(e) => {
+                        setFormData({ ...formData, address: e.target.value });
+                        if (validationErrors.address) {
+                          setValidationErrors(prev => ({ ...prev, address: '' }));
+                        }
+                      }}
+                      className={`w-full pl-9 pr-3 py-2.5 rounded-xl border text-xs sm:text-sm focus:outline-none transition-all resize-none ${
+                        validationErrors.address
+                          ? 'border-rose-400 bg-rose-50/30 ring-2 ring-rose-500/20'
+                          : 'border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500'
+                      }`}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Tanggal Terapi & Custom Sesi Waktu Dropdown */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+                {/* Date Picker with Quick Select Chips */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                    <span>Pilih Tanggal *</span>
+                    <span className="text-[10px] text-slate-500">Pilihan Cepat:</span>
+                  </label>
+                  
+                  {/* Quick date chips */}
+                  <div className="flex gap-1.5 mb-1.5">
+                    <button
+                      type="button"
+                      onClick={() => handleQuickDateSelect(0)}
+                      className="px-2 py-0.5 text-[10px] font-bold rounded-lg bg-slate-100 hover:bg-emerald-100 text-slate-700 hover:text-emerald-800 cursor-pointer transition-colors"
+                    >
+                      Hari Ini
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleQuickDateSelect(1)}
+                      className="px-2 py-0.5 text-[10px] font-bold rounded-lg bg-slate-100 hover:bg-emerald-100 text-slate-700 hover:text-emerald-800 cursor-pointer transition-colors"
+                    >
+                      Besok
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleQuickDateSelect(2)}
+                      className="px-2 py-0.5 text-[10px] font-bold rounded-lg bg-slate-100 hover:bg-emerald-100 text-slate-700 hover:text-emerald-800 cursor-pointer transition-colors"
+                    >
+                      Lusa
+                    </button>
+                  </div>
+
                   <input
                     type="date"
                     required
                     value={formData.selectedDate}
                     onChange={(e) => setFormData({ ...formData, selectedDate: e.target.value })}
-                    className="w-full p-2 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full p-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                   />
                 </div>
 
-                <div className="space-y-1">
+                {/* Custom Sesi Waktu Dropdown */}
+                <div className="space-y-1.5 relative" ref={timeDropdownRef}>
                   <label className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    Sesi Waktu
+                    Sesi Waktu *
                   </label>
-                  <select
-                    value={formData.selectedTimeSlot}
-                    onChange={(e) => setFormData({ ...formData, selectedTimeSlot: e.target.value })}
-                    className="w-full p-2 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+
+                  <button
+                    type="button"
+                    onClick={() => setIsTimeDropdownOpen(!isTimeDropdownOpen)}
+                    className={`w-full p-2.5 rounded-xl border text-left flex items-center justify-between text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                      isTimeDropdownOpen
+                        ? 'border-emerald-600 ring-2 ring-emerald-600/30 bg-white shadow-md'
+                        : 'border-slate-300 hover:border-emerald-300 bg-white'
+                    }`}
                   >
-                    {timeSlots.map((slot) => (
-                      <option key={slot} value={slot}>
-                        {slot}
-                      </option>
-                    ))}
-                  </select>
+                    <div className="flex items-center gap-2 truncate">
+                      <Clock className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span className="truncate text-slate-800">{formData.selectedTimeSlot}</span>
+                    </div>
+                    <ChevronDown
+                      className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                        isTimeDropdownOpen ? 'rotate-180 text-emerald-600' : ''
+                      }`}
+                    />
+                  </button>
+
+                  {/* Custom Time Options Menu */}
+                  {isTimeDropdownOpen && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-slate-200 shadow-xl z-40 overflow-hidden divide-y divide-slate-100 animate-in fade-in zoom-in-95 duration-150">
+                      {timeSlots.map((slot) => {
+                        const isSelected = formData.selectedTimeSlot === slot.label;
+                        return (
+                          <div
+                            key={slot.label}
+                            onClick={() => {
+                              setFormData({ ...formData, selectedTimeSlot: slot.label });
+                              setIsTimeDropdownOpen(false);
+                            }}
+                            className={`p-2.5 flex items-center justify-between text-xs cursor-pointer transition-colors ${
+                              isSelected
+                                ? 'bg-emerald-50 text-emerald-900 font-bold'
+                                : 'hover:bg-slate-50 text-slate-700'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              {slot.icon}
+                              <span>{slot.label}</span>
+                            </div>
+                            {isSelected && <Check className="w-4 h-4 text-emerald-600" />}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
+
               </div>
-
-              {/* Personal Data */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    Nama Pasien (Ikhwan) *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Nama lengkap"
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full p-2 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    No. WhatsApp *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    placeholder="081234567890"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full p-2 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Address (If Panggilan) */}
-              {formData.serviceType === 'panggilan' && (
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    Alamat Lengkap / Patokan Rumah *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Contoh: Jl. Raya Dramaga No. 12, dekat Masjid..."
-                    value={formData.address}
-                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    className="w-full p-2 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                  />
-                </div>
-              )}
 
               {/* Medical Screening Checkboxes */}
               <div className="space-y-1.5">
                 <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">
-                  Skrining Kesehatan (Beri tanda jika ada)
+                  Skrining Riwayat Kesehatan (Beri tanda jika ada)
                 </label>
                 <div className="grid grid-cols-2 gap-2 text-xs text-slate-700">
-                  <label className="flex items-center gap-2 p-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <label className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.hasMedicalConditions.diabetes}
@@ -352,10 +727,10 @@ Mohon konfirmasi ketersediaan jadwal terapis. Terima kasih.`;
                       })}
                       className="rounded text-emerald-600 focus:ring-emerald-500"
                     />
-                    <span>Diabetes/Gula</span>
+                    <span>Diabetes / Gula</span>
                   </label>
 
-                  <label className="flex items-center gap-2 p-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <label className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.hasMedicalConditions.highBloodPressure}
@@ -368,7 +743,7 @@ Mohon konfirmasi ketersediaan jadwal terapis. Terima kasih.`;
                     <span>Darah Tinggi</span>
                   </label>
 
-                  <label className="flex items-center gap-2 p-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <label className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.hasMedicalConditions.bloodThinners}
@@ -381,7 +756,7 @@ Mohon konfirmasi ketersediaan jadwal terapis. Terima kasih.`;
                     <span>Obat Pengencer Darah</span>
                   </label>
 
-                  <label className="flex items-center gap-2 p-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <label className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.hasMedicalConditions.heartDisease}
@@ -399,32 +774,32 @@ Mohon konfirmasi ketersediaan jadwal terapis. Terima kasih.`;
               {/* Specific Health Notes */}
               <div className="space-y-1">
                 <label className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                  Keluhan / Catatan Khusus
+                  Keluhan Pasien / Catatan Khusus
                 </label>
                 <input
                   type="text"
-                  placeholder="Contoh: Pegal leher, masuk angin, ingin fokus titik sunnah..."
+                  placeholder="Contoh: Pegal leher, pusing, masuk angin, ingin fokus titik sunnah..."
                   value={formData.healthNotes}
                   onChange={(e) => setFormData({ ...formData, healthNotes: e.target.value })}
-                  className="w-full p-2 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  className="w-full p-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                 />
               </div>
 
               {/* Total & Submit */}
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
                 <div>
                   <span className="text-[10px] text-slate-400 block uppercase font-bold">Total Biaya:</span>
-                  <span className="text-lg font-black text-emerald-800">
+                  <span className="text-xl font-black text-emerald-800">
                     Rp {totalCost.toLocaleString('id-ID')}
                   </span>
                 </div>
 
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer flex items-center gap-2"
+                  className="px-6 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer flex items-center gap-2 hover:scale-[1.02]"
                 >
-                  <Calendar className="w-4 h-4" />
-                  <span>Kirim via WhatsApp</span>
+                  <WhatsAppIcon className="w-4 h-4 text-white" />
+                  <span>Kirim Reservasi via WhatsApp</span>
                 </button>
               </div>
 

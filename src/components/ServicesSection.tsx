@@ -1,6 +1,6 @@
 import React from 'react';
-import { Check, Clock, ShieldCheck, Heart, Sparkles, UserCheck, ArrowRight, Car, Home } from 'lucide-react';
-import { servicePackages, THERAPIST_INFO } from '../data/treatments';
+import { Check, Clock, Sparkles, UserCheck, ArrowRight, Car } from 'lucide-react';
+import { servicePackages } from '../data/treatments';
 import { ServicePackage } from '../types';
 
 interface ServicesSectionProps {
@@ -30,7 +30,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectPackag
             Pilihan Paket Terapi Bekam
           </h2>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            Semua paket dikerjakan langsung oleh terapis ikhwan bersertifikat dan bersanad. Bebas biaya transport jika terapi di rumah terapis di Leuwisadeng.
+            Dikerjakan langsung oleh terapis bersertifikat dan bersanad untuk wilayah <strong>Bogor dan Sekitarnya</strong>. Bebas biaya transport jika datang langsung ke rumah terapis di Leuwisadeng.
           </p>
         </div>
 
@@ -80,10 +80,6 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectPackag
                       + transport
                     </span>
                   </div>
-                  <p className="text-[11px] text-emerald-700 font-semibold mt-1 flex items-center gap-1">
-                    <UserCheck className="w-3.5 h-3.5" />
-                    <span>Khusus Ikhwan (Laki-laki)</span>
-                  </p>
                 </div>
 
                 {/* Features List */}
@@ -122,6 +118,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectPackag
               {/* Action Button */}
               <div className="p-6 pt-0">
                 <button
+                  type="button"
                   onClick={() => onSelectPackage(pkg)}
                   className={`w-full py-3 rounded-xl font-bold text-xs sm:text-sm shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer ${
                     pkg.isPopular
@@ -129,7 +126,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectPackag
                       : 'bg-slate-900 hover:bg-slate-800 text-white'
                   }`}
                 >
-                  <span>Pilih Paket Ini</span>
+                  <span>Reservasi Paket Ini</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -146,7 +143,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectPackag
             <div>
               <h4 className="font-bold text-slate-900 text-sm">Ketentuan Biaya Transport Panggilan</h4>
               <p className="text-xs text-slate-600 mt-0.5">
-                Biaya transport dihitung <strong>Rp 1.500 per km (Pulang-Pergi / PP)</strong> dari Kp. Leuwisadeng ke rumah pasien. Jika pasien datang langsung ke rumah terapis, <strong>bebas biaya transport (gratis)</strong>.
+                Biaya transport dihitung secara adil dan transparan dari Kp. Leuwisadeng ke rumah pasien. Jika pasien datang langsung ke rumah terapis, <strong>bebas biaya transport (gratis)</strong>.
               </p>
             </div>
           </div>

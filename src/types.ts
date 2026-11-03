@@ -41,6 +41,7 @@ export interface DynamicSunnahDate {
 
 export interface BookingFormData {
   fullName: string;
+  age: string;
   phone: string;
   serviceType: 'panggilan' | 'ke_rumah_terapis';
   servicePackageId: string;

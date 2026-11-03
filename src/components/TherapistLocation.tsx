@@ -1,144 +1,45 @@
 import React from 'react';
-import { MapPin, Navigation, Home, CheckCircle, ExternalLink, ShieldCheck } from 'lucide-react';
+import { MapPin, Navigation, ExternalLink } from 'lucide-react';
 import { THERAPIST_INFO } from '../data/treatments';
-import { WhatsAppIcon } from './WhatsAppIcon';
 
-export const TherapistLocation: React.FC = () => {
+interface TherapistLocationProps {
+  onOpenBooking?: () => void;
+}
+
+export const TherapistLocation: React.FC<TherapistLocationProps> = () => {
   return (
-    <section id="lokasi-rumah" className="py-16 bg-slate-50 relative">
+    <section id="lokasi-rumah" className="py-14 bg-slate-50 relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
+        <div className="text-center max-w-3xl mx-auto mb-8">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider mb-2.5">
             <MapPin className="w-3.5 h-3.5 text-emerald-600" />
-            Alamat &amp; Titik Lokasi
+            Titik Lokasi Rumah Terapis
           </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
-            Lokasi Rumah Terapis Bekam
+            Peta Lokasi Kediaman Terapis
           </h2>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            Karena saat ini <strong>belum membuka klinik</strong>, terapis fokus melayani <strong>Bekam Panggilan</strong> ke rumah pasien. Adapun jika Anda ingin terapi dan datang langsung ke rumah terapis di Leuwisadeng, sangat dipersilakan dengan <strong>bebas biaya transport (gratis biaya transport)</strong>.
+            <strong>{THERAPIST_INFO.address}</strong>. Kami melayani Bekam Panggilan ke rumah pasien di wilayah <strong>Bogor dan Sekitarnya</strong>, dan dipersilakan datang langsung ke rumah terapis dengan <strong>bebas biaya transport (gratis)</strong>.
           </p>
         </div>
 
-        {/* Location Showcase Card */}
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden mb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12">
-            
-            {/* Left Details */}
-            <div className="lg:col-span-7 p-6 sm:p-8 space-y-6">
-              
-              <div className="space-y-2">
-                <span className="text-xs font-bold uppercase text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
-                  Alamat Lengkap
-                </span>
-                <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug">
-                  {THERAPIST_INFO.address}
-                </h3>
-              </div>
-
-              {/* Perks of visiting therapist home */}
-              <div className="space-y-3 pt-1">
-                <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                  Ketentuan Kunjungan ke Rumah Terapis:
-                </h4>
-                <div className="space-y-2 text-xs sm:text-sm text-slate-600">
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <span><strong>Bebas Biaya Transport:</strong> Pasien hanya membayar tarif paket bekam yang dipilih (Rp 85rb / 110rb / 135rb).</span>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <span><strong>Ruangan Khusus Ikhwan:</strong> Disediakan tempat terapi khusus pria yang bersih, tenang, dan tertutup.</span>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <span><strong>Konfirmasi Jadwal Terlebih Dahulu:</strong> Harap membuat janji via WhatsApp sebelum berkunjung agar terapis standby di rumah.</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row gap-3">
-                <a
-                  href={THERAPIST_INFO.gmapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm shadow-md transition-all"
-                >
-                  <Navigation className="w-4 h-4 text-emerald-400" />
-                  <span>Petunjuk Arah Google Maps</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-                </a>
-
-                <a
-                  href={THERAPIST_INFO.whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm shadow-md transition-all"
-                >
-                  <WhatsAppIcon className="w-4 h-4 text-white" />
-                  <span>Chat WhatsApp</span>
-                </a>
-              </div>
-
-            </div>
-
-            {/* Right Information Card */}
-            <div className="lg:col-span-5 bg-gradient-to-br from-emerald-800 to-teal-950 text-white p-6 sm:p-8 flex flex-col justify-between">
-              
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-emerald-300">
-                  <MapPin className="w-7 h-7" />
-                </div>
-                
-                <div>
-                  <h4 className="text-lg font-bold">Kecamatan Leuwisadeng, Bogor</h4>
-                  <p className="text-xs text-emerald-200 mt-1 leading-relaxed">
-                    Siap melayani panggilan bekam ke berbagai area sekitar: Leuwisadeng, Leuwiliang, Cibungbulang, Nanggung, Ciampea, Dramaga, hingga Bogor Kota.
-                  </p>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-white/10 backdrop-blur-xs border border-white/15 text-xs space-y-1">
-                  <p className="font-semibold text-emerald-200">Layanan Terapis Resmi:</p>
-                  <p className="text-sm font-bold text-white">Khusus Ikhwan (Laki-laki)</p>
-                  <p className="text-[11px] text-emerald-300">Praktisi Bersertifikat dan Bersanad</p>
-                </div>
-              </div>
-
-              <div className="pt-6">
-                <a
-                  href={THERAPIST_INFO.gmapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-xl bg-white hover:bg-emerald-50 text-emerald-950 font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition-colors"
-                >
-                  <MapPin className="w-3.5 h-3.5 text-emerald-700" />
-                  <span>Buka Titik di Google Maps</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-
-        {/* Embedded Interactive Google Map clickable directly to Google Maps */}
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-lg overflow-hidden p-3 sm:p-4">
-          <div className="flex items-center justify-between pb-3 px-2">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
-              <MapPin className="w-4 h-4 text-emerald-600" />
-              <span>Peta Titik Lokasi: Terapi Bekam Bogor (Kp. Leuwisadeng)</span>
+        {/* Embedded Interactive Google Map */}
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden p-3 sm:p-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3.5 px-2 gap-2 border-b border-slate-100 mb-3">
+            <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-800">
+              <MapPin className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Titik Kordinat: Kp. Leuwisadeng RT 01 RW 03, Kab. Bogor</span>
             </div>
             <a
               href={THERAPIST_INFO.gmapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-bold text-emerald-700 hover:text-emerald-800 underline flex items-center gap-1"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:text-emerald-800 underline transition-colors"
             >
-              <span>Buka di Google Maps ↗</span>
+              <Navigation className="w-3.5 h-3.5" />
+              <span>Buka Petunjuk Arah di Google Maps ↗</span>
             </a>
           </div>
 
@@ -146,8 +47,8 @@ export const TherapistLocation: React.FC = () => {
             href={THERAPIST_INFO.gmapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="block relative w-full h-80 sm:h-96 rounded-2xl overflow-hidden border border-slate-200 group cursor-pointer"
-            title="Klik peta untuk membuka titik tujuan di Google Maps"
+            className="block relative w-full h-80 sm:h-96 lg:h-[420px] rounded-2xl overflow-hidden border border-slate-200 group cursor-pointer"
+            title="Klik peta untuk membuka rute langsung di Google Maps"
           >
             <iframe
               title="Peta Lokasi Terapi Bekam Bogor"

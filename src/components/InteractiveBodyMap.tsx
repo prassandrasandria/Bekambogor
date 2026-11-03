@@ -29,7 +29,10 @@ export const InteractiveBodyMap: React.FC<InteractiveBodyMapProps> = ({ onSelect
             Anatomi Sunnah &amp; Titik Medis Tubuh
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
-            Peta Titik Bekam Interaktif (Punggung &amp; Kepala)
+            Peta Titik Bekam Interaktif
+            <span className="block text-emerald-700 text-2xl sm:text-3xl font-bold mt-1">
+              (Punggung &amp; Kepala)
+            </span>
           </h2>
           <p className="text-slate-600 text-base leading-relaxed">
             Klik titik-titik pada tubuh di bawah ini untuk mempelajari nama sunnah Arab, dalil hadits, serta manfaat medis klinisnya.
@@ -163,32 +166,41 @@ export const InteractiveBodyMap: React.FC<InteractiveBodyMapProps> = ({ onSelect
 
           {/* Right: Detailed Point Card */}
           <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md">
-            
-            {/* Header of Point */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-5">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
+            {/* Header of Point - Neatly aligned, clean spacing without cramming */}
+            <div className="border-b border-slate-100 pb-5 space-y-3">
+              {/* Badge & Arabic Name Row */}
+              <div className="flex items-center justify-between gap-3">
+                <span
+                  className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap shadow-2xs ${
                     selectedPoint.sunnahStatus
-                      ? 'bg-amber-100 text-amber-900 border border-amber-200'
-                      : 'bg-teal-100 text-teal-900 border border-teal-200'
-                  }`}>
-                    {selectedPoint.sunnahStatus ? '★ Titik Sunnah Nabawi' : 'Titik Medis Anatomi'}
-                  </span>
-                  <span className="text-xs text-slate-500 font-medium">
-                    {selectedPoint.location}
-                  </span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                      ? 'bg-amber-100 text-amber-900 border border-amber-300'
+                      : 'bg-teal-100 text-teal-900 border border-teal-300'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <span>{selectedPoint.sunnahStatus ? 'Titik Sunnah Nabawi' : 'Titik Medis Anatomi'}</span>
+                </span>
+
+                {/* Arabic Script */}
+                <span className="font-arabic text-2xl sm:text-3xl font-bold text-emerald-800 shrink-0" dir="rtl">
+                  {selectedPoint.arabicName}
+                </span>
+              </div>
+
+              {/* Point Name in Indonesian */}
+              <div>
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-snug">
                   {selectedPoint.indonesianName}
                 </h3>
               </div>
 
-              {/* Arabic Name Badge */}
-              <div className="text-left sm:text-right">
-                <span className="font-arabic text-2xl font-bold text-emerald-800" dir="rtl">
-                  {selectedPoint.arabicName}
-                </span>
+              {/* Anatomical Position Box */}
+              <div className="p-3 rounded-xl bg-emerald-50/50 border border-emerald-100 text-xs text-slate-700 leading-relaxed flex items-start gap-2">
+                <Info className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-bold text-emerald-950">Letak Anatomi: </span>
+                  <span className="text-slate-700">{selectedPoint.location}</span>
+                </div>
               </div>
             </div>
 
