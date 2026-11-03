@@ -192,7 +192,30 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       ? `Rp ${transportCost.toLocaleString('id-ID')} (${formData.distanceKm} km x Rp 2.500)`
       : 'Rp 0 (Gratis Transport - Datang ke Rumah Terapis Leuwisadeng)';
 
-    const message = `*FORMULIR RESERVASI TERAPI BEKAM BOGOR*
+    const formatIndonesianDateWithDay = (dateStr: string) => {
+      if (!dateStr) return '';
+      try {
+        const [year, month, day] = dateStr.split('-').map(Number);
+        const dateObj = new Date(year, month - 1, day);
+        const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        const months = [
+          'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        const dayName = days[dateObj.getDay()];
+        const monthName = months[dateObj.getMonth()];
+        return `${dayName}, ${day} ${monthName} ${year}`;
+      } catch {
+        return dateStr;
+      }
+    };
+
+    const formattedDateWithDay = formatIndonesianDateWithDay(formData.selectedDate);
+
+    const message = `Assalamu'alaikum, saya mau booking jadwal terapi bekam pada hari/tgl:
+📅 *${formattedDateWithDay}* (${formData.selectedTimeSlot})
+
+*DATA FORMULIR RESERVASI:*
 ---------------------------------------
 👤 *Nama Pasien:* ${formData.fullName.trim()} (Ikhwan)
 🎂 *Usia Pasien:* ${formData.age.trim()} tahun
@@ -200,15 +223,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 🏠 *Tipe Layanan:* ${formData.serviceType === 'panggilan' ? 'Bekam Panggilan (Ke Rumah Pasien)' : 'Datang ke Rumah Terapis (Kp. Leuwisadeng)'}
 📍 *Alamat Pasien:* ${formData.address.trim()}
 ${formData.serviceType === 'panggilan' ? `🚗 *Jarak Tempuh:* ${formData.distanceKm} km (Pulang Pergi)\n💰 *Biaya Transport:* ${transportInfoText}\n` : `🏡 *Lokasi Terapi:* Kp. Leuwisadeng RT 01 RW 03 Kec. Leuwisadeng\n`}
-📦 *Paket Bekam:* ${selectedPackage.name} (Rp ${selectedPackage.price.toLocaleString('id-ID')})
-📅 *Hari/Tanggal:* ${formData.selectedDate}
-⏰ *Sesi Waktu:* ${formData.selectedTimeSlot}
+📦 *Paket Terapi:* ${selectedPackage.name} (Rp ${selectedPackage.price.toLocaleString('id-ID')})
 💵 *TOTAL BIAYA:* Rp ${totalCost.toLocaleString('id-ID')}
 
 🩺 *Kondisi Kesehatan:* ${conditionsText}
-📝 *Catatan Keluhan:* ${formData.healthNotes.trim() || 'Ingin bekam rutin sunnah & stamina'}
+📝 *Catatan Keluhan:* ${formData.healthNotes.trim() || 'Ingin bekam rutin sunnah & kebugaran tubuh'}
 ---------------------------------------
-Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formulir di atas. Terima kasih.`;
+Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
 
     const waLink = `${THERAPIST_INFO.whatsappUrl}?text=${encodeURIComponent(message)}`;
     setGeneratedWaUrl(waLink);
@@ -231,15 +252,24 @@ Assalamu'alaikum, saya ingin konfirmasi reservasi terapi bekam sesuai data formu
         
         {/* Header */}
         <div className="bg-gradient-to-r from-emerald-800 to-teal-900 text-white p-6 rounded-t-3xl flex items-start justify-between">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 text-[11px] font-bold uppercase tracking-wider mb-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              Layanan Steril &amp; Profesional
+          <div className="flex items-start gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-white/10 p-1.5 border-2 border-emerald-400 shrink-0 shadow-md hidden sm:flex items-center justify-center">
+              <img
+                src="/logo.png"
+                alt="Logo Bekam Bogor"
+                className="w-9 h-9 object-contain"
+              />
             </div>
-            <h3 className="text-xl sm:text-2xl font-black">Formulir Reservasi Terapi Bekam</h3>
-            <p className="text-xs text-emerald-100 mt-0.5">
-              {THERAPIST_INFO.tagline} • Ditangani {THERAPIST_INFO.certification}
-            </p>
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 text-[11px] font-bold uppercase tracking-wider mb-1">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                Layanan Steril &amp; Profesional (Khusus Ikhwan)
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black">Formulir Booking Jadwal Bekam</h3>
+              <p className="text-xs text-emerald-100 mt-0.5">
+                {THERAPIST_INFO.tagline} • Standar Higienis SOP Medis &amp; Sanad Thibbun Nabawi
+              </p>
+            </div>
           </div>
           <button
             type="button"

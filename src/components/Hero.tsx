@@ -57,7 +57,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }
               </div>
               <div className="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-slate-200 shadow-2xs">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="text-xs font-semibold text-slate-800 text-left">{THERAPIST_INFO.certification}</span>
+                <span className="text-xs font-semibold text-slate-800 text-left">Praktisi Berpengalaman (Sejak 2022)</span>
               </div>
               <div className="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-slate-200 shadow-2xs col-span-2 sm:col-span-1">
                 <Calculator className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -65,8 +65,22 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }
               </div>
             </div>
 
+            {/* SEMENTARA DI-KOMENTAR SESUAI PERMINTAAN USER:
+            <div className="inline-flex items-center gap-2.5 bg-emerald-50/80 border border-emerald-200/80 rounded-2xl p-2 pr-4 shadow-2xs">
+              <img
+                src={THERAPIST_INFO.photoUrl}
+                alt={THERAPIST_INFO.therapistName}
+                className="w-8 h-8 rounded-xl object-cover border border-emerald-600/40 shrink-0 shadow-2xs"
+              />
+              <div className="text-left text-xs">
+                <span className="font-bold text-slate-900 block leading-tight">Ditangani oleh {THERAPIST_INFO.therapistName}</span>
+                <span className="text-[11px] text-emerald-800 font-medium">Praktisi Resmi Aswaja • {THERAPIST_INFO.experienceYears}</span>
+              </div>
+            </div>
+            */}
+
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1">
               <button
                 type="button"
                 onClick={onExploreCalculator}
@@ -109,9 +123,12 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }
                   height={56}
                   className="w-14 h-14 object-contain drop-shadow-sm"
                 />
-                <div>
+                <div className="flex-1">
                   <h3 className="font-black text-lg text-slate-900 leading-tight">Bekam Bogor</h3>
-                  <p className="text-xs text-emerald-700 font-bold">{THERAPIST_INFO.certification}</p>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span className="text-xs text-emerald-700 font-bold">Praktisi Bersertifikat</span>
+                    <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">Sejak {THERAPIST_INFO.experienceSince}</span>
+                  </div>
                   <p className="text-[11px] text-slate-400">Wilayah Layanan: Bogor dan Sekitarnya</p>
                 </div>
               </div>

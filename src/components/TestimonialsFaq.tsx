@@ -179,7 +179,7 @@ export const TestimonialsFaq: React.FC = () => {
               Punya pertanyaan khusus seputar keluhan fisik atau titik bekam Anda?
             </p>
             <a
-              href="https://wa.me/6285777205863?text=Assalamu%27alaikum%20saya%20ingin%20tanya%20konsultasi%20terapi%20bekam."
+              href="https://wa.me/6285163518070?text=Assalamu%27alaikum%20saya%20ingin%20tanya%20konsultasi%20terapi%20bekam."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer"

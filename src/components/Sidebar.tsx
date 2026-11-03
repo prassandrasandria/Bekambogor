@@ -49,6 +49,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       icon: <Calculator className="w-4 h-4 text-emerald-600" />
     },
     { id: 'paket-layanan', label: 'Biaya & Paket Bekam', icon: <Layers className="w-4 h-4" /> },
+    // SEMENTARA DI-KOMENTAR SESUAI PERMINTAAN USER:
+    // {
+    //   id: 'profil-terapis',
+    //   label: 'Profil & Sertifikat Terapis',
+    //   icon: <UserCheck className="w-4 h-4 text-emerald-600" />
+    // },
     { id: 'dokumentasi-foto', label: 'Dokumentasi Terapi', icon: <Camera className="w-4 h-4" /> },
     { id: 'titik-bekam', label: 'Peta Titik Bekam', icon: <Activity className="w-4 h-4" /> },
     {
@@ -144,6 +150,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <X className="w-5 h-5" />
             </button>
           </div>
+
+          {/* SEMENTARA DI-KOMENTAR SESUAI PERMINTAAN USER:
+          <div className="flex items-center gap-2.5 p-2 rounded-xl bg-slate-50 border border-slate-200/80">
+            <img
+              src={THERAPIST_INFO.photoUrl}
+              alt={THERAPIST_INFO.therapistName}
+              className="w-7 h-7 rounded-lg object-cover border border-emerald-500/50 shrink-0"
+            />
+            <div className="min-w-0 text-left">
+              <p className="text-[11px] font-bold text-slate-800 truncate">Terapis: {THERAPIST_INFO.therapistName}</p>
+              <p className="text-[10px] text-emerald-700 font-semibold truncate">Sejak {THERAPIST_INFO.experienceSince}</p>
+            </div>
+          </div>
+          */}
         </div>
 
         {/* Middle: Semantic Navigation Landmark */}
@@ -201,7 +221,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             }}
             className="w-full py-2.5 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer"
           >
-            <span>Reservasi Terapi Bekam</span>
+            <span>Booking Jadwal Bekam</span>
           </button>
 
           <div className="text-[10px] text-center text-slate-500 font-medium">

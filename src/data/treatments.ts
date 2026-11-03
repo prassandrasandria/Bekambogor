@@ -1,19 +1,72 @@
-import { ServicePackage } from '../types';
+import { ServicePackage, TherapistCertificate } from '../types';
+
+export const THERAPIST_CERTIFICATES: TherapistCertificate[] = [
+  {
+    id: 'cert-bekam-aswaja',
+    title: 'Pelatihan Kilat Bekam Aswaja',
+    institution: 'Bekam Aswaja Surabaya (Trainer & Pembina: Achmad Zakaria, S.Hum)',
+    credentialNumber: '012/PBK/04/2025',
+    date: '13 April 2025',
+    recipient: 'Prassandra Sandria',
+    badge: 'Bekam Aswaja',
+    imageUrl: '/assets/aistudio/Ali_Asadallah_12.pdf_20260605_010819_0000_7690982a.png',
+    description: 'Sertifikasi kompetensi pelatihan kilat bekam berstandar keilmuan dan kaidah syariah Thibbun Nabawi Aswaja Surabaya.'
+  },
+  {
+    id: 'cert-thibbun-nabawi',
+    title: 'Seminar Reguler Sinergi Bekam Sunnah & Herbal Nusantara',
+    institution: 'Al-Hijamah Thibbun Nabawi Training Center (Yayasan Rumah Tarbiyah Indonesia)',
+    credentialNumber: '4391/TNTR/Al-Hijamah/VI/2025 (SK Kemenkumham: No. AHU-005048.AH.01.04.Tahun 2019)',
+    date: '01 Juni 2025',
+    recipient: 'Prassandra Sandria',
+    badge: 'SK Kemenkumham',
+    imageUrl: '/assets/aistudio/20260625_173326_0000_e3e26373.png',
+    description: 'Sertifikat resmi seminar reguler integrasi bekam sunnah dengan herba nusantara berbadan hukum Kemenkumham.'
+  },
+  {
+    id: 'cert-gusmus-raksa-jasad',
+    title: 'Anggota Perkumpulan Gusmus Raksa Jasad - GM Terapi Organ Tubuh',
+    institution: 'LKP Jaya Perkasa (Ketua Koordinat: Jeje Suwanda Spd.)',
+    credentialNumber: '019 / Sert / RTKII / KOORDINAT / I / 2024',
+    date: '03 Juni 2025',
+    recipient: 'Prassandra Sandria',
+    badge: 'Gusmus Raksa Jasad',
+    imageUrl: '/assets/aistudio/file_00000000b5ec7208a5502f9f42d519f6_06dba098.png',
+    description: 'Sertifikasi keanggotaan dan keahlian terapi perbaikan sistem organ tubuh koordinat Jaya Perkasa.'
+  },
+  {
+    id: 'cert-bekam-terapan',
+    title: 'Pelatihan Bekam Terapan & Homeservis',
+    institution: 'Pelatihan Bekam Terapan (dr. Ahmad Rizki Ramanda Nst)',
+    credentialNumber: '200/SER/NTC-HT/VII/2026',
+    date: '16 Juli 2026',
+    recipient: 'Prassandra S',
+    badge: 'Bekam Terapan Medis',
+    imageUrl: '/assets/aistudio/file_000000005bc881fa9d8954840c696798_0779a561.png',
+    description: 'Webinar dan bimbingan bekam medis profesional homeservis berstandar higienis dan penanganan repeat order pasien.'
+  }
+];
 
 export const THERAPIST_INFO = {
   name: 'Bekam Bogor - Spesialis Bekam Panggilan',
+  therapistName: 'Prassandra S',
+  formalName: 'Prassandra Sandria',
+  experienceYears: 'Menekuni terapi bekam sejak tahun 2022',
+  experienceSince: '2022',
+  photoUrl: '/assets/aistudio/file_00000000a9bc8211944e9f5c8e0e4fb4_9ca2b26c.png',
   tagline: 'Spesialis Bekam Panggilan',
-  description: 'Melayani bekam panggilan ke rumah pasien se-Bogor dan Sekitarnya, atau datang langsung ke rumah terapis di Leuwisadeng (bebas biaya transport). Saat ini khusus melayani ikhwan (laki-laki), insya Allah ke depan tersedia terapis akhwat (perempuan).',
+  description: 'Menghidupkan Thibbun Nabawi untuk kebugaran tubuh, meredakan migrain, kolesterol, pegal pundak & pinggang. Melayani panggilan ke rumah pasien untuk wilayah Bogor dan Sekitarnya, dan jika ingin datang langsung ke rumah terapis sangat dipersilakan.',
   address: 'Kp. Leuwisadeng RT 01 RW 03 Kec. Leuwisadeng Kab.Bogor',
   phone: '085163518070',
   whatsappUrl: 'https://wa.me/6285163518070',
   gmapsUrl: 'https://maps.app.goo.gl/zCZNsTtXu6BtTctv7',
   mapCoordinates: { lat: -6.5707973, lng: 106.6064241 },
   transportRatePerKm: 2500, // Rp 2.500 / km (Pulang Pergi: jarak x 2.500)
-  certification: 'Praktisi Bersertifikat dan Bersanad',
+  certification: 'Praktisi Bersertifikat Resmi & Berpengalaman',
   genderRestriction: 'Khusus Ikhwan (Laki-laki) *sementara waktu, insya Allah ke depan tersedia terapis akhwat',
   genderNote: 'Sementara khusus ikhwan / pria, insya Allah ke depan tersedia terapis akhwat (perempuan)',
-  clinicStatus: 'Melayani panggilan ke rumah pasien & terapi langsung di rumah terapis.'
+  clinicStatus: 'Melayani panggilan ke rumah pasien & terapi langsung di rumah terapis.',
+  certificates: THERAPIST_CERTIFICATES
 };
 
 export const servicePackages: ServicePackage[] = [

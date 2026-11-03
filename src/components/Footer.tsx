@@ -58,6 +58,13 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
                   Jadwal Bekam Sunnah Nabawi (Tiap Bulan)
                 </a>
               </li>
+              {/* SEMENTARA DI-KOMENTAR SESUAI PERMINTAAN USER:
+              <li>
+                <a href="#profil-terapis" className="hover:text-emerald-400 transition-colors">
+                  Profil &amp; Sertifikasi Terapis
+                </a>
+              </li>
+              */}
               <li>
                 <a href="#titik-bekam" className="hover:text-emerald-400 transition-colors">
                   Peta Titik Bekam Anatomi
@@ -120,7 +127,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
         {/* Disclaimer & Copyright - With generous mobile bottom padding so it is completely visible */}
         <div className="pt-6 text-xs text-slate-500 space-y-2.5 text-left">
           <p className="max-w-3xl leading-relaxed">
-            <strong className="text-slate-400">Disclaimer:</strong> Terapi bekam (hijamah) adalah ikhtiar pengobatan komplementer sunnah Nabawi yang telah diakui khasiatnya. Ditangani langsung oleh {THERAPIST_INFO.certification} dengan standar sterilitas tinggi.
+            <strong className="text-slate-400">Disclaimer:</strong> Terapi bekam (hijamah) adalah ikhtiar pengobatan komplementer sunnah Nabawi yang telah diakui khasiatnya. Ditangani langsung oleh terapis <strong>{THERAPIST_INFO.therapistName}</strong> ({THERAPIST_INFO.experienceYears}) dengan standar sterilitas tinggi.
           </p>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-slate-900 text-slate-500 font-medium">
             <p>

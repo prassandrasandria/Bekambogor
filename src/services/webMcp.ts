@@ -41,7 +41,10 @@ export function initializeWebMcp() {
       },
       execute: async () => {
         return {
-          therapist: THERAPIST_INFO.name,
+          clinic: THERAPIST_INFO.name,
+          therapist: THERAPIST_INFO.therapistName,
+          formalName: THERAPIST_INFO.formalName,
+          experience: THERAPIST_INFO.experienceYears,
           address: THERAPIST_INFO.address,
           whatsapp: THERAPIST_INFO.phone,
           packages: servicePackages.map(pkg => ({

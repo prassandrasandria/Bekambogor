@@ -86,3 +86,15 @@ export interface FaqItem {
   category: 'dasar' | 'sunnah' | 'medis' | 'layanan';
 }
 
+export interface TherapistCertificate {
+  id: string;
+  title: string;
+  institution: string;
+  credentialNumber: string;
+  date: string;
+  recipient: string;
+  badge: string;
+  imageUrl: string;
+  description?: string;
+}
+

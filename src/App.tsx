@@ -10,6 +10,7 @@ import { InteractiveBodyMap } from './components/InteractiveBodyMap';
 import { HygieneProtocols } from './components/HygieneProtocols';
 import { TestimonialsFaq } from './components/TestimonialsFaq';
 import { Footer } from './components/Footer';
+import { TherapistProfile } from './components/TherapistProfile';
 import { BookingModal } from './components/BookingModal';
 import { WhatsAppIcon } from './components/WhatsAppIcon';
 import { ServicePackage } from './types';
@@ -174,6 +175,12 @@ export function App() {
             <ServicesSection onSelectPackage={handleSelectPackage} />
           </div>
 
+          {/* SEMENTARA DI-KOMENTAR SESUAI PERMINTAAN USER:
+          <div className="scroll-reveal">
+            <TherapistProfile onOpenBooking={handleOpenBooking} />
+          </div>
+          */}
+
           {/* Automatic Dynamic Monthly Hijri Sunnah Dates */}
           <div className="scroll-reveal">
             <SunnahScheduleBanner onSelectDateToBook={handleSelectDateToBook} />
@@ -226,36 +233,22 @@ export function App() {
           showBackToTop
             ? 'opacity-100 translate-y-0 pointer-events-auto'
             : 'opacity-0 translate-y-6 pointer-events-none'
-        } bottom-20 right-4 lg:bottom-8 lg:right-8`}
+        } bottom-24 right-4 lg:bottom-8 lg:right-8`}
         title="Kembali ke atas"
       >
         <ChevronUp className="w-5 h-5 stroke-[2.5]" />
       </button>
 
-      {/* Mobile Sticky Bottom Action Bar - Text changed to 'Booking Jadwal' to fit cleanly without line breaks */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 p-2.5 px-4 shadow-xl flex items-center justify-between gap-3">
-        <div className="text-left shrink-0">
-          <p className="text-[11px] font-bold text-emerald-800">Bekam Bogor</p>
-          <p className="text-[10px] text-slate-500 font-semibold">Spesialis Bekam Panggilan</p>
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          <button
-            type="button"
-            onClick={handleOpenBooking}
-            className="p-2.5 rounded-xl bg-emerald-700 text-white shadow-xs hover:bg-emerald-800 cursor-pointer"
-            aria-label="Chat WhatsApp"
-          >
-            <WhatsAppIcon className="w-4 h-4 text-white" />
-          </button>
-          <button
-            type="button"
-            onClick={handleOpenBooking}
-            className="py-2.5 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shadow-md flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
-          >
-            <Calendar className="w-3.5 h-3.5 shrink-0" />
-            <span>Booking Jadwal</span>
-          </button>
-        </div>
+      {/* Mobile Sticky Bottom Action Bar - Cukup SATU TOMBOL LEBAR "Booking Jadwal Bekam" */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200/90 py-2.5 px-4 sm:px-6 shadow-[0_-8px_30px_rgba(0,0,0,0.15)] pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <button
+          type="button"
+          onClick={handleOpenBooking}
+          className="w-full py-3.5 px-6 rounded-2xl bg-emerald-700 hover:bg-emerald-800 active:scale-[0.98] text-white font-black text-sm sm:text-base shadow-lg shadow-emerald-700/35 flex items-center justify-center gap-2.5 cursor-pointer transition-all tracking-wide"
+        >
+          <Calendar className="w-5 h-5 shrink-0" />
+          <span>Booking Jadwal Bekam</span>
+        </button>
       </div>
 
     </div>
