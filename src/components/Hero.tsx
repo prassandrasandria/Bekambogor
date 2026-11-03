@@ -35,9 +35,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }
               </span>
             </h1>
 
-            {/* Clarification on Clinic & Home visiting */}
+            {/* Description */}
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
-              Menghidupkan Thibbun Nabawi untuk kebugaran tubuh, meredakan migrain, kolesterol, pegal pundak &amp; pinggang. <strong>Karena belum buka klinik</strong>, kami melayani panggilan ke rumah pasien di <strong>Bogor dan Sekitarnya</strong>, dan jika ingin <strong>datang langsung ke rumah terapis di Kp. Leuwisadeng sangat dipersilakan (bebas biaya transport)</strong>.
+              Menghidupkan Thibbun Nabawi untuk kebugaran tubuh, meredakan migrain, kolesterol, pegal pundak &amp; pinggang. Kami melayani panggilan ke rumah pasien untuk wilayah <strong>Bogor dan Sekitarnya</strong>, dan jika ingin <strong>datang langsung ke rumah terapis sangat dipersilakan</strong>.
             </p>
 
             {/* Gender restriction alert (temporary status until akhwat therapist available) */}

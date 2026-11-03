@@ -13,7 +13,7 @@ export const THERAPIST_INFO = {
   certification: 'Praktisi Bersertifikat dan Bersanad',
   genderRestriction: 'Khusus Ikhwan (Laki-laki) *sementara waktu, insya Allah ke depan tersedia terapis akhwat',
   genderNote: 'Sementara khusus ikhwan / pria, insya Allah ke depan tersedia terapis akhwat (perempuan)',
-  clinicStatus: 'Belum buka klinik, adapun jika ingin datang ke rumah terapis dipersilakan (gratis biaya transport).'
+  clinicStatus: 'Melayani panggilan ke rumah pasien & terapi langsung di rumah terapis.'
 };
 
 export const servicePackages: ServicePackage[] = [
