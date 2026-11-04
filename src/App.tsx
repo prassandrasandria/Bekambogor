@@ -4,6 +4,11 @@ import { Hero } from './components/Hero';
 import { TransportCalculator } from './components/TransportCalculator';
 import { PhotoCarousel } from './components/PhotoCarousel';
 import { ServicesSection } from './components/ServicesSection';
+import { ShopSection } from './components/ShopSection';
+import { FullShopPage } from './components/FullShopPage';
+import { CartModal } from './components/CartModal';
+import { ProfileModal } from './components/ProfileModal';
+import { MobileBottomNav } from './components/MobileBottomNav';
 import { SunnahScheduleBanner } from './components/SunnahScheduleBanner';
 import { TherapistLocation } from './components/TherapistLocation';
 import { InteractiveBodyMap } from './components/InteractiveBodyMap';
@@ -13,13 +18,16 @@ import { Footer } from './components/Footer';
 import { TherapistProfile } from './components/TherapistProfile';
 import { BookingModal } from './components/BookingModal';
 import { WhatsAppIcon } from './components/WhatsAppIcon';
-import { ServicePackage } from './types';
+import { ServicePackage, ShopProduct, CartItem } from './types';
 import { THERAPIST_INFO } from './data/treatments';
-import { Calendar, UserCheck, ChevronUp } from 'lucide-react';
+import { formatRupiah } from './data/shopProducts';
+import { Calendar, UserCheck, ChevronUp, ShoppingBag, CheckCircle } from 'lucide-react';
 
 export function App() {
+  const [currentView, setCurrentView] = useState<'home' | 'shop'>('home');
   const [activeSection, setActiveSection] = useState('beranda');
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [bookingPackageId, setBookingPackageId] = useState<string | undefined>(undefined);
   const [bookingServiceType, setBookingServiceType] = useState<'panggilan' | 'ke_rumah_terapis'>('panggilan');
   const [bookingDistanceKm, setBookingDistanceKm] = useState<number>(5);
@@ -27,6 +35,61 @@ export function App() {
   const [bookingDate, setBookingDate] = useState<string | undefined>(undefined);
   const [bookingSymptom, setBookingSymptom] = useState<string | undefined>(undefined);
   const [showBackToTop, setShowBackToTop] = useState(false);
+
+  // Shop and Shopping Cart state (with local storage persistence)
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    try {
+      const saved = localStorage.getItem('bekambogor_cart');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('bekambogor_cart', JSON.stringify(cartItems));
+    } catch {
+      // ignore
+    }
+  }, [cartItems]);
+
+  const handleAddToCart = (product: ShopProduct) => {
+    setCartItems((prev) => {
+      const existing = prev.find((item) => item.product.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prev, { product, quantity: 1 }];
+    });
+    setToastMessage(`"${product.name}" ditambahkan ke keranjang`);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
+  const handleUpdateQuantity = (productId: string, quantity: number) => {
+    if (quantity <= 0) {
+      handleRemoveFromCart(productId);
+      return;
+    }
+    setCartItems((prev) =>
+      prev.map((item) => (item.product.id === productId ? { ...item, quantity } : item))
+    );
+  };
+
+  const handleRemoveFromCart = (productId: string) => {
+    setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
+  };
+
+  const handleClearCart = () => {
+    setCartItems([]);
+  };
+
+  const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const totalCartPrice = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
 
   // Monitor scroll for Back to Top button
   useEffect(() => {
@@ -74,10 +137,45 @@ export function App() {
   };
 
   const handleNavigate = (sectionId: string) => {
+    if (sectionId === 'toko-herbal') {
+      setCurrentView('shop');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (currentView === 'shop') {
+      setCurrentView('home');
+      setTimeout(() => {
+        setActiveSection(sectionId);
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
+      return;
+    }
     setActiveSection(sectionId);
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleNavigateHome = () => {
+    if (currentView === 'shop') {
+      setCurrentView('home');
+    }
+    setActiveSection('beranda');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigateLocation = () => {
+    if (currentView === 'shop') {
+      setCurrentView('home');
+      setTimeout(() => {
+        handleNavigate('lokasi-rumah');
+      }, 50);
+    } else {
+      handleNavigate('lokasi-rumah');
     }
   };
 
@@ -120,95 +218,140 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col lg:flex-row selection:bg-emerald-100 selection:text-emerald-900">
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col lg:flex-row selection:bg-emerald-100 selection:text-emerald-900 pb-16 lg:pb-0">
       
       {/* Desktop Sticky Left Sidebar */}
       <Sidebar
-        activeSection={activeSection}
+        activeSection={currentView === 'shop' ? 'toko-herbal' : activeSection}
         onNavigate={handleNavigate}
         onOpenBooking={handleOpenBooking}
+        cartCount={totalCartCount}
+        onOpenCart={() => setIsCartOpen(true)}
       />
 
       {/* Main Content Area (Offset for Desktop Sticky Sidebar) */}
       <div className="flex-1 lg:ml-72 min-h-screen flex flex-col overflow-x-hidden">
         
-        {/* Top Header / Announcement Bar - Clean without redundant WhatsApp button */}
-        <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-3 sticky top-0 lg:static z-20 shadow-2xs">
-          <div className="max-w-6xl mx-auto flex items-center justify-between gap-2.5">
-            <div className="flex items-center gap-2 text-xs text-slate-700">
-              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
-              <span className="font-semibold text-emerald-800">{THERAPIST_INFO.tagline}</span>
-              <span className="hidden md:inline text-slate-400">•</span>
-              <span className="hidden md:inline text-slate-500">{THERAPIST_INFO.clinicStatus}</span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
-                Bogor &amp; Sekitarnya
-              </span>
-            </div>
-          </div>
-        </header>
-
-        {/* Main Body Content Sections */}
-        <main className="flex-1">
-          {/* Hero Section */}
-          <Hero
-            onOpenBooking={handleOpenBooking}
-            onExploreCalculator={handleExploreCalculator}
+        {/* If in Full Shop Page View */}
+        {currentView === 'shop' ? (
+          <FullShopPage
+            onBackToHome={() => {
+              setCurrentView('home');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            cartItems={cartItems}
+            onAddToCart={handleAddToCart}
+            onUpdateQuantity={handleUpdateQuantity}
+            onOpenCart={() => setIsCartOpen(true)}
           />
+        ) : (
+          <>
+            {/* Top Header / Announcement Bar */}
+            <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-3 sticky top-0 lg:static z-20 shadow-2xs">
+              <div className="max-w-7xl mx-auto flex items-center justify-between gap-2.5">
+                <div className="flex items-center gap-2 text-xs text-slate-700">
+                  <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                  <span className="font-semibold text-emerald-800">{THERAPIST_INFO.tagline}</span>
+                  <span className="hidden md:inline text-slate-400">•</span>
+                  <span className="hidden md:inline text-slate-500">{THERAPIST_INFO.clinicStatus}</span>
+                </div>
 
-          {/* Transport & Distance Calculator Section */}
-          <div className="scroll-reveal">
-            <TransportCalculator
-              onSelectBookingWithDetails={handleSelectBookingWithDetails}
-            />
-          </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      setCurrentView('shop');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-emerald-800 bg-slate-100 hover:bg-emerald-50 px-3 py-1.5 rounded-xl border border-slate-200 transition-colors cursor-pointer"
+                  >
+                    <ShoppingBag className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Toko Herbal</span>
+                  </button>
 
-          {/* Photo Documentation Carousel with Real Cupping Images */}
-          <div className="scroll-reveal">
-            <PhotoCarousel />
-          </div>
+                  <button
+                    onClick={() => setIsCartOpen(true)}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-xl border border-emerald-200 transition-colors cursor-pointer"
+                    title="Buka Keranjang Belanja"
+                  >
+                    <ShoppingBag className="w-3.5 h-3.5 text-emerald-700" />
+                    <span className="hidden sm:inline">Keranjang:</span>
+                    <span className="font-black text-emerald-900">
+                      {totalCartCount > 0 ? `${totalCartCount} item` : '0'}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </header>
 
-          {/* Services & Exact 3 Packages */}
-          <div className="scroll-reveal">
-            <ServicesSection onSelectPackage={handleSelectPackage} />
-          </div>
+            {/* Main Body Content Sections */}
+            <main className="flex-1">
+              {/* Hero Section */}
+              <Hero
+                onOpenBooking={handleOpenBooking}
+                onExploreCalculator={handleExploreCalculator}
+              />
 
-          {/* SEMENTARA DI-KOMENTAR SESUAI PERMINTAAN USER:
-          <div className="scroll-reveal">
-            <TherapistProfile onOpenBooking={handleOpenBooking} />
-          </div>
-          */}
+              {/* Transport & Distance Calculator Section */}
+              <div className="scroll-reveal">
+                <TransportCalculator
+                  onSelectBookingWithDetails={handleSelectBookingWithDetails}
+                />
+              </div>
 
-          {/* Automatic Dynamic Monthly Hijri Sunnah Dates */}
-          <div className="scroll-reveal">
-            <SunnahScheduleBanner onSelectDateToBook={handleSelectDateToBook} />
-          </div>
+              {/* Services & Exact 3 Packages */}
+              <div className="scroll-reveal">
+                <ServicesSection onSelectPackage={handleSelectPackage} />
+              </div>
 
-          {/* Dedicated Therapist Home Location Section with Embedded Map */}
-          <div className="scroll-reveal">
-            <TherapistLocation onOpenBooking={handleOpenBooking} />
-          </div>
+              {/* Homepage 3 Featured Products + See All Card in 2-Column Mobile Grid */}
+              <div className="scroll-reveal">
+                <ShopSection
+                  cartItems={cartItems}
+                  onAddToCart={handleAddToCart}
+                  onUpdateQuantity={handleUpdateQuantity}
+                  onOpenCart={() => setIsCartOpen(true)}
+                  onViewAllProducts={() => {
+                    setCurrentView('shop');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                />
+              </div>
 
-          {/* Interactive Cupping Points Silhouette Guide */}
-          <div className="scroll-reveal">
-            <InteractiveBodyMap onSelectPointForBooking={handleSelectPointForBooking} />
-          </div>
+              {/* Photo Documentation Carousel with Real Cupping Images */}
+              <div className="scroll-reveal">
+                <PhotoCarousel />
+              </div>
 
-          {/* Hygiene, Hospital-grade Sterilization & Sanad */}
-          <div className="scroll-reveal">
-            <HygieneProtocols />
-          </div>
+              {/* Automatic Dynamic Monthly Hijri Sunnah Dates */}
+              <div className="scroll-reveal">
+                <SunnahScheduleBanner onSelectDateToBook={handleSelectDateToBook} />
+              </div>
 
-          {/* Testimonials & FAQs */}
-          <div className="scroll-reveal">
-            <TestimonialsFaq />
-          </div>
-        </main>
+              {/* Dedicated Therapist Home Location Section with Embedded Map */}
+              <div className="scroll-reveal">
+                <TherapistLocation onOpenBooking={handleOpenBooking} />
+              </div>
 
-        {/* Footer */}
-        <Footer onOpenBooking={handleOpenBooking} />
+              {/* Interactive Cupping Points Silhouette Guide */}
+              <div className="scroll-reveal">
+                <InteractiveBodyMap onSelectPointForBooking={handleSelectPointForBooking} />
+              </div>
+
+              {/* Hygiene, Hospital-grade Sterilization & Sanad */}
+              <div className="scroll-reveal">
+                <HygieneProtocols />
+              </div>
+
+              {/* Testimonials & FAQs */}
+              <div className="scroll-reveal">
+                <TestimonialsFaq />
+              </div>
+            </main>
+
+            {/* Footer */}
+            <Footer onOpenBooking={handleOpenBooking} />
+          </>
+        )}
 
       </div>
 
@@ -224,33 +367,86 @@ export function App() {
         initialAddress={bookingAddress}
       />
 
+      {/* Shopping Cart Modal */}
+      <CartModal
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        cartItems={cartItems}
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemoveItem={handleRemoveFromCart}
+        onClearCart={handleClearCart}
+      />
+
+      {/* Therapist Profile Modal */}
+      <ProfileModal
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+        onOpenBooking={handleOpenBooking}
+      />
+
+      {/* Toast Notification when adding to cart */}
+      {toastMessage && (
+        <div className="fixed top-18 right-4 z-50 bg-slate-900/95 text-white px-4 py-3 rounded-2xl shadow-2xl border border-emerald-500/50 flex items-center gap-2.5 text-xs font-semibold backdrop-blur-md animate-in slide-in-from-top-3 duration-200">
+          <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span className="line-clamp-1">{toastMessage}</span>
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="ml-2 text-amber-300 hover:text-amber-200 font-bold whitespace-nowrap cursor-pointer underline"
+          >
+            Buka Keranjang
+          </button>
+        </div>
+      )}
+
+      {/* Floating Sticky Cart Button on Desktop */}
+      {totalCartCount > 0 && (
+        <button
+          type="button"
+          onClick={() => setIsCartOpen(true)}
+          className="hidden lg:flex fixed z-40 bottom-8 left-80 bg-emerald-800 hover:bg-emerald-900 text-white px-4 py-3 rounded-2xl shadow-2xl border-2 border-amber-400 items-center gap-3 transition-all hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-md"
+          title="Buka Keranjang Herbal"
+        >
+          <div className="relative">
+            <ShoppingBag className="w-5 h-5 text-amber-300" />
+            <span className="absolute -top-2 -right-2 bg-amber-400 text-slate-950 text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+              {totalCartCount}
+            </span>
+          </div>
+          <div className="text-left leading-tight">
+            <div className="text-[10px] font-bold text-emerald-200 uppercase tracking-wider">Keranjang Herbal</div>
+            <div className="text-xs font-black text-white">{formatRupiah(totalCartPrice)}</div>
+          </div>
+          <span className="text-xs font-bold bg-white/20 hover:bg-white/30 px-2 py-0.5 rounded-lg">
+            Buka
+          </span>
+        </button>
+      )}
+
       {/* Back to Top Button */}
       <button
         type="button"
         onClick={handleScrollToTop}
         aria-label="Kembali ke atas"
-        className={`fixed z-40 transition-all duration-300 rounded-2xl bg-emerald-700/90 hover:bg-emerald-800 text-white shadow-xl hover:shadow-2xl border border-emerald-500/30 p-3 flex items-center justify-center cursor-pointer backdrop-blur-xs hover:scale-110 active:scale-95 ${
+        className={`fixed z-30 transition-all duration-300 rounded-2xl bg-emerald-700/90 hover:bg-emerald-800 text-white shadow-xl hover:shadow-2xl border border-emerald-500/30 p-3 flex items-center justify-center cursor-pointer backdrop-blur-xs hover:scale-110 active:scale-95 ${
           showBackToTop
             ? 'opacity-100 translate-y-0 pointer-events-auto'
             : 'opacity-0 translate-y-6 pointer-events-none'
-        } bottom-24 right-4 lg:bottom-8 lg:right-8`}
+        } bottom-20 right-4 lg:bottom-8 lg:right-8`}
         title="Kembali ke atas"
       >
         <ChevronUp className="w-5 h-5 stroke-[2.5]" />
       </button>
 
-      {/* Mobile Sticky Bottom Action Bar - Cukup SATU TOMBOL LEBAR "Booking Jadwal Bekam" */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200/90 py-2.5 px-4 sm:px-6 shadow-[0_-8px_30px_rgba(0,0,0,0.15)] pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-        <button
-          type="button"
-          onClick={handleOpenBooking}
-          className="w-full py-3.5 px-6 rounded-2xl bg-emerald-700 hover:bg-emerald-800 active:scale-[0.98] text-white font-black text-sm sm:text-base shadow-lg shadow-emerald-700/35 flex items-center justify-center gap-2.5 cursor-pointer transition-all tracking-wide"
-        >
-          <Calendar className="w-5 h-5 shrink-0" />
-          <span>Booking Jadwal Bekam</span>
-        </button>
-      </div>
-
+      {/* Mobile Bottom Navigation Bar (Beranda, Lokasi, Booking Jadwal ditengah, Keranjang, Profil) */}
+      <MobileBottomNav
+        activeSection={currentView === 'shop' ? '' : activeSection}
+        cartCount={totalCartCount}
+        onNavigateHome={handleNavigateHome}
+        onNavigateLocation={handleNavigateLocation}
+        onOpenBooking={handleOpenBooking}
+        onOpenCart={() => setIsCartOpen(true)}
+        onOpenProfile={() => setIsProfileOpen(true)}
+      />
     </div>
   );
 }

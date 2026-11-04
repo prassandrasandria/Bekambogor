@@ -23,7 +23,15 @@
   <!-- Biaya & Paket Bekam Panggilan -->
   <url>
     <loc>https://bekambogor.my.id/#paket-layanan</loc>
-    <lastmod>2026-11-03</lastmod>
+    <lastmod>2026-11-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Toko Herbal Alami & Madu Pilihan Terapis -->
+  <url>
+    <loc>https://bekambogor.my.id/#toko-herbal</loc>
+    <lastmod>2026-11-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>

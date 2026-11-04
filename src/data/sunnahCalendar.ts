@@ -40,9 +40,25 @@ export const cuppingRulesAndPreparation = {
   ]
 };
 
+export const HIJRI_MONTH_NAMES_ID = [
+  'Muharram',
+  'Safar',
+  "Rabi'ul Awal",
+  "Rabi'ul Akhir",
+  'Jumadil Ula',
+  'Jumadil Akhir',
+  'Rajab',
+  "Sya'ban",
+  'Ramadhan',
+  'Syawwal',
+  "Dzulqa'dah",
+  'Dzulhijjah'
+];
+
 /**
  * Automatically calculates the upcoming Sunnah cupping days (17, 19, and 21 Hijri)
  * dynamically based on the current date so it updates automatically every month.
+ * Uses exact numeric month mapping to prevent Android/Chromium locale bugs (e.g. month 6 showing as 'Juni').
  */
 export function getDynamicSunnahDates(limit = 6): DynamicSunnahDate[] {
   const results: DynamicSunnahDate[] = [];
@@ -51,29 +67,30 @@ export function getDynamicSunnahDates(limit = 6): DynamicSunnahDate[] {
 
   let islamicFormatter: Intl.DateTimeFormat;
   try {
-    islamicFormatter = new Intl.DateTimeFormat('id-u-ca-islamic-umalqura', {
+    islamicFormatter = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura-nu-latn', {
       day: 'numeric',
-      month: 'long',
+      month: 'numeric',
       year: 'numeric'
     });
   } catch {
-    // Fallback if specific locale is missing
-    islamicFormatter = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', {
+    islamicFormatter = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn', {
       day: 'numeric',
-      month: 'long',
+      month: 'numeric',
       year: 'numeric'
     });
   }
 
-  // Scan up to 100 days ahead to find all 17, 19, 21 dates
-  for (let i = 0; i < 100 && results.length < limit; i++) {
+  // Scan up to 120 days ahead to find all 17, 19, 21 dates
+  for (let i = 0; i < 120 && results.length < limit; i++) {
     const testDate = new Date(today.getTime() + i * 86400000);
     try {
       const parts = islamicFormatter.formatToParts(testDate);
       const dayPart = parts.find(p => p.type === 'day')?.value;
       const monthPart = parts.find(p => p.type === 'month')?.value;
       const yearPart = parts.find(p => p.type === 'year')?.value;
+
       const dayNum = parseInt(dayPart || '0', 10);
+      const monthNum = parseInt(monthPart || '0', 10);
 
       if (dayNum === 17 || dayNum === 19 || dayNum === 21) {
         const isToday = i === 0;
@@ -81,7 +98,11 @@ export function getDynamicSunnahDates(limit = 6): DynamicSunnahDate[] {
         const dayName = testDate.toLocaleDateString('id-ID', { weekday: 'long' });
         const dateString = testDate.toISOString().split('T')[0];
 
-        let significance = `Hari Sunnah ke-${dayNum === 17 ? '1 (Utama)' : dayNum === 19 ? '2' : '3'} bulan ${monthPart}`;
+        const hijriMonthName = (monthNum >= 1 && monthNum <= 12)
+          ? HIJRI_MONTH_NAMES_ID[monthNum - 1]
+          : 'Hijriyyah';
+
+        let significance = `Hari Sunnah ke-${dayNum === 17 ? '1 (Utama)' : dayNum === 19 ? '2' : '3'} bulan ${hijriMonthName}`;
         if (dayName === 'Senin' || dayName === 'Kamis') {
           significance += ` — Bertepatan dengan hari ${dayName} (Sangat Dianjurkan)`;
         }
@@ -91,8 +112,8 @@ export function getDynamicSunnahDates(limit = 6): DynamicSunnahDate[] {
           dateString,
           dayName,
           hijriDay: dayNum,
-          hijriMonthName: monthPart || 'Hijriyyah',
-          hijriYear: yearPart || '',
+          hijriMonthName,
+          hijriYear: yearPart || '1448',
           daysUntil: i,
           isToday,
           isNext,

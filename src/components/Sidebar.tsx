@@ -12,7 +12,8 @@ import {
   Menu,
   X,
   ExternalLink,
-  UserCheck
+  UserCheck,
+  ShoppingBag
 } from 'lucide-react';
 import { THERAPIST_INFO } from '../data/treatments';
 
@@ -20,12 +21,16 @@ interface SidebarProps {
   activeSection: string;
   onNavigate: (sectionId: string) => void;
   onOpenBooking: () => void;
+  cartCount?: number;
+  onOpenCart?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   activeSection,
   onNavigate,
-  onOpenBooking
+  onOpenBooking,
+  cartCount = 0,
+  onOpenCart
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -49,6 +54,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       icon: <Calculator className="w-4 h-4 text-emerald-600" />
     },
     { id: 'paket-layanan', label: 'Biaya & Paket Bekam', icon: <Layers className="w-4 h-4" /> },
+    {
+      id: 'toko-herbal',
+      label: 'Toko Herbal & Madu',
+      icon: <ShoppingBag className="w-4 h-4 text-emerald-600" />,
+      badge: cartCount > 0 ? `${cartCount} item` : 'Baru'
+    },
     // SEMENTARA DI-KOMENTAR SESUAI PERMINTAAN USER:
     // {
     //   id: 'profil-terapis',
@@ -92,15 +103,33 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </a>
 
-        {/* Hamburger button */}
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen(true)}
-          className="p-2 rounded-xl text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
-          aria-label="Buka Menu"
-        >
-          <Menu className="w-6 h-6" />
-        </button>
+        {/* Mobile Right Actions: Cart & Hamburger */}
+        <div className="flex items-center gap-1.5">
+          {onOpenCart && (
+            <button
+              type="button"
+              onClick={onOpenCart}
+              className="p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer relative"
+              aria-label="Buka Keranjang Belanja"
+            >
+              <ShoppingBag className="w-5 h-5 text-emerald-700" />
+              {cartCount > 0 && (
+                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-emerald-600 text-white text-[10px] font-black flex items-center justify-center animate-pulse">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(true)}
+            className="p-2 rounded-xl text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+            aria-label="Buka Menu"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+        </div>
       </div>
 
       {/* Blurred right-side overlay when menu is open: clicking anywhere on it or on the X button closes the drawer */}
@@ -187,6 +216,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <span className={isActive ? 'text-white' : 'text-slate-500'}>{item.icon}</span>
                   <span>{item.label}</span>
                 </div>
+                {item.badge && (
+                  <span
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                      isActive
+                        ? 'bg-emerald-800 text-white'
+                        : item.id === 'toko-herbal' && cartCount > 0
+                        ? 'bg-amber-400 text-slate-950 font-black'
+                        : 'bg-emerald-100 text-emerald-800'
+                    }`}
+                  >
+                    {item.badge}
+                  </span>
+                )}
               </button>
             );
           })}
@@ -213,6 +255,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Bottom: Fast Action Button */}
         <div className="p-4 border-t border-slate-100 bg-slate-50/70 space-y-2">
+          {cartCount > 0 && onOpenCart && (
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenCart();
+              }}
+              className="w-full py-2.5 px-3.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-slate-950 font-extrabold text-xs flex items-center justify-between shadow-xs transition-colors cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                <ShoppingBag className="w-4 h-4 text-slate-950" />
+                <span>Buka Keranjang Herbal</span>
+              </div>
+              <span className="px-2 py-0.5 rounded-full bg-slate-950 text-white text-[11px] font-black">
+                {cartCount} item
+              </span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={() => {

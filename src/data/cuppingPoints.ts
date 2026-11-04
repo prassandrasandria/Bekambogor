@@ -3,8 +3,8 @@ import { CuppingPoint } from '../types';
 export const cuppingPointsData: CuppingPoint[] = [
   {
     id: 'al-kahil',
-    arabicName: 'الكاهل (Al-Kahil)',
-    indonesianName: 'Punuk Leher Belakang (C7-T1)',
+    arabicName: 'الكاهل',
+    indonesianName: 'Punuk Leher Belakang (Al-Kahil / C7-T1)',
     location: 'Pertemuan tulang leher bagian bawah dan tulang punggung atas (tonjolan C7)',
     bodyView: 'posterior',
     coords: { x: 50, y: 22 },
@@ -22,8 +22,8 @@ export const cuppingPointsData: CuppingPoint[] = [
   },
   {
     id: 'al-akhdaain-kiri',
-    arabicName: 'الأخدعين (Al-Akhda’ain Kiri)',
-    indonesianName: 'Urat Leher Kiri (Vena Jugularis)',
+    arabicName: 'الأخدعين',
+    indonesianName: 'Urat Leher Kiri (Al-Akhda’ain Kiri)',
     location: 'Sisi leher kiri di bawah telinga belakang rahang',
     bodyView: 'posterior',
     coords: { x: 42, y: 17 },
@@ -40,8 +40,8 @@ export const cuppingPointsData: CuppingPoint[] = [
   },
   {
     id: 'al-akhdaain-kanan',
-    arabicName: 'الأخدعين (Al-Akhda’ain Kanan)',
-    indonesianName: 'Urat Leher Kanan (Vena Jugularis)',
+    arabicName: 'الأخدعين',
+    indonesianName: 'Urat Leher Kanan (Al-Akhda’ain Kanan)',
     location: 'Sisi leher kanan di bawah telinga belakang rahang',
     bodyView: 'posterior',
     coords: { x: 58, y: 17 },
@@ -57,8 +57,8 @@ export const cuppingPointsData: CuppingPoint[] = [
   },
   {
     id: 'ummu-mughits',
-    arabicName: 'أم مغيث (Ummu Mughits)',
-    indonesianName: 'Puncak Kepala / Vertex',
+    arabicName: 'أم مغيث',
+    indonesianName: 'Puncak Kepala / Vertex (Ummu Mughits)',
     location: 'Titik tertinggi di ubun-ubun kepala (pertemuan garis kedua telinga)',
     bodyView: 'head',
     coords: { x: 50, y: 15 },
@@ -75,8 +75,8 @@ export const cuppingPointsData: CuppingPoint[] = [
   },
   {
     id: 'al-katifain-kiri',
-    arabicName: 'الكتفين (Al-Katifain Kiri)',
-    indonesianName: 'Tulang Belikat Kiri',
+    arabicName: 'الكتفين',
+    indonesianName: 'Tulang Belikat Kiri (Al-Katifain Kiri)',
     location: 'Area otot trapezius dan skapula kiri belakang',
     bodyView: 'posterior',
     coords: { x: 34, y: 28 },
@@ -92,8 +92,8 @@ export const cuppingPointsData: CuppingPoint[] = [
   },
   {
     id: 'al-katifain-kanan',
-    arabicName: 'الكتفين (Al-Katifain Kanan)',
-    indonesianName: 'Tulang Belikat Kanan',
+    arabicName: 'الكتفين',
+    indonesianName: 'Tulang Belikat Kanan (Al-Katifain Kanan)',
     location: 'Area otot trapezius dan skapula kanan belakang',
     bodyView: 'posterior',
     coords: { x: 66, y: 28 },
@@ -109,7 +109,7 @@ export const cuppingPointsData: CuppingPoint[] = [
   },
   {
     id: 'ma-bainal-katifain',
-    arabicName: 'ما بين الكتفين (Punggung Tengah)',
+    arabicName: 'ما بين الكتفين',
     indonesianName: 'Antara Dua Belikat (T4-T5)',
     location: 'Di tengah ruas tulang belakang antara belikat kiri dan kanan',
     bodyView: 'posterior',
@@ -125,8 +125,8 @@ export const cuppingPointsData: CuppingPoint[] = [
   },
   {
     id: 'al-warik-kiri',
-    arabicName: 'الورك (Al-Warik Kiri)',
-    indonesianName: 'Pinggang Kiri (Area Ginjal & Lumbal)',
+    arabicName: 'الورك',
+    indonesianName: 'Pinggang Kiri (Al-Warik Kiri)',
     location: 'Sisi kiri lumbal L2-L4 di atas pinggul',
     bodyView: 'posterior',
     coords: { x: 38, y: 55 },
@@ -142,8 +142,8 @@ export const cuppingPointsData: CuppingPoint[] = [
   },
   {
     id: 'al-warik-kanan',
-    arabicName: 'الورك (Al-Warik Kanan)',
-    indonesianName: 'Pinggang Kanan (Area Ginjal & Lumbal)',
+    arabicName: 'الورك',
+    indonesianName: 'Pinggang Kanan (Al-Warik Kanan)',
     location: 'Sisi kanan lumbal L2-L4 di atas pinggul',
     bodyView: 'posterior',
     coords: { x: 62, y: 55 },
@@ -159,8 +159,8 @@ export const cuppingPointsData: CuppingPoint[] = [
   },
   {
     id: 'al-adzim-sakrum',
-    arabicName: 'العجز (Al-’Ajz / Sakrum)',
-    indonesianName: 'Tulang Ekor / Sakrum Atas',
+    arabicName: 'العجز',
+    indonesianName: 'Tulang Ekor / Sakrum (Al-’Ajz)',
     location: 'Pertemuan tulang belakang dengan panggul tengah (Sakrum S1-S3)',
     bodyView: 'posterior',
     coords: { x: 50, y: 64 },
@@ -175,8 +175,8 @@ export const cuppingPointsData: CuppingPoint[] = [
   },
   {
     id: 'as-saqain-betis',
-    arabicName: 'الساقين (As-Saqain)',
-    indonesianName: 'Otot Betis Belakang (Gastrocnemius)',
+    arabicName: 'الساقين',
+    indonesianName: 'Otot Betis Belakang (As-Saqain)',
     location: 'Tengah otot betis kanan dan kiri',
     bodyView: 'posterior',
     coords: { x: 50, y: 82 },

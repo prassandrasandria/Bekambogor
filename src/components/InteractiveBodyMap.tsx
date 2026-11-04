@@ -168,8 +168,8 @@ export const InteractiveBodyMap: React.FC<InteractiveBodyMapProps> = ({ onSelect
           <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md">
             {/* Header of Point - Neatly aligned, clean spacing without cramming */}
             <div className="border-b border-slate-100 pb-5 space-y-3">
-              {/* Badge & Arabic Name Row */}
-              <div className="flex items-center justify-between gap-3">
+              {/* Badge & Arabic Name Row - Responsive layout preventing overflow */}
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <span
                   className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap shadow-2xs ${
                     selectedPoint.sunnahStatus
@@ -181,10 +181,12 @@ export const InteractiveBodyMap: React.FC<InteractiveBodyMapProps> = ({ onSelect
                   <span>{selectedPoint.sunnahStatus ? 'Titik Sunnah Nabawi' : 'Titik Medis Anatomi'}</span>
                 </span>
 
-                {/* Arabic Script */}
-                <span className="font-arabic text-2xl sm:text-3xl font-bold text-emerald-800 shrink-0" dir="rtl">
-                  {selectedPoint.arabicName}
-                </span>
+                {/* Pure Arabic Script with proper styling and overflow protection */}
+                <div className="bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-200/80">
+                  <span className="font-arabic text-xl sm:text-2xl font-bold text-emerald-800 tracking-wide" dir="rtl">
+                    {selectedPoint.arabicName}
+                  </span>
+                </div>
               </div>
 
               {/* Point Name in Indonesian */}

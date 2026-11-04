@@ -98,3 +98,29 @@ export interface TherapistCertificate {
   description?: string;
 }
 
+export type ProductCategory = 'semua' | 'madu-herbal' | 'vitalitas-pasutri' | 'minyak-jamu';
+
+export interface ShopProduct {
+  id: string;
+  name: string;
+  category: 'madu-herbal' | 'vitalitas-pasutri' | 'minyak-jamu';
+  categoryLabel: string;
+  brand: string;
+  price: number;
+  originalPrice?: number;
+  volume: string;
+  image: string;
+  tagline: string;
+  badge?: string;
+  description: string;
+  benefits: string[];
+  composition?: string[];
+  dosage: string;
+  isPopular?: boolean;
+}
+
+export interface CartItem {
+  product: ShopProduct;
+  quantity: number;
+}
+
