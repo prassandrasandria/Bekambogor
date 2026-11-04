@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, MapPin, Calendar, ShoppingBag, Star } from 'lucide-react';
+import { Home, MapPin, Calendar, ShoppingBag, Receipt } from 'lucide-react';
 
 interface MobileBottomNavProps {
   activeSection: string;
@@ -83,14 +83,14 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
           <span className="text-[11px] mt-1 tracking-tight">Keranjang</span>
         </button>
 
-        {/* 5. Testimoni (Ganti dari Profil sesuai instruksi) */}
+        {/* 5. Bukti Transfer Pasien (Bukan bintang) */}
         <button
           type="button"
           onClick={onOpenTestimonials}
           className="flex flex-col items-center justify-center py-1 px-1 w-full text-center transition-colors cursor-pointer text-slate-500 hover:text-slate-800"
         >
-          <Star className="w-5 h-5 stroke-[1.8] fill-amber-400 text-amber-500" />
-          <span className="text-[11px] mt-1 tracking-tight font-medium">Testimoni</span>
+          <Receipt className="w-5 h-5 stroke-[1.8] text-emerald-700" />
+          <span className="text-[11px] mt-1 tracking-tight font-medium">Bukti Trf</span>
         </button>
 
       </div>

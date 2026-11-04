@@ -403,7 +403,7 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
             <div>
               <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 text-[11px] font-bold uppercase tracking-wider mb-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                Layanan Steril &amp; Profesional (Khusus Ikhwan)
+                Layanan Steril &amp; Profesional
               </div>
               <h3 className="text-xl sm:text-2xl font-black">Formulir Booking Jadwal Bekam</h3>
               <p className="text-xs text-emerald-100 mt-0.5">
@@ -772,7 +772,7 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
                   {/* Nama Lengkap */}
                   <div className="sm:col-span-8 space-y-1">
                     <label htmlFor="booking-fullname" className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between cursor-pointer">
-                      <span>Nama Pasien (Ikhwan) *</span>
+                      <span>Nama Pasien *</span>
                       {validationErrors.fullName && (
                         <span className="text-[10px] text-rose-600 font-bold lowercase">{validationErrors.fullName}</span>
                       )}

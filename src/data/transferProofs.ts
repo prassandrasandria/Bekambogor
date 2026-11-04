@@ -1,94 +1,108 @@
 export interface TransferProof {
   id: string;
   customerName: string;
+  senderName: string;
+  receiverName: string;
   location: string;
   date: string;
   items: string;
   amount: number;
-  bankName: 'BCA' | 'BRI' | 'Bank Mandiri' | 'BSI (Bank Syariah)' | 'QRIS';
-  status: 'Lunas & Terverifikasi' | 'Pesanan Diproses';
+  bankName: 'SeaBank' | 'Bank Jago (Syariah)' | 'BRI (BRImo)' | 'BCA' | 'DANA / E-Wallet';
+  status: 'Lunas & Terverifikasi';
   refNumber: string;
-  notes?: string;
-  imageUrl?: string;
+  notes: string;
+  imageUrl: string;
 }
 
 export const INITIAL_TRANSFER_PROOFS: TransferProof[] = [
   {
     id: 'trf-001',
-    customerName: 'Abu Fatih (Hendra)',
-    location: 'Leuwiliang, Kab. Bogor',
-    date: 'Hari ini, 09:42 WIB',
-    items: '2x Madu JTS Vitalitas Herbal + 1x Minyak Zaitun Ruqyah',
-    amount: 345000,
-    bankName: 'BCA',
+    customerName: 'Muhammad Agung Betariko',
+    senderName: 'Muhammad Agung Betariko (SeaBank: 901132522573)',
+    receiverName: 'Prassandra Sandria (SeaBank: 901655497524)',
+    location: 'Bogor',
+    date: '17 Mar 2026, 22:37 WIB',
+    items: 'Pelunasan Terapi Bekam & Herbal Alami',
+    amount: 150000,
+    bankName: 'SeaBank',
     status: 'Lunas & Terverifikasi',
-    refNumber: 'TRF-BCA-20261104-9821',
-    notes: 'Paket diantar langsung saat sesi bekam sore hari ini',
-    imageUrl: undefined
+    refNumber: '2026031743504817303293',
+    notes: 'Transfer SeaBank Realtime Online ke Prassandra Sandria',
+    imageUrl: '/assets/aistudio/WhatsApp_Image_2026-11-04_at_23.08.38__1__82737878.jpeg'
   },
   {
     id: 'trf-002',
-    customerName: 'Pak Dedi Kurniawan',
-    location: 'Dramaga, Bogor Barat',
-    date: 'Kemarin, 14:15 WIB',
-    items: '1x Paket Pasutri Harmonis (Madu JTS + Madu Subur Wanita)',
-    amount: 280000,
-    bankName: 'QRIS',
+    customerName: 'Saeful R Hidayat',
+    senderName: 'Saeful R Hidayat (Jago: 502220774979)',
+    receiverName: 'Prassandra Sandria (Jago: 503300849725)',
+    location: 'Bogor',
+    date: '02 Jun 2026, 19:32 WIB',
+    items: 'Paket Terapi Bekam Basah & Madu Vitalitas',
+    amount: 199000,
+    bankName: 'Bank Jago (Syariah)',
     status: 'Lunas & Terverifikasi',
-    refNumber: 'QRIS-NMID-20261103-4412',
-    notes: 'Kirim via kurir GoSend instan sampai sebelum ashar',
-    imageUrl: undefined
+    refNumber: '260602-CC3H-LJZ4TQ',
+    notes: 'Resi Resmi Bank Jago Syariah ke Prassandra Sandria',
+    imageUrl: '/assets/aistudio/WhatsApp_Image_2026-11-04_at_23.08.38_f7c45f18.jpeg'
   },
   {
     id: 'trf-003',
-    customerName: 'Ust. Maulana Akbar',
-    location: 'Cibungbulang, Kab. Bogor',
-    date: '2 November 2026',
-    items: '2x Madu Lambung & Pencernaan (GERD Maag)',
-    amount: 210000,
-    bankName: 'BSI (Bank Syariah)',
+    customerName: 'Muhammad Agung Betariko',
+    senderName: 'Muhammad Agung Betariko (BRI: 0546 **** 563)',
+    receiverName: 'Prassandra Sandria (SeaBank: 9016 5549 7524)',
+    location: 'Bogor',
+    date: '22 Juni 2026, 12:27 WIB',
+    items: 'Pelunasan Terapi Bekam Home Care Lengkap',
+    amount: 199000,
+    bankName: 'BRI (BRImo)',
     status: 'Lunas & Terverifikasi',
-    refNumber: 'BSI-FT-20261102-7719',
-    notes: 'Alhamdulillah kondisi lambung membaik, pesan botol kedua',
-    imageUrl: undefined
+    refNumber: '163926083907',
+    notes: 'Transfer BI-FAST via BRImo Berhasil (Total Rp 201.500)',
+    imageUrl: '/assets/aistudio/WhatsApp_Image_2026-11-04_at_23.07.35_b9d64cdd.jpeg'
   },
   {
     id: 'trf-004',
-    customerName: 'Kang Rizki Ramadhan',
-    location: 'Ciampea, Kab. Bogor',
-    date: '1 November 2026',
-    items: '1x Madu Hitam Pahit Ratu Lebah + 1x Habbatussauda Oil',
-    amount: 195000,
-    bankName: 'BRI',
+    customerName: 'Muhammad Fakhri Waliyuddin',
+    senderName: 'Muhammad Fakhri Waliyuddin (SeaBank: 901081718181)',
+    receiverName: 'Dnid Praxxxxxxx Sanxxxx (DANA: 08996342009)',
+    location: 'Bogor',
+    date: '14 Okt 2026',
+    items: 'Paket Bekam Punggung Sunnah',
+    amount: 100000,
+    bankName: 'SeaBank',
     status: 'Lunas & Terverifikasi',
-    refNumber: 'BRIMO-20261101-3108',
-    notes: 'Diambil sendiri ke rumah terapis Kp. Leuwisadeng',
-    imageUrl: undefined
+    refNumber: '2026110143500399602622125',
+    notes: 'Pembayaran Diterima via SeaBank ke e-Wallet DANA',
+    imageUrl: '/assets/aistudio/WhatsApp_Image_2026-11-04_at_23.07.34__2__c698d386.jpeg'
   },
   {
     id: 'trf-005',
-    customerName: 'Pak H. Wahyudi',
-    location: 'Tanah Sareal, Kota Bogor',
-    date: '31 Oktober 2026',
-    items: '3x Madu Murni Sumbawa Hutan Asli',
-    amount: 360000,
-    bankName: 'Bank Mandiri',
+    customerName: 'Pasien Terapi (m-BCA)',
+    senderName: 'Akun BCA (628 - 0** - **28)',
+    receiverName: 'Dnid PRAXXXXXXX SANXXXX (DANA: 0899-634-2009)',
+    location: 'Bogor',
+    date: '06 Mei 2026, 18:19 WIB',
+    items: 'Terapi Bekam Full Body & Herbal Jamu',
+    amount: 200000,
+    bankName: 'BCA',
     status: 'Lunas & Terverifikasi',
-    refNumber: 'LIVIN-20261031-8891',
-    notes: 'Langsung kirim via JNE YES ke alamat kantor',
-    imageUrl: undefined
+    refNumber: '9527120260506181910586TPP8156955000',
+    notes: 'Pembayaran e-Wallet DANA via BCA Mobile Berhasil',
+    imageUrl: '/assets/aistudio/WhatsApp_Image_2026-11-04_at_23.07.34__1__c42b7841.jpeg'
   },
   {
     id: 'trf-006',
-    customerName: 'Ikhwan Fauzan',
-    location: 'Pamijahan, Kab. Bogor',
-    date: '30 Oktober 2026',
-    items: '1x Madu JTS Vitalitas + 1x Minyak Herba But-But',
+    customerName: 'Muhammad Fakhri Waliyuddin',
+    senderName: 'Muhammad Fakhri Waliyuddin (SeaBank: 901081718181)',
+    receiverName: 'Dnid Praxxxxxxx Sanxxxx (DANA: 08996342009)',
+    location: 'Bogor',
+    date: '04 Nov 2026, 08:15 WIB',
+    items: 'Sesi Bekam Panggilan Home Care + Ongkir Transport',
     amount: 200000,
-    bankName: 'QRIS',
+    bankName: 'DANA / E-Wallet',
     status: 'Lunas & Terverifikasi',
-    refNumber: 'QRIS-NMID-20261030-5520',
-    notes: 'Bawakan saat terapis datang bekam panggilan ke rumah',
-    imageUrl: undefined
+    refNumber: '20261104SSPIIDJAF010050948350',
+    notes: 'Rincian Transaksi Selesai via SeaBank ke DANA',
+    imageUrl: '/assets/aistudio/WhatsApp_Image_2026-11-04_at_23.07.34_ae8679ea.jpeg'
   }
 ];

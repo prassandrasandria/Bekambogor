@@ -248,6 +248,7 @@ export function App() {
         onOpenBooking={handleOpenBooking}
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
+        hideMobileBar={currentView === 'shop'}
       />
 
       {/* Main Content Area (Offset for Desktop Sticky Sidebar) */}
@@ -267,8 +268,8 @@ export function App() {
           />
         ) : (
           <>
-            {/* Top Header / Announcement Bar */}
-            <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-3 sticky top-0 lg:static z-20 shadow-2xs">
+            {/* Top Header / Announcement Bar (Relative so it does not collide with mobile top bar) */}
+            <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-3 relative z-10 shadow-2xs">
               <div className="max-w-7xl mx-auto flex items-center justify-between gap-2.5">
                 <div className="flex items-center gap-2 text-xs text-slate-700">
                   <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>

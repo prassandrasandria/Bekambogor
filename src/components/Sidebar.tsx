@@ -14,7 +14,7 @@ import {
   ExternalLink,
   UserCheck,
   ShoppingBag,
-  Star
+  Receipt
 } from 'lucide-react';
 import { THERAPIST_INFO } from '../data/treatments';
 
@@ -24,6 +24,7 @@ interface SidebarProps {
   onOpenBooking: () => void;
   cartCount?: number;
   onOpenCart?: () => void;
+  hideMobileBar?: boolean;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -31,7 +32,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onNavigate,
   onOpenBooking,
   cartCount = 0,
-  onOpenCart
+  onOpenCart,
+  hideMobileBar = false
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -63,8 +65,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       id: 'testimoni-bukti',
-      label: 'Testimoni & Bukti Transfer',
-      icon: <Star className="w-4 h-4 text-amber-500 fill-amber-400" />,
+      label: 'Bukti Transfer Pasien',
+      icon: <Receipt className="w-4 h-4 text-emerald-600" />,
       badge: 'Update'
     },
     { id: 'dokumentasi-foto', label: 'Dokumentasi Terapi', icon: <Camera className="w-4 h-4" /> },
@@ -86,8 +88,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <>
-      {/* Mobile Top Navigation Bar (Hidden on Desktop) */}
-      <div className="lg:hidden sticky top-0 z-30 bg-white border-b border-slate-200 px-4 py-2.5 flex items-center justify-between shadow-xs">
+      {/* Mobile Top Navigation Bar (Hidden on Desktop & when full shop page is active) */}
+      {!hideMobileBar && (
+        <div className="lg:hidden sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-2.5 flex items-center justify-between shadow-xs">
         <a href="#beranda" className="flex items-center gap-2.5">
           <img
             src="/logo.png"
@@ -132,6 +135,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </button>
         </div>
       </div>
+      )}
 
       {/* Blurred right-side overlay when menu is open: clicking anywhere on it or on the X button closes the drawer */}
       {mobileMenuOpen && (

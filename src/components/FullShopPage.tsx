@@ -109,8 +109,8 @@ Bisa dibawakan saat terapi bekam atau dikirim via kurir ke alamat saya? Terima k
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-28 lg:pb-16 animate-in fade-in duration-300">
       
-      {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 sm:px-6 py-3 shadow-xs">
+      {/* Top Navigation Bar (Solid Opaque White, No Bleed-Through) */}
+      <header className="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 sm:px-6 py-3 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
           <button
             type="button"
