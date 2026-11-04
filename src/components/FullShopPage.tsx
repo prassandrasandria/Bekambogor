@@ -17,6 +17,7 @@ import {
 import { SHOP_PRODUCTS, formatRupiah } from '../data/shopProducts';
 import { ShopProduct, ProductCategory, CartItem } from '../types';
 import { WhatsAppIcon } from './WhatsAppIcon';
+import { TransferProofCarousel } from './TransferProofCarousel';
 import { THERAPIST_INFO, getCleanWhatsAppNumber } from '../data/treatments';
 
 interface FullShopPageProps {
@@ -109,8 +110,8 @@ Bisa dibawakan saat terapi bekam atau dikirim via kurir ke alamat saya? Terima k
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-28 lg:pb-16 animate-in fade-in duration-300">
       
-      {/* Top Navigation Bar (Solid Opaque White, No Bleed-Through) */}
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 sm:px-6 py-3 shadow-sm">
+      {/* Sub Navigation Bar - Flush under the mobile top bar with zero empty gap */}
+      <div className="bg-white border-b border-slate-200 px-4 sm:px-6 py-2.5 sm:py-3 shadow-xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
           <button
             type="button"
@@ -137,7 +138,7 @@ Bisa dibawakan saat terapi bekam atau dikirim via kurir ke alamat saya? Terima k
             </button>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Hero Banner */}
       <div className="bg-gradient-to-b from-emerald-900 to-teal-900 text-white py-10 px-4 sm:px-6 relative overflow-hidden">
@@ -307,26 +308,17 @@ Bisa dibawakan saat terapi bekam atau dikirim via kurir ke alamat saya? Terima k
                         {product.description}
                       </p>
 
-                      {/* Benefits Bullets preview */}
-                      <div className="mt-2 space-y-1">
-                        {product.benefits.slice(0, isExpanded ? product.benefits.length : 1).map((benefit, idx) => (
-                          <div key={idx} className="flex items-start gap-1 text-[11px] text-slate-600">
-                            <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0 mt-0.5" />
-                            <span className="line-clamp-1">{benefit}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {product.benefits.length > 1 && (
+                      {/* Tombol Lihat Detail Produk Lengkap (Muncul lengkap tanpa kepotong) */}
+                      <div className="mt-2.5">
                         <button
                           type="button"
-                          onClick={() => setExpandedDetailsId(isExpanded ? null : product.id)}
-                          className="mt-0.5 text-[10px] sm:text-[11px] font-bold text-emerald-700 hover:text-emerald-800 inline-flex items-center gap-0.5 cursor-pointer"
+                          onClick={() => setPreviewProduct(product)}
+                          className="w-full py-1.5 px-2 rounded-xl bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 text-[11px] font-bold border border-slate-200 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                         >
-                          <span>{isExpanded ? 'Tutup' : `+${product.benefits.length - 1} Khasiat`}</span>
-                          {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                          <Eye className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Lihat Detail Produk</span>
                         </button>
-                      )}
+                      </div>
                     </div>
 
                     {/* Price with 50% Strikethrough */}
@@ -394,6 +386,14 @@ Bisa dibawakan saat terapi bekam atau dikirim via kurir ke alamat saya? Terima k
             })}
           </div>
         )}
+
+        {/* Bukti Transaksi Pembelian Herbal Alami (Clean Slider) */}
+        <section className="mt-14 pt-10 border-t border-slate-200">
+          <TransferProofCarousel
+            title="Bukti Transaksi Pembelian Madu &amp; Herbal Alami"
+            subtitle="Dokumentasi bukti transfer asli transaksi pembelian madu dan herbal alami di Bekam Bogor."
+          />
+        </section>
 
       </main>
 

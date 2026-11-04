@@ -14,7 +14,7 @@ import {
   ExternalLink,
   UserCheck,
   ShoppingBag,
-  Receipt
+  ArrowLeftRight
 } from 'lucide-react';
 import { THERAPIST_INFO } from '../data/treatments';
 
@@ -61,13 +61,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: 'toko-herbal',
       label: 'Toko Herbal & Madu',
       icon: <ShoppingBag className="w-4 h-4 text-emerald-600" />,
-      badge: cartCount > 0 ? `${cartCount} item` : 'Baru'
+      badge: cartCount > 0 ? `${cartCount} item` : undefined
     },
     {
       id: 'testimoni-bukti',
-      label: 'Bukti Transfer Pasien',
-      icon: <Receipt className="w-4 h-4 text-emerald-600" />,
-      badge: 'Update'
+      label: 'Transaksi',
+      icon: <ArrowLeftRight className="w-4 h-4 text-emerald-600" />
     },
     { id: 'dokumentasi-foto', label: 'Dokumentasi Terapi', icon: <Camera className="w-4 h-4" /> },
     { id: 'titik-bekam', label: 'Peta Titik Bekam', icon: <Activity className="w-4 h-4" /> },
@@ -88,10 +87,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <>
-      {/* Mobile Top Navigation Bar (Hidden on Desktop & when full shop page is active) */}
-      {!hideMobileBar && (
-        <div className="lg:hidden sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-2.5 flex items-center justify-between shadow-xs">
-        <a href="#beranda" className="flex items-center gap-2.5">
+      {/* Mobile Top Navigation Bar: Always Sticky on Mobile Mode */}
+      <div className="lg:hidden sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-2.5 flex items-center justify-between shadow-xs">
+        <button
+          type="button"
+          onClick={() => handleItemClick('beranda')}
+          className="flex items-center gap-2.5 text-left cursor-pointer"
+        >
           <img
             src="/logo.png"
             alt="Logo Bekam Bogor"
@@ -105,7 +107,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
             <p className="text-[10px] text-slate-500 font-semibold">{THERAPIST_INFO.tagline}</p>
           </div>
-        </a>
+        </button>
 
         {/* Mobile Right Actions: Cart & Hamburger */}
         <div className="flex items-center gap-1.5">
@@ -135,7 +137,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </button>
         </div>
       </div>
-      )}
 
       {/* Blurred right-side overlay when menu is open: clicking anywhere on it or on the X button closes the drawer */}
       {mobileMenuOpen && (

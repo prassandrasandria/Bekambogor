@@ -139,7 +139,7 @@ export function App() {
   };
 
   const handleNavigate = (sectionId: string) => {
-    if (sectionId === 'testimoni-bukti' || sectionId === 'testimoni') {
+    if (sectionId === 'testimoni-bukti' || sectionId === 'testimoni' || sectionId === 'transaksi') {
       setIsTestimonialsOpen(true);
       return;
     }
@@ -248,7 +248,6 @@ export function App() {
         onOpenBooking={handleOpenBooking}
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
-        hideMobileBar={currentView === 'shop'}
       />
 
       {/* Main Content Area (Offset for Desktop Sticky Sidebar) */}

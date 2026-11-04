@@ -450,7 +450,7 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
               <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-left text-xs space-y-2">
                 <p><strong>👤 Pasien:</strong> {formData.fullName} ({formData.age} tahun)</p>
                 <p><strong>📦 Paket:</strong> {selectedPackage.name}</p>
-                <p><strong>🚗 Layanan:</strong> {formData.serviceType === 'panggilan' ? `Bekam Home Care (${formData.distanceKm} km)` : 'Datang ke Rumah Terapis'}</p>
+                <p><strong>Layanan:</strong> {formData.serviceType === 'panggilan' ? `Bekam Home Care (${formData.distanceKm} km)` : 'Datang ke Rumah Terapis'}</p>
                 <p><strong>📍 Alamat:</strong> {formData.address}</p>
                 <p><strong>📅 Jadwal:</strong> {formData.selectedDate} • {formData.selectedTimeSlot}</p>
                 <p className="pt-1 border-t border-emerald-200"><strong>💵 Total Biaya:</strong> <strong className="text-emerald-800 text-sm">Rp {totalCost.toLocaleString('id-ID')}</strong></p>
@@ -498,7 +498,7 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
                     }`}
                   >
                     <Car className="w-4 h-4 text-emerald-600" />
-                    <span>🚗 Home Care (Panggilan)</span>
+                    <span>Home Care (Panggilan)</span>
                   </button>
                   <button
                     type="button"
@@ -510,7 +510,7 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
                     }`}
                   >
                     <Home className="w-4 h-4 text-emerald-600" />
-                    <span>🏡 Di Rumah Terapis</span>
+                    <span>Di Rumah Terapis</span>
                     <span className="text-[9px] text-emerald-700 font-extrabold uppercase">Gratis Transport</span>
                   </button>
                 </div>
@@ -529,37 +529,37 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
                 <button
                   type="button"
                   onClick={() => setIsPackageDropdownOpen(!isPackageDropdownOpen)}
-                  className={`w-full p-3.5 rounded-2xl border text-left flex items-center justify-between transition-all cursor-pointer ${
+                  className={`w-full p-3 sm:p-3.5 rounded-2xl border text-left flex items-center justify-between gap-2.5 transition-all cursor-pointer ${
                     isPackageDropdownOpen
                       ? 'border-emerald-600 ring-2 ring-emerald-600/30 bg-white shadow-md'
                       : 'border-slate-200 hover:border-emerald-300 bg-white hover:bg-slate-50/50 shadow-2xs'
                   }`}
                 >
-                  <div className="flex items-center gap-3 truncate">
+                  <div className="flex items-center gap-2.5 sm:gap-3 flex-1 min-w-0">
                     <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 font-bold text-xs">
                       {selectedPackage.cupCount.includes('17') || selectedPackage.cupCount.includes('Full') ? '17' : selectedPackage.cupCount.includes('11') || selectedPackage.cupCount.includes('Punggung') ? '11' : '0'}
                     </div>
-                    <div className="truncate">
-                      <div className="font-extrabold text-xs sm:text-sm text-slate-900 truncate flex items-center gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                         <span>{selectedPackage.name}</span>
                         {selectedPackage.isPopular && (
-                          <span className="bg-amber-400 text-slate-900 text-[9px] font-extrabold px-1.5 py-0.2 rounded">
+                          <span className="ml-1.5 inline-block bg-amber-400 text-slate-900 text-[9px] font-extrabold px-1.5 py-0.2 rounded align-middle">
                             Favorit
                           </span>
                         )}
                       </div>
-                      <div className="text-[11px] text-slate-500 truncate">
+                      <div className="text-[11px] text-slate-500 mt-0.5">
                         {selectedPackage.cupCount} • {selectedPackage.durationMinutes} menit
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="font-black text-xs sm:text-sm text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg">
+                  <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                    <span className="font-black text-xs sm:text-sm text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 sm:px-2.5 py-1 rounded-lg whitespace-nowrap">
                       Rp {selectedPackage.price.toLocaleString('id-ID')}
                     </span>
                     <ChevronDown
-                      className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                      className={`w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0 ${
                         isPackageDropdownOpen ? 'rotate-180 text-emerald-600' : ''
                       }`}
                     />
