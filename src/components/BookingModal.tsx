@@ -190,7 +190,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
     const transportInfoText = formData.serviceType === 'panggilan'
       ? `Rp ${transportCost.toLocaleString('id-ID')} (${formData.distanceKm} km x Rp 2.500)`
-      : 'Rp 0 (Gratis Transport - Datang ke Rumah Terapis Leuwisadeng)';
+      : 'Rp 0 (Gratis Transport - Datang ke Rumah Terapis)';
 
     const formatIndonesianDateWithDay = (dateStr: string) => {
       if (!dateStr) return '';
@@ -220,9 +220,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 👤 *Nama Pasien:* ${formData.fullName.trim()} (Ikhwan)
 🎂 *Usia Pasien:* ${formData.age.trim()} tahun
 📱 *No. WhatsApp:* ${formData.phone.trim()}
-🏠 *Tipe Layanan:* ${formData.serviceType === 'panggilan' ? 'Bekam Panggilan (Ke Rumah Pasien)' : 'Datang ke Rumah Terapis (Kp. Leuwisadeng)'}
+🏠 *Tipe Layanan:* ${formData.serviceType === 'panggilan' ? 'Bekam Home Care (Panggilan)' : 'Datang ke Rumah Terapis'}
 📍 *Alamat Pasien:* ${formData.address.trim()}
-${formData.serviceType === 'panggilan' ? `🚗 *Jarak Tempuh:* ${formData.distanceKm} km (Pulang Pergi)\n💰 *Biaya Transport:* ${transportInfoText}\n` : `🏡 *Lokasi Terapi:* Kp. Leuwisadeng RT 01 RW 03 Kec. Leuwisadeng\n`}
+${formData.serviceType === 'panggilan' ? `🚗 *Jarak Tempuh:* ${formData.distanceKm} km (Pulang Pergi)\n💰 *Biaya Transport:* ${transportInfoText}\n` : `🏡 *Lokasi Terapi:* Rumah Terapis (Sesuai Titik Google Maps)\n`}
 📦 *Paket Terapi:* ${selectedPackage.name} (Rp ${selectedPackage.price.toLocaleString('id-ID')})
 💵 *TOTAL BIAYA:* Rp ${totalCost.toLocaleString('id-ID')}
 
@@ -310,7 +310,7 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
               <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-left text-xs space-y-2">
                 <p><strong>👤 Pasien:</strong> {formData.fullName} ({formData.age} tahun)</p>
                 <p><strong>📦 Paket:</strong> {selectedPackage.name}</p>
-                <p><strong>🚗 Layanan:</strong> {formData.serviceType === 'panggilan' ? `Bekam Panggilan (${formData.distanceKm} km)` : 'Datang ke Rumah Terapis (Leuwisadeng)'}</p>
+                <p><strong>🚗 Layanan:</strong> {formData.serviceType === 'panggilan' ? `Bekam Home Care (${formData.distanceKm} km)` : 'Datang ke Rumah Terapis'}</p>
                 <p><strong>📍 Alamat:</strong> {formData.address}</p>
                 <p><strong>📅 Jadwal:</strong> {formData.selectedDate} • {formData.selectedTimeSlot}</p>
                 <p className="pt-1 border-t border-emerald-200"><strong>💵 Total Biaya:</strong> <strong className="text-emerald-800 text-sm">Rp {totalCost.toLocaleString('id-ID')}</strong></p>
@@ -343,22 +343,22 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
               
               {/* Service Type Selection */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                <label className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
                   <span>Pilih Lokasi Terapi</span>
-                  <span className="text-[10px] text-emerald-700 font-semibold">Bogor &amp; Sekitarnya</span>
+                  <span className="text-xs text-emerald-700 font-semibold">Bogor &amp; Sekitarnya</span>
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => setFormData({ ...formData, serviceType: 'panggilan' })}
-                    className={`p-3 rounded-2xl border text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${
+                    className={`p-3.5 rounded-2xl border text-xs sm:text-sm font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${
                       formData.serviceType === 'panggilan'
                         ? 'border-emerald-600 bg-emerald-50 text-emerald-900 ring-2 ring-emerald-600/30 shadow-xs'
                         : 'border-slate-200 text-slate-600 hover:bg-slate-50'
                     }`}
                   >
                     <Car className="w-4 h-4 text-emerald-600" />
-                    <span>🚗 Panggilan ke Rumah</span>
+                    <span>🚗 Home Care (Panggilan)</span>
                   </button>
                   <button
                     type="button"
@@ -487,7 +487,7 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
                 <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
                   <div className="flex justify-between items-center text-xs">
                     <label htmlFor="booking-distance-slider" className="font-bold text-slate-700 cursor-pointer">
-                      Perkiraan Jarak dari Kp. Leuwisadeng:
+                      Perkiraan Jarak Tempuh:
                     </label>
                     <span className="font-extrabold text-emerald-700">{formData.distanceKm} km (PP: {formData.distanceKm * 2} km)</span>
                   </div>

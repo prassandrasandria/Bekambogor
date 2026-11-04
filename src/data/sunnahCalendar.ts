@@ -7,14 +7,19 @@ export const sunnahHadiths = [
     narrator: 'HR. Al-Bukhari no. 5696 & Muslim no. 1577'
   },
   {
-    textArabic: 'مَنِ احْتَجَمَ لِسَبْعَ عَشْرَةَ وَتِسْعَ عَشْرَةَ وَإِحْدَى وَعِشْرِينَ كَانَ شِفَاءً مِنْ كُلِّ دَاءٍ',
-    translation: 'Barangsiapa berbekam pada tanggal 17, 19, dan 21 (bulan Hijriyyah), maka itu akan menjadi kesembuhan bagi setiap penyakit.',
-    narrator: 'HR. Abu Dawud no. 3861, Tirmidzi no. 2051'
+    textArabic: 'مَا مَرَرْتُ لَيْلَةَ أُسْرِيَ بِي بِمَلإٍ مِنَ الْمَلاَئِكَةِ إِلاَّ قَالُوا: يَا مُحَمَّدُ مُرْ أُمَّتَكَ بِالْحِجَامَةِ',
+    translation: 'Tidaklah aku melewati sekumpulan malaikat pada malam Isra\' Mi\'raj melainkan mereka berkata: Wahai Muhammad, perintahkanlah umatmu untuk berbekam.',
+    narrator: 'HR. Ibnu Majah no. 3477 & At-Tirmidzi (Shahih)'
   },
   {
     textArabic: 'الشِّفَاءُ فِي ثَلاَثَةٍ: شَرْبَةِ عَسَلٍ، وَشَرْطَةِ مِحْجَمٍ، وَكَيَّةِ نَارٍ، وَأَنْهَى أُمَّتِي عَنِ الْكَيِّ',
     translation: 'Kesembuhan itu ada pada tiga hal: minum madu, sayatan alat bekam, dan sengatan api (kayy). Dan aku melarang umatku dari sengatan api.',
     narrator: 'HR. Al-Bukhari no. 5680'
+  },
+  {
+    textArabic: 'مَنِ احْتَجَمَ لِسَبْعَ عَشْرَةَ وَتِسْعَ عَشْرَةَ وَإِحْدَى وَعِشْرِينَ كَانَ شِفَاءً مِنْ كُلِّ دَاءٍ',
+    translation: 'Barangsiapa berbekam pada tanggal 17, 19, dan 21 (bulan Hijriyyah), maka itu akan menjadi kesembuhan bagi setiap penyakit.',
+    narrator: 'HR. Abu Dawud no. 3861, Tirmidzi no. 2051'
   }
 ];
 

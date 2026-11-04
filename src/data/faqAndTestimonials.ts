@@ -116,9 +116,9 @@ export const carouselSlidesData: CarouselSlide[] = [
   {
     id: 'slide-17',
     imageSrc: '/assets/aistudio/IMG_20260714_135537_5c9bf5da.webp',
-    title: 'Layanan Bekam Panggilan ke Rumah Pasien di Bogor',
-    subtitle: 'Terapis ikhwan siap datang tepat waktu ke rumah pasien se-Bogor dengan perlengkapan lengkap, sehingga Anda nyaman berbekam di kediaman sendiri.',
-    badge: 'Layanan Panggilan'
+    title: 'Layanan Bekam Home Care Panggilan di Bogor',
+    subtitle: 'Terapis ikhwan siap datang tepat waktu dengan layanan Home Care se-Bogor dengan perlengkapan lengkap, sehingga Anda nyaman berbekam di kediaman sendiri.',
+    badge: 'Home Care'
   },
   {
     id: 'slide-18',

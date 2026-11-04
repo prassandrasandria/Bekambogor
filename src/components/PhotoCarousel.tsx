@@ -22,30 +22,14 @@ export const PhotoCarousel: React.FC = () => {
     setCurrentIndex((prev) => (prev + 1) % totalSlides);
   }, [totalSlides]);
 
-  // Snappy auto-play interval: 4 seconds (not slow, buttery smooth)
+  // Auto-play only when active and not lightbox
   useEffect(() => {
     if (isPaused || isLightboxOpen) return;
     const interval = setInterval(() => {
       handleNext();
-    }, 4000);
+    }, 5000);
     return () => clearInterval(interval);
   }, [isPaused, isLightboxOpen, handleNext]);
-
-  // Auto scroll active thumbnail inside its horizontal container ONLY (never affects page/window scroll)
-  useEffect(() => {
-    const container = thumbnailContainerRef.current;
-    const activeThumb = thumbnailRefs.current[currentIndex];
-    if (activeThumb && container) {
-      const containerWidth = container.clientWidth;
-      const thumbLeft = activeThumb.offsetLeft;
-      const thumbWidth = activeThumb.clientWidth;
-      const targetScrollLeft = thumbLeft - containerWidth / 2 + thumbWidth / 2;
-      container.scrollTo({
-        left: targetScrollLeft,
-        behavior: 'smooth'
-      });
-    }
-  }, [currentIndex]);
 
   // Preload adjacent images in browser cache so switching is 100% instant without lag
   useEffect(() => {
@@ -169,13 +153,6 @@ export const PhotoCarousel: React.FC = () => {
           >
             <ChevronRight className="w-6 h-6" />
           </button>
-
-          {/* Bottom Bar with Clean Counter & Swipe Note */}
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
-            <span className="px-3 py-1 rounded-full bg-black/50 backdrop-blur-sm text-white/90 text-[11px] font-medium shadow-sm">
-              Geser foto untuk melihat {totalSlides} dokumentasi
-            </span>
-          </div>
         </div>
 
         {/* Thumbnail Strip: Lightweight, smooth scrolling container */}

@@ -16,7 +16,7 @@
       "identifier": "id.my.bekambogor.cupping-service",
       "displayName": "Layanan Terapi Bekam Panggilan Bogor",
       "type": "service",
-      "description": "Layanan terapi bekam panggilan ke rumah pasien atau terapi di rumah terapis di Kp. Leuwisadeng, Bogor khusus ikhwan.",
+      "description": "Layanan terapi bekam Home Care panggilan atau terapi di rumah terapis di Bogor khusus ikhwan.",
       "url": "https://bekambogor.my.id/#paket-layanan",
       "representativeQueries": [
         "bekam panggilan bogor",
@@ -30,12 +30,12 @@
       "identifier": "id.my.bekambogor.transport-calculator",
       "displayName": "Kalkulator Biaya Transport Bekam",
       "type": "tool",
-      "description": "Perhitungan otomatis jarak dan biaya transport panggilan terapis bekam ke rumah pasien dengan tarif transparan Rp 2.500/km (PP).",
+      "description": "Perhitungan otomatis jarak dan biaya transport Home Care panggilan terapis bekam dengan tarif transparan Rp 2.500/km (PP).",
       "url": "https://bekambogor.my.id/#kalkulator-transport",
       "representativeQueries": [
         "hitung biaya transport bekam bogor",
         "ongkos bekam panggilan leuwisadeng bogor",
-        "jarak terapis bekam ke rumah pasien"
+        "jarak terapis bekam Home Care"
       ]
     },
     {

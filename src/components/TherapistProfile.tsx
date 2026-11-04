@@ -54,34 +54,34 @@ export const TherapistProfile: React.FC<TherapistProfileProps> = ({ onOpenBookin
               <div className="relative w-64 sm:w-72 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl bg-slate-900 border-2 border-white">
                 <img
                   src={THERAPIST_INFO.photoUrl}
-                  alt="Prassandra S - Terapis Bekam Profesional Bogor"
+                  alt="Praktisi Bekam Profesional Bogor"
                   className="w-full h-full object-cover object-top group-hover:scale-102 transition duration-500"
                   loading="lazy"
                 />
                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent p-4 text-center">
-                  <p className="text-white font-black text-base sm:text-lg tracking-tight">Prassandra S</p>
-                  <p className="text-emerald-300 text-xs font-semibold">Terapis Bekam Aswaja &amp; Thibbun Nabawi</p>
+                  <p className="text-white font-black text-lg sm:text-xl tracking-tight">Praktisi Bekam Profesional</p>
+                  <p className="text-emerald-300 text-xs sm:text-sm font-semibold">Terapis Bekam Aswaja &amp; Thibbun Nabawi</p>
                 </div>
               </div>
             </div>
 
             {/* Quick Experience Badge */}
-            <div className="mt-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-700 text-white text-xs font-bold shadow-md">
-              <Calendar className="w-3.5 h-3.5 text-emerald-200" />
-              <span>Praktisi Sejak Tahun 2022</span>
+            <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-700 text-white text-xs sm:text-sm font-bold shadow-md">
+              <Calendar className="w-4 h-4 text-emerald-200" />
+              <span>Praktisi Berpengalaman &amp; Bersanad</span>
             </div>
           </div>
 
           {/* Bio & Credentials Details */}
           <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
             <div>
-              <div className="inline-block text-xs font-bold text-emerald-700 bg-emerald-100/80 px-2.5 py-1 rounded-md mb-2">
-                Identitas Terapis Resmi
+              <div className="inline-block text-xs sm:text-sm font-bold text-emerald-800 bg-emerald-100/80 px-3 py-1 rounded-md mb-2">
+                Identitas Praktisi Resmi
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                {THERAPIST_INFO.therapistName}
-                <span className="block text-sm sm:text-base font-semibold text-slate-500 mt-1">
-                  Nama Resmi: {THERAPIST_INFO.formalName}
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+                Praktisi Bekam Berpengalaman
+                <span className="block text-base sm:text-lg font-semibold text-emerald-700 mt-1">
+                  Bersertifikat Resmi &amp; Bersanad Thibbun Nabawi
                 </span>
               </h3>
             </div>

@@ -45,7 +45,7 @@ export const HygieneProtocols: React.FC = () => {
             Standar Higienitas Medis &amp; Sanad Keilmuan
           </h2>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            Kesehatan dan kenyamanan Anda adalah amanah terbesar kami. Di Bekam Bogor, kami menjamin peralatan steril dan penanganan langsung oleh terapis <strong>{THERAPIST_INFO.therapistName}</strong> ({THERAPIST_INFO.experienceYears}) dengan lisensi dan sertifikasi kompetensi resmi.
+            Kesehatan dan kenyamanan Anda adalah amanah terbesar kami. Di Bekam Bogor, kami menjamin peralatan steril sekali pakai dan penanganan langsung oleh praktisi terapis bersertifikat resmi Thibbun Nabawi dengan standar higienis SOP medis.
           </p>
         </div>
 

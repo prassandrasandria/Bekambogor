@@ -1,7 +1,7 @@
 # Bekam Bogor - Dokumentasi Lengkap Pengetahuan & Panduan Layanan Terapi Bekam Panggilan
 
 ## 1. Profil Layanan
-Bekam Bogor adalah penyedia jasa terapi bekam (hijamah) profesional dengan sistem panggilan (homecare) ke rumah pasien di seluruh wilayah Kabupaten Bogor dan Kota Bogor, serta menerima pasien yang ingin datang langsung ke kediaman terapis di Kp. Leuwisadeng RT 01 RW 03, Kecamatan Leuwisadeng, Kabupaten Bogor.
+Bekam Bogor adalah penyedia jasa terapi bekam (hijamah) profesional dengan sistem panggilan Home Care di seluruh wilayah Kabupaten Bogor dan Kota Bogor, serta menerima pasien yang ingin datang langsung ke kediaman terapis di Bogor.
 
 - Target Pasien: Khusus Ikhwan (Laki-laki). Status ini bersifat sementara waktu hingga tersedia terapis akhwat di masa depan.
 - Praktisi: Terapis bersertifikat dan bersanad pengobatan Thibbun Nabawi.

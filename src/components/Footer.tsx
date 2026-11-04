@@ -27,10 +27,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
                 Bekam<span className="text-emerald-400">Bogor</span>
               </span>
             </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              <strong>{THERAPIST_INFO.tagline}</strong> di wilayah Bogor &amp; sekitarnya. Melayani panggilan ke rumah pasien se-Bogor Barat, Dramaga, Ciampea, Cibungbulang, Leuwiliang, atau terapi langsung di rumah terapis di Kp. Leuwisadeng. Khusus Ikhwan (Laki-laki).
+            <p className="text-sm text-slate-300 leading-relaxed">
+              <strong>{THERAPIST_INFO.tagline}</strong> di wilayah Bogor &amp; sekitarnya. Melayani layanan Home Care se-Bogor Barat, Dramaga, Ciampea, Cibungbulang, Leuwiliang, atau terapi langsung di rumah terapis. Khusus Ikhwan (Laki-laki).
             </p>
-            <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-semibold">
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-emerald-400 font-semibold">
               <ShieldCheck className="w-4 h-4 shrink-0" />
               <span>{THERAPIST_INFO.certification}</span>
             </div>
@@ -73,33 +73,29 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
             </ul>
           </div>
 
-          {/* Col 3: Address & Info */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider">Lokasi Rumah Terapis</h4>
-            <div className="space-y-2 text-xs text-slate-400">
-              <div className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span>{THERAPIST_INFO.address}</span>
-              </div>
+          {/* Col 3: Lokasi Rumah Terapis (Clean without repetitive kampung text per Screenshot 2) */}
+          <div className="space-y-3.5">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Lokasi Rumah Terapis</h4>
+            <div className="space-y-2.5 text-sm text-slate-400">
               <a
                 href={THERAPIST_INFO.gmapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-emerald-400 hover:text-emerald-300 underline font-semibold text-xs"
+                className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 font-bold text-sm bg-slate-900 border border-emerald-900/60 p-3 rounded-xl transition-colors w-full"
               >
-                <span>Buka Titik Google Maps</span>
-                <ExternalLink className="w-3 h-3" />
+                <MapPin className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Buka Titik Google Maps ↗</span>
               </a>
-              <p className="text-[11px] text-slate-400 pt-1 leading-relaxed">
-                * {THERAPIST_INFO.clinicStatus}
+              <p className="text-xs text-slate-400 pt-1 leading-relaxed">
+                Melayani Panggilan <strong>Home Care</strong> &amp; Terapi Langsung di Rumah Terapis (Bebas Biaya Transport).
               </p>
             </div>
           </div>
 
           {/* Col 4: Contacts & WhatsApp Button */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider">Kontak Langsung</h4>
-            <div className="space-y-2 text-xs text-slate-400">
+          <div className="space-y-3.5">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Kontak Langsung</h4>
+            <div className="space-y-2 text-sm text-slate-400">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Buka Setiap Hari: 08.00 - 21.00 WIB</span>
@@ -114,7 +110,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
               <button
                 type="button"
                 onClick={onOpenBooking}
-                className="w-full py-2.5 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer"
+                className="w-full py-3 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer"
               >
                 <WhatsAppIcon className="w-4 h-4 text-white" />
                 <span>Reservasi Terapi Bekam</span>
@@ -124,16 +120,16 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
 
         </div>
 
-        {/* Disclaimer & Copyright - With generous mobile bottom padding so it is completely visible */}
-        <div className="pt-6 text-xs text-slate-500 space-y-2.5 text-left">
+        {/* Disclaimer & Copyright */}
+        <div className="pt-8 text-xs sm:text-sm text-slate-500 space-y-3 text-left">
           <p className="max-w-3xl leading-relaxed">
-            <strong className="text-slate-400">Disclaimer:</strong> Terapi bekam (hijamah) adalah ikhtiar pengobatan komplementer sunnah Nabawi yang telah diakui khasiatnya. Ditangani langsung oleh terapis <strong>{THERAPIST_INFO.therapistName}</strong> ({THERAPIST_INFO.experienceYears}) dengan standar sterilitas tinggi.
+            <strong className="text-slate-400">Disclaimer:</strong> Terapi bekam (hijamah) adalah ikhtiar pengobatan komplementer sunnah Nabawi yang telah diakui khasiatnya. Ditangani langsung oleh praktisi bekam bersertifikat resmi Thibbun Nabawi dengan standar sterilitas tinggi.
           </p>
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-slate-900 text-slate-500 font-medium">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-3 border-t border-slate-900 text-slate-500 font-medium">
             <p>
               &copy; {new Date().getFullYear()} Bekam Bogor. Seluruh hak cipta dilindungi.
             </p>
-            <div className="flex items-center gap-3 text-[11px] text-slate-400">
+            <div className="flex items-center gap-3 text-xs text-slate-400">
               <span>Wilayah Layanan: Bogor dan Sekitarnya</span>
             </div>
           </div>

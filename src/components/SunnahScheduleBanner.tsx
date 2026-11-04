@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Calendar, Moon, Sparkles, BookOpen, Clock, AlertCircle, CheckCircle, RefreshCw } from 'lucide-react';
 import { getDynamicSunnahDates, sunnahHadiths, cuppingRulesAndPreparation } from '../data/sunnahCalendar';
 import { DynamicSunnahDate } from '../types';
@@ -10,6 +10,15 @@ interface SunnahScheduleBannerProps {
 export const SunnahScheduleBanner: React.FC<SunnahScheduleBannerProps> = ({ onSelectDateToBook }) => {
   const [activeTab, setActiveTab] = useState<'calendar' | 'rules' | 'hadith'>('calendar');
   const [activeHadithIdx, setActiveHadithIdx] = useState(0);
+
+  // Auto-slide Hadiths every 3 seconds (3000ms)
+  useEffect(() => {
+    if (activeTab !== 'hadith') return;
+    const interval = setInterval(() => {
+      setActiveHadithIdx((prev) => (prev + 1) % sunnahHadiths.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [activeTab]);
 
   // Dynamic automatic calculation of upcoming sunnah dates
   const dynamicDates = useMemo(() => getDynamicSunnahDates(6), []);
@@ -194,21 +203,21 @@ export const SunnahScheduleBanner: React.FC<SunnahScheduleBannerProps> = ({ onSe
 
         {/* Tab 3: Hadith Citations */}
         {activeTab === 'hadith' && (
-          <div className="bg-emerald-950/70 p-6 sm:p-8 rounded-3xl border border-emerald-800 max-w-4xl mx-auto">
-            <div className="flex items-center justify-center gap-2 mb-6">
+          <div className="bg-emerald-950/70 p-6 sm:p-8 rounded-3xl border border-emerald-800 max-w-4xl mx-auto min-h-[300px] flex flex-col justify-between">
+            <div className="flex items-center justify-center gap-2 mb-4">
               {sunnahHadiths.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveHadithIdx(idx)}
-                  className={`w-3 h-3 rounded-full transition-all cursor-pointer ${
-                    activeHadithIdx === idx ? 'bg-amber-400 w-8' : 'bg-emerald-800'
+                  className={`h-3 rounded-full transition-all cursor-pointer ${
+                    activeHadithIdx === idx ? 'bg-amber-400 w-8' : 'bg-emerald-800 w-3'
                   }`}
                   aria-label={`Hadith ${idx + 1}`}
                 />
               ))}
             </div>
 
-            <div className="text-center space-y-4">
+            <div className="text-center space-y-4 my-auto">
               <p className="font-arabic text-2xl sm:text-3xl text-amber-200 leading-loose py-2" dir="rtl">
                 {sunnahHadiths[activeHadithIdx].textArabic}
               </p>

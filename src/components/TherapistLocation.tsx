@@ -11,18 +11,15 @@ export const TherapistLocation: React.FC<TherapistLocationProps> = () => {
     <section id="lokasi-rumah" className="py-14 bg-slate-50 relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-8">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider mb-2.5">
+        {/* Header - Langsung Judul Bersih & Langsung Peta Lokasi */}
+        <div className="text-center max-w-3xl mx-auto mb-6">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider mb-2">
             <MapPin className="w-3.5 h-3.5 text-emerald-600" />
-            Titik Lokasi Rumah Terapis
+            Lokasi Rumah Terapis
           </div>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Peta Lokasi Kediaman Terapis
           </h2>
-          <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            <strong>{THERAPIST_INFO.address}</strong>. Kami melayani Bekam Panggilan ke rumah pasien di wilayah <strong>Bogor dan Sekitarnya</strong>, dan dipersilakan datang langsung ke rumah terapis dengan <strong>bebas biaya transport (gratis)</strong>.
-          </p>
         </div>
 
         {/* Embedded Interactive Google Map */}
@@ -30,7 +27,7 @@ export const TherapistLocation: React.FC<TherapistLocationProps> = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3.5 px-2 gap-2 border-b border-slate-100 mb-3">
             <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-800">
               <MapPin className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>Titik Kordinat: Kp. Leuwisadeng RT 01 RW 03, Kab. Bogor</span>
+              <span>Titik Lokasi Rumah Terapis (Google Maps)</span>
             </div>
             <a
               href={THERAPIST_INFO.gmapsUrl}

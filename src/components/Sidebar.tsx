@@ -103,13 +103,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </button>
       </div>
 
-      {/* Blurred right-side overlay when menu is open: clicking anywhere on it closes the drawer */}
+      {/* Blurred right-side overlay when menu is open: clicking anywhere on it or on the X button closes the drawer */}
       {mobileMenuOpen && (
-        <div
-          onClick={() => setMobileMenuOpen(false)}
-          className="lg:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-md transition-all duration-300 animate-in fade-in"
-          aria-hidden="true"
-        />
+        <>
+          <div
+            onClick={() => setMobileMenuOpen(false)}
+            className="lg:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-md transition-all duration-300 animate-in fade-in cursor-pointer"
+            aria-label="Tutup Menu"
+          />
+
+          {/* Tombol X di area hitam blur */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(false)}
+            className="lg:hidden fixed top-4 right-4 sm:top-6 sm:right-6 z-60 w-11 h-11 rounded-full bg-slate-900/80 hover:bg-slate-950 text-white flex items-center justify-center border-2 border-white/50 shadow-2xl transition-all hover:scale-110 active:scale-95 cursor-pointer"
+            aria-label="Tutup Menu"
+          >
+            <X className="w-6 h-6 text-white" />
+          </button>
+        </>
       )}
 
       {/* Sidebar Drawer: Desktop Fixed, Mobile Slide-out */}
@@ -121,35 +133,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
       >
         {/* Top: Brand Header */}
         <div className="p-4 sm:p-5 border-b border-slate-100">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-3">
-              <img
-                src="/logo.png"
-                alt="Logo Bekam Bogor"
-                width={44}
-                height={44}
-                className="w-11 h-11 object-contain drop-shadow-sm hover:scale-105 transition-transform"
-              />
-              <div>
-                <div className="font-black text-xl tracking-tight text-slate-900 leading-tight">
-                  Bekam<span className="text-emerald-600">Bogor</span>
-                </div>
-                <div className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md inline-block border border-emerald-100 mt-0.5">
-                  {THERAPIST_INFO.tagline}
-                </div>
+          <div className="flex items-center gap-3">
+            <img
+              src="/logo.png"
+              alt="Logo Bekam Bogor"
+              width={44}
+              height={44}
+              className="w-11 h-11 object-contain drop-shadow-sm hover:scale-105 transition-transform"
+            />
+            <div>
+              <div className="font-black text-xl tracking-tight text-slate-900 leading-tight">
+                Bekam<span className="text-emerald-600">Bogor</span>
+              </div>
+              <div className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md inline-block border border-emerald-100 mt-0.5">
+                {THERAPIST_INFO.tagline}
               </div>
             </div>
-
-            {/* The ONLY Close 'X' Button on Mobile */}
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(false)}
-              className="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
-              aria-label="Tutup Menu"
-            >
-              <X className="w-5 h-5" />
-            </button>
           </div>
+        </div>
 
           {/* SEMENTARA DI-KOMENTAR SESUAI PERMINTAAN USER:
           <div className="flex items-center gap-2.5 p-2 rounded-xl bg-slate-50 border border-slate-200/80">
@@ -164,11 +165,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           </div>
           */}
-        </div>
 
         {/* Middle: Semantic Navigation Landmark */}
         <nav aria-label="Menu Navigasi Utama" className="flex-1 overflow-y-auto p-3 space-y-1">
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 py-1">
+          <div className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 py-1">
             Menu Navigasi
           </div>
           {navMenuItems.map((item) => {
@@ -177,13 +177,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 key={item.id}
                 onClick={() => handleItemClick(item.id)}
-                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
                   isActive
                     ? 'bg-emerald-700 text-white shadow-xs'
                     : 'text-slate-700 hover:bg-emerald-50 hover:text-emerald-800'
                 }`}
               >
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-3">
                   <span className={isActive ? 'text-white' : 'text-slate-500'}>{item.icon}</span>
                   <span>{item.label}</span>
                 </div>
@@ -192,7 +192,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           })}
 
           <div className="pt-3 border-t border-slate-100 mt-2 px-1 space-y-1.5">
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 pb-1">
+            <div className="text-xs font-bold text-slate-400 uppercase tracking-wider px-2 pb-1">
               Info &amp; Lokasi
             </div>
             
@@ -200,13 +200,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
               href={THERAPIST_INFO.gmapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200/80 transition-colors"
+              className="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-sm font-medium border border-slate-200/80 transition-colors"
             >
-              <div className="flex items-center gap-2 truncate">
-                <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span className="truncate text-[11px]">Kp. Leuwisadeng, Bogor</span>
+              <div className="flex items-center gap-2.5 truncate">
+                <MapPin className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span className="truncate text-xs sm:text-sm">Lokasi Rumah Terapis</span>
               </div>
-              <ExternalLink className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+              <ExternalLink className="w-4 h-4 text-slate-400 shrink-0" />
             </a>
           </div>
         </nav>
@@ -219,12 +219,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
               setMobileMenuOpen(false);
               onOpenBooking();
             }}
-            className="w-full py-2.5 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer"
+            className="w-full py-3 px-3.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer"
           >
             <span>Booking Jadwal Bekam</span>
           </button>
 
-          <div className="text-[10px] text-center text-slate-500 font-medium">
+          <div className="text-xs text-center text-slate-500 font-medium">
             Praktisi Bersertifikat &amp; Bersanad
           </div>
         </div>
