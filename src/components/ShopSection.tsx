@@ -13,7 +13,7 @@ import {
 import { SHOP_PRODUCTS, formatRupiah } from '../data/shopProducts';
 import { ShopProduct, CartItem } from '../types';
 import { WhatsAppIcon } from './WhatsAppIcon';
-import { THERAPIST_INFO } from '../data/treatments';
+import { THERAPIST_INFO, getCleanWhatsAppNumber } from '../data/treatments';
 
 interface ShopSectionProps {
   cartItems: CartItem[];
@@ -62,7 +62,7 @@ Halo Praktisi Bekam Bogor, saya ingin memesan:
 Bisa dibawakan saat sesi terapi bekam panggilan atau dikirim via kurir? Terima kasih!`;
 
     const encoded = encodeURIComponent(message);
-    const cleanPhone = THERAPIST_INFO.phone.replace(/[^0-9]/g, '');
+    const cleanPhone = getCleanWhatsAppNumber(THERAPIST_INFO.phone);
     const waUrl = `https://wa.me/${cleanPhone}?text=${encoded}`;
     window.open(waUrl, '_blank', 'noopener,noreferrer');
   };

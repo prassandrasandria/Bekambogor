@@ -11,7 +11,7 @@ import {
   ExternalLink,
   CalendarCheck
 } from 'lucide-react';
-import { THERAPIST_INFO } from '../data/treatments';
+import { THERAPIST_INFO, getCleanWhatsAppNumber } from '../data/treatments';
 import { WhatsAppIcon } from './WhatsAppIcon';
 
 interface ProfileModalProps {
@@ -99,7 +99,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
               <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-2.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-bold text-slate-900 text-xs">Sanad &amp; Manhaj Thibbun Nabawi</p>
+                  <p className="font-bold text-slate-900 text-xs">Sanad &amp; Manhaj Bekam Aswaja</p>
                   <p className="text-[11px] text-slate-500">Kaidah sunnah Rasulullah SAW: penentuan titik Al-Kahil, Al-Akhda’ain, Ummu Mughits</p>
                 </div>
               </div>
@@ -146,7 +146,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
           </button>
 
           <a
-            href={`https://wa.me/${THERAPIST_INFO.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Halo Praktisi Bekam Bogor, saya ingin konsultasi terapi bekam / herbal.')}`}
+            href={`https://wa.me/${getCleanWhatsAppNumber(THERAPIST_INFO.phone)}?text=${encodeURIComponent('Halo Praktisi Bekam Bogor, saya ingin konsultasi terapi bekam / herbal.')}`}
             target="_blank"
             rel="noopener noreferrer"
             className="py-3 px-4 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-300 font-bold text-xs sm:text-sm flex items-center gap-1.5 cursor-pointer transition-colors"

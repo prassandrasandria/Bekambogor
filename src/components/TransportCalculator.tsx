@@ -20,16 +20,22 @@ import {
 import { servicePackages, THERAPIST_INFO, calculateTransportCost } from '../data/treatments';
 import { WhatsAppIcon } from './WhatsAppIcon';
 
-interface TransportCalculatorProps {
+export interface TransportCalculatorProps {
   onSelectBookingWithDetails: (
     packageId: string,
     serviceType: 'panggilan' | 'ke_rumah_terapis',
     distanceKm: number,
     address?: string
   ) => void;
+  onTransportStateChange?: (state: {
+    packageId: string;
+    serviceType: 'panggilan' | 'ke_rumah_terapis';
+    distanceKm: number;
+    address: string;
+  }) => void;
 }
 
-interface LocationSuggestion {
+export interface LocationSuggestion {
   id: string;
   primary: string;
   secondary: string;
@@ -41,7 +47,7 @@ interface LocationSuggestion {
 }
 
 // Curated Local Database for instant 0ms lookup
-const CURATED_LOCAL_LOCATIONS = [
+export const CURATED_LOCAL_LOCATIONS = [
   { name: 'Leuwisadeng', sub: 'Kecamatan Leuwisadeng, Bogor Barat', roadKm: 3, estMinutes: '10-15 mnt', aliases: ['sadeng', 'leuwisadeng', 'babakan sadeng', 'sibanteng'] },
   { name: 'Wangunjaya', sub: 'Leuwisadeng, Kab. Bogor', roadKm: 4, estMinutes: '10-15 mnt', aliases: ['wangunjaya'] },
   { name: 'Leuwiliang', sub: 'Pusat Kecamatan Leuwiliang, Kab. Bogor', roadKm: 5, estMinutes: '15-20 mnt', aliases: ['leuwiliang', 'terminal leuwiliang', 'pasar leuwiliang'] },
@@ -103,7 +109,10 @@ const CURATED_LOCAL_LOCATIONS = [
   { name: 'Sukabumi', sub: 'Kota / Kabupaten Sukabumi, Jawa Barat', roadKm: 60, estMinutes: '95-130 mnt', aliases: ['sukabumi', 'cibadak', 'cicurug'] }
 ];
 
-export const TransportCalculator: React.FC<TransportCalculatorProps> = ({ onSelectBookingWithDetails }) => {
+export const TransportCalculator: React.FC<TransportCalculatorProps> = ({
+  onSelectBookingWithDetails,
+  onTransportStateChange
+}) => {
   const [serviceType, setServiceType] = useState<'panggilan' | 'ke_rumah_terapis'>('panggilan');
   const [distanceKm, setDistanceKm] = useState<number>(5);
   const [selectedPackageId, setSelectedPackageId] = useState<string>(servicePackages[1].id);
@@ -126,6 +135,18 @@ export const TransportCalculator: React.FC<TransportCalculatorProps> = ({ onSele
   const selectedPackage = servicePackages.find(p => p.id === selectedPackageId) || servicePackages[0];
   const transportCost = calculateTransportCost(distanceKm, serviceType);
   const totalCost = selectedPackage.price + transportCost;
+
+  // Sync to parent/App.tsx so any booking button inherits these exact details
+  useEffect(() => {
+    if (onTransportStateChange) {
+      onTransportStateChange({
+        packageId: selectedPackageId,
+        serviceType,
+        distanceKm,
+        address: detectedAddress || locationInput
+      });
+    }
+  }, [selectedPackageId, serviceType, distanceKm, detectedAddress, locationInput, onTransportStateChange]);
 
   // Format currency in Rupiah
   const formatRupiah = (amount: number) => {

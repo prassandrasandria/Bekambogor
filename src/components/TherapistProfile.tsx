@@ -81,7 +81,7 @@ export const TherapistProfile: React.FC<TherapistProfileProps> = ({ onOpenBookin
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
                 Praktisi Bekam Berpengalaman
                 <span className="block text-base sm:text-lg font-semibold text-emerald-700 mt-1">
-                  Bersertifikat Resmi &amp; Bersanad Thibbun Nabawi
+                  Bersertifikat Resmi &amp; Bersanad Bekam Aswaja
                 </span>
               </h3>
             </div>

@@ -58,6 +58,7 @@ export const THERAPIST_INFO = {
   description: 'Menghidupkan Thibbun Nabawi untuk kebugaran tubuh, meredakan migrain, kolesterol, pegal pundak & pinggang. Melayani panggilan Home Care untuk wilayah Bogor dan Sekitarnya, dan jika ingin datang langsung ke rumah terapis sangat dipersilakan.',
   address: 'Kp. Leuwisadeng RT 01 RW 03 Kec. Leuwisadeng Kab.Bogor',
   phone: '085163518070',
+  phoneClean: '6285163518070',
   whatsappUrl: 'https://wa.me/6285163518070',
   gmapsUrl: 'https://maps.app.goo.gl/zCZNsTtXu6BtTctv7',
   mapCoordinates: { lat: -6.5707973, lng: 106.6064241 },
@@ -68,6 +69,17 @@ export const THERAPIST_INFO = {
   clinicStatus: 'Melayani panggilan Home Care & terapi langsung di rumah terapis.',
   certificates: THERAPIST_CERTIFICATES
 };
+
+export const getCleanWhatsAppNumber = (phone: string = THERAPIST_INFO.phone): string => {
+  let clean = phone.replace(/[^0-9]/g, '');
+  if (clean.startsWith('0')) {
+    clean = '62' + clean.slice(1);
+  } else if (!clean.startsWith('62')) {
+    clean = '62' + clean;
+  }
+  return clean;
+};
+
 
 export const servicePackages: ServicePackage[] = [
   {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, MapPin, Calendar, ShoppingBag, User } from 'lucide-react';
+import { Home, MapPin, Calendar, ShoppingBag, Star } from 'lucide-react';
 
 interface MobileBottomNavProps {
   activeSection: string;
@@ -8,7 +8,7 @@ interface MobileBottomNavProps {
   onNavigateLocation: () => void;
   onOpenBooking: () => void;
   onOpenCart: () => void;
-  onOpenProfile: () => void;
+  onOpenTestimonials: () => void;
 }
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
@@ -18,7 +18,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   onNavigateLocation,
   onOpenBooking,
   onOpenCart,
-  onOpenProfile
+  onOpenTestimonials
 }) => {
   return (
     <nav
@@ -83,14 +83,14 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
           <span className="text-[11px] mt-1 tracking-tight">Keranjang</span>
         </button>
 
-        {/* 5. Profil */}
+        {/* 5. Testimoni (Ganti dari Profil sesuai instruksi) */}
         <button
           type="button"
-          onClick={onOpenProfile}
+          onClick={onOpenTestimonials}
           className="flex flex-col items-center justify-center py-1 px-1 w-full text-center transition-colors cursor-pointer text-slate-500 hover:text-slate-800"
         >
-          <User className="w-5 h-5 stroke-[1.8]" />
-          <span className="text-[11px] mt-1 tracking-tight">Profil</span>
+          <Star className="w-5 h-5 stroke-[1.8] fill-amber-400 text-amber-500" />
+          <span className="text-[11px] mt-1 tracking-tight font-medium">Testimoni</span>
         </button>
 
       </div>

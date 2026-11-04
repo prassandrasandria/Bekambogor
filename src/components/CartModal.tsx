@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { CartItem } from '../types';
 import { formatRupiah } from '../data/shopProducts';
-import { THERAPIST_INFO } from '../data/treatments';
+import { THERAPIST_INFO, getCleanWhatsAppNumber } from '../data/treatments';
 import { WhatsAppIcon } from './WhatsAppIcon';
 
 interface CartModalProps {
@@ -26,6 +26,7 @@ interface CartModalProps {
   onUpdateQuantity: (productId: string, quantity: number) => void;
   onRemoveItem: (productId: string) => void;
   onClearCart: () => void;
+  onViewProducts?: () => void;
 }
 
 export const CartModal: React.FC<CartModalProps> = ({
@@ -34,7 +35,8 @@ export const CartModal: React.FC<CartModalProps> = ({
   cartItems,
   onUpdateQuantity,
   onRemoveItem,
-  onClearCart
+  onClearCart,
+  onViewProducts
 }) => {
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
@@ -88,7 +90,7 @@ ${customerNotes.trim() ? `- Catatan: ${customerNotes.trim()}` : ''}
 Mohon konfirmasi ketersediaan stok dan kelanjutan pesanannya. Terima kasih!`;
 
     const encoded = encodeURIComponent(message);
-    const cleanPhone = THERAPIST_INFO.phone.replace(/[^0-9]/g, '');
+    const cleanPhone = getCleanWhatsAppNumber(THERAPIST_INFO.phone);
     const waUrl = `https://wa.me/${cleanPhone}?text=${encoded}`;
     window.open(waUrl, '_blank', 'noopener,noreferrer');
   };
@@ -133,8 +135,14 @@ Mohon konfirmasi ketersediaan stok dan kelanjutan pesanannya. Terima kasih!`;
                 </p>
               </div>
               <button
-                onClick={onClose}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm shadow-md transition-all cursor-pointer"
+                type="button"
+                onClick={() => {
+                  onClose();
+                  if (onViewProducts) {
+                    onViewProducts();
+                  }
+                }}
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm shadow-md transition-all cursor-pointer hover:scale-105 active:scale-95"
               >
                 <span>Lihat Produk Herbal</span>
                 <ArrowRight className="w-4 h-4" />

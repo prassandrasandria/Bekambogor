@@ -27,7 +27,7 @@ export const HygieneProtocols: React.FC = () => {
     {
       icon: <Award className="w-6 h-6 text-emerald-600" />,
       title: 'Praktisi Bersertifikat dan Bersanad',
-      desc: 'Terapis ikhwan kami merupakan praktisi yang telah lulus sertifikasi kompetensi bekam thibbun nabawi serta memiliki sanad keilmuan yang jelas dan terpercaya.'
+      desc: 'Terapis ikhwan kami merupakan praktisi yang telah lulus sertifikasi kompetensi bekam serta memiliki sanad bekam aswaja yang jelas dan terpercaya.'
     }
   ];
 

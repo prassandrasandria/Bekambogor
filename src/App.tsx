@@ -8,6 +8,7 @@ import { ShopSection } from './components/ShopSection';
 import { FullShopPage } from './components/FullShopPage';
 import { CartModal } from './components/CartModal';
 import { ProfileModal } from './components/ProfileModal';
+import { TestimonialsModal } from './components/TestimonialsModal';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { SunnahScheduleBanner } from './components/SunnahScheduleBanner';
 import { TherapistLocation } from './components/TherapistLocation';
@@ -28,6 +29,7 @@ export function App() {
   const [activeSection, setActiveSection] = useState('beranda');
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isTestimonialsOpen, setIsTestimonialsOpen] = useState(false);
   const [bookingPackageId, setBookingPackageId] = useState<string | undefined>(undefined);
   const [bookingServiceType, setBookingServiceType] = useState<'panggilan' | 'ke_rumah_terapis'>('panggilan');
   const [bookingDistanceKm, setBookingDistanceKm] = useState<number>(5);
@@ -137,6 +139,10 @@ export function App() {
   };
 
   const handleNavigate = (sectionId: string) => {
+    if (sectionId === 'testimoni-bukti' || sectionId === 'testimoni') {
+      setIsTestimonialsOpen(true);
+      return;
+    }
     if (sectionId === 'toko-herbal') {
       setCurrentView('shop');
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -207,10 +213,25 @@ export function App() {
     setBookingPackageId(packageId);
     setBookingServiceType(serviceType);
     setBookingDistanceKm(distanceKm);
-    if (address) {
-      setBookingAddress(address);
+    if (address && address.trim()) {
+      setBookingAddress(address.trim());
     }
     setIsBookingOpen(true);
+  };
+
+  // Synchronize homepage calculator changes so any booking button inherits these exact details
+  const handleTransportStateChange = (state: {
+    packageId: string;
+    serviceType: 'panggilan' | 'ke_rumah_terapis';
+    distanceKm: number;
+    address: string;
+  }) => {
+    setBookingPackageId(state.packageId);
+    setBookingServiceType(state.serviceType);
+    setBookingDistanceKm(state.distanceKm);
+    if (state.address && state.address.trim()) {
+      setBookingAddress(state.address.trim());
+    }
   };
 
   const handleExploreCalculator = () => {
@@ -295,6 +316,7 @@ export function App() {
               <div className="scroll-reveal">
                 <TransportCalculator
                   onSelectBookingWithDetails={handleSelectBookingWithDetails}
+                  onTransportStateChange={handleTransportStateChange}
                 />
               </div>
 
@@ -375,6 +397,11 @@ export function App() {
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveFromCart}
         onClearCart={handleClearCart}
+        onViewProducts={() => {
+          setIsCartOpen(false);
+          setCurrentView('shop');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
       />
 
       {/* Therapist Profile Modal */}
@@ -437,7 +464,7 @@ export function App() {
         <ChevronUp className="w-5 h-5 stroke-[2.5]" />
       </button>
 
-      {/* Mobile Bottom Navigation Bar (Beranda, Lokasi, Booking Jadwal ditengah, Keranjang, Profil) */}
+      {/* Mobile Bottom Navigation Bar (Beranda, Lokasi, Booking Jadwal ditengah, Keranjang, Testimoni) */}
       <MobileBottomNav
         activeSection={currentView === 'shop' ? '' : activeSection}
         cartCount={totalCartCount}
@@ -445,7 +472,15 @@ export function App() {
         onNavigateLocation={handleNavigateLocation}
         onOpenBooking={handleOpenBooking}
         onOpenCart={() => setIsCartOpen(true)}
-        onOpenProfile={() => setIsProfileOpen(true)}
+        onOpenTestimonials={() => setIsTestimonialsOpen(true)}
+      />
+
+      {/* Testimonials & Herbal Transfer Proofs Modal */}
+      <TestimonialsModal
+        isOpen={isTestimonialsOpen}
+        onClose={() => setIsTestimonialsOpen(false)}
+        onOpenBooking={handleOpenBooking}
+        onOpenCart={() => setIsCartOpen(true)}
       />
     </div>
   );

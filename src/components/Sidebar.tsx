@@ -13,7 +13,8 @@ import {
   X,
   ExternalLink,
   UserCheck,
-  ShoppingBag
+  ShoppingBag,
+  Star
 } from 'lucide-react';
 import { THERAPIST_INFO } from '../data/treatments';
 
@@ -60,12 +61,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       icon: <ShoppingBag className="w-4 h-4 text-emerald-600" />,
       badge: cartCount > 0 ? `${cartCount} item` : 'Baru'
     },
-    // SEMENTARA DI-KOMENTAR SESUAI PERMINTAAN USER:
-    // {
-    //   id: 'profil-terapis',
-    //   label: 'Profil & Sertifikat Terapis',
-    //   icon: <UserCheck className="w-4 h-4 text-emerald-600" />
-    // },
+    {
+      id: 'testimoni-bukti',
+      label: 'Testimoni & Bukti Transfer',
+      icon: <Star className="w-4 h-4 text-amber-500 fill-amber-400" />,
+      badge: 'Update'
+    },
     { id: 'dokumentasi-foto', label: 'Dokumentasi Terapi', icon: <Camera className="w-4 h-4" /> },
     { id: 'titik-bekam', label: 'Peta Titik Bekam', icon: <Activity className="w-4 h-4" /> },
     {

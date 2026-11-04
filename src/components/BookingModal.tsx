@@ -16,9 +16,13 @@ import {
   Sun,
   Sunset,
   Moon,
-  AlertCircle
+  AlertCircle,
+  Lock,
+  Navigation,
+  Crosshair,
+  Loader2
 } from 'lucide-react';
-import { servicePackages, THERAPIST_INFO, calculateTransportCost } from '../data/treatments';
+import { servicePackages, THERAPIST_INFO, calculateTransportCost, getCleanWhatsAppNumber } from '../data/treatments';
 import { BookingFormData } from '../types';
 import { WhatsAppIcon } from './WhatsAppIcon';
 
@@ -32,6 +36,37 @@ interface BookingModalProps {
   initialSymptom?: string;
   initialAddress?: string;
 }
+
+const POPULAR_AREAS = [
+  { name: 'Leuwisadeng', roadKm: 3 },
+  { name: 'Wangunjaya', roadKm: 4 },
+  { name: 'Leuwiliang', roadKm: 5 },
+  { name: 'RSUD Leuwiliang', roadKm: 5 },
+  { name: 'Barengkok', roadKm: 6 },
+  { name: 'Puraseda', roadKm: 8 },
+  { name: 'Cibungbulang', roadKm: 10 },
+  { name: 'Cibatok', roadKm: 11 },
+  { name: 'Cemplang', roadKm: 12 },
+  { name: 'Pamijahan', roadKm: 14 },
+  { name: 'Ciampea', roadKm: 15 },
+  { name: 'Cigudeg', roadKm: 16 },
+  { name: 'Cinangneng', roadKm: 16 },
+  { name: 'Tenjolaya', roadKm: 17 },
+  { name: 'Dramaga', roadKm: 20 },
+  { name: 'IPB Dramaga', roadKm: 21 },
+  { name: 'Jasinga', roadKm: 22 },
+  { name: 'Laladon', roadKm: 23 },
+  { name: 'Bubulak', roadKm: 23 },
+  { name: 'Ciomas', roadKm: 24 },
+  { name: 'Bogor Barat (Cilendek)', roadKm: 25 },
+  { name: 'Taman Yasmin', roadKm: 26 },
+  { name: 'Stasiun Bogor', roadKm: 29 },
+  { name: 'Bogor Kota (Pusat)', roadKm: 30 },
+  { name: 'Tanah Sareal', roadKm: 30 },
+  { name: 'Cibinong', roadKm: 38 },
+  { name: 'Sentul City', roadKm: 41 },
+  { name: 'Puncak / Cisarua', roadKm: 47 }
+];
 
 export const BookingModal: React.FC<BookingModalProps> = ({
   isOpen,
@@ -72,6 +107,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [isPackageDropdownOpen, setIsPackageDropdownOpen] = useState(false);
   const [isTimeDropdownOpen, setIsTimeDropdownOpen] = useState(false);
 
+  // Automatic Location & Locked Distance state
+  const [isGpsDetecting, setIsGpsDetecting] = useState(false);
+  const [gpsModalNotice, setGpsModalNotice] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [showAreaPicker, setShowAreaPicker] = useState(false);
+
   const packageDropdownRef = useRef<HTMLDivElement>(null);
   const timeDropdownRef = useRef<HTMLDivElement>(null);
   const modalBodyRef = useRef<HTMLDivElement>(null);
@@ -83,27 +123,108 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const transportCost = calculateTransportCost(formData.distanceKm, formData.serviceType);
   const totalCost = selectedPackage.price + transportCost;
 
-  // Sync initial props
+  // Sync initial props (both on change and whenever modal opens)
   useEffect(() => {
-    if (initialPackageId) {
-      setFormData(prev => ({ ...prev, servicePackageId: initialPackageId }));
+    if (isOpen) {
+      setFormData(prev => ({
+        ...prev,
+        servicePackageId: initialPackageId || prev.servicePackageId,
+        serviceType: initialServiceType || prev.serviceType,
+        distanceKm: initialDistanceKm !== undefined ? initialDistanceKm : prev.distanceKm,
+        address: initialAddress !== undefined && initialAddress !== '' ? initialAddress : prev.address,
+        selectedDate: initialDate || prev.selectedDate,
+        healthNotes: initialSymptom ? (initialSymptom.startsWith('Keluhan:') ? initialSymptom : `Keluhan: ${initialSymptom}`) : prev.healthNotes
+      }));
     }
-    if (initialServiceType) {
-      setFormData(prev => ({ ...prev, serviceType: initialServiceType }));
+  }, [isOpen, initialPackageId, initialServiceType, initialDistanceKm, initialAddress, initialDate, initialSymptom]);
+
+  // GPS detection directly in booking modal
+  const handleDetectGps = () => {
+    if (!navigator.geolocation) {
+      setGpsModalNotice({
+        type: 'error',
+        text: 'Browser Anda tidak mendukung deteksi GPS. Silakan pilih wilayah Bogor di bawah.'
+      });
+      return;
     }
-    if (initialDistanceKm) {
-      setFormData(prev => ({ ...prev, distanceKm: initialDistanceKm }));
-    }
-    if (initialDate) {
-      setFormData(prev => ({ ...prev, selectedDate: initialDate }));
-    }
-    if (initialSymptom) {
-      setFormData(prev => ({ ...prev, healthNotes: initialSymptom }));
-    }
-    if (initialAddress) {
-      setFormData(prev => ({ ...prev, address: initialAddress }));
-    }
-  }, [initialPackageId, initialServiceType, initialDistanceKm, initialDate, initialSymptom, initialAddress]);
+
+    setIsGpsDetecting(true);
+    setGpsModalNotice(null);
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const userLat = pos.coords.latitude;
+        const userLon = pos.coords.longitude;
+        
+        // Haversine road km to therapist
+        const R = 6371;
+        const dLat = ((userLat - THERAPIST_INFO.mapCoordinates.lat) * Math.PI) / 180;
+        const dLon = ((userLon - THERAPIST_INFO.mapCoordinates.lng) * Math.PI) / 180;
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos((THERAPIST_INFO.mapCoordinates.lat * Math.PI) / 180) *
+            Math.cos((userLat * Math.PI) / 180) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const estimatedKm = Math.max(1, Math.round(R * c * 1.28));
+
+        let detectedName = '';
+        try {
+          const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userLat}&lon=${userLon}&zoom=14&addressdetails=1`, {
+            headers: { 'Accept-Language': 'id' }
+          });
+          if (resp.ok) {
+            const data = await resp.json();
+            const addr = data.address || {};
+            const sub = addr.suburb || addr.village || addr.quarter || addr.town || addr.city_district || addr.county || '';
+            const city = addr.city || addr.county || 'Kab. Bogor';
+            if (sub) {
+              detectedName = `${sub}, ${city}`;
+            } else if (data.display_name) {
+              detectedName = data.display_name.split(',').slice(0, 3).join(', ');
+            }
+          }
+        } catch {
+          // fallback silently
+        }
+
+        const finalAddress = detectedName ? `${detectedName} (Titik GPS Pasien)` : `Lokasi GPS Pasien (${userLat.toFixed(4)}, ${userLon.toFixed(4)})`;
+
+        setFormData(prev => ({
+          ...prev,
+          distanceKm: estimatedKm,
+          address: prev.address.trim() ? prev.address : finalAddress
+        }));
+        setIsGpsDetecting(false);
+        setGpsModalNotice({
+          type: 'success',
+          text: `Lokasi otomatis terdeteksi! Jarak otomatis: ${estimatedKm} km (${finalAddress}).`
+        });
+      },
+      (err) => {
+        setIsGpsDetecting(false);
+        setGpsModalNotice({
+          type: 'error',
+          text: err.code === 1 ? 'Izin akses GPS belum diaktifkan. Silakan pilih kecamatan di bawah.' : 'Sinyal GPS tidak ditemukan. Silakan pilih kecamatan di bawah.'
+        });
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  };
+
+  const handleSelectArea = (areaName: string, roadKm: number) => {
+    setFormData(prev => ({
+      ...prev,
+      distanceKm: roadKm,
+      address: prev.address.trim() ? prev.address : `Kecamatan ${areaName}, Kab. Bogor`
+    }));
+    setShowAreaPicker(false);
+    setGpsModalNotice({
+      type: 'success',
+      text: `Wilayah terpilih: ${areaName} • Jarak otomatis: ${roadKm} km (PP: ${roadKm * 2} km).`
+    });
+  };
 
   // Handle outside click to close dropdowns
   useEffect(() => {
@@ -213,25 +334,44 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     const formattedDateWithDay = formatIndonesianDateWithDay(formData.selectedDate);
 
     const message = `Assalamu'alaikum, saya mau booking jadwal terapi bekam pada hari/tgl:
+
 📅 *${formattedDateWithDay}* (${formData.selectedTimeSlot})
 
 *DATA FORMULIR RESERVASI:*
 ---------------------------------------
-👤 *Nama Pasien:* ${formData.fullName.trim()} (Ikhwan)
-🎂 *Usia Pasien:* ${formData.age.trim()} tahun
-📱 *No. WhatsApp:* ${formData.phone.trim()}
-🏠 *Tipe Layanan:* ${formData.serviceType === 'panggilan' ? 'Bekam Home Care (Panggilan)' : 'Datang ke Rumah Terapis'}
-📍 *Alamat Pasien:* ${formData.address.trim()}
-${formData.serviceType === 'panggilan' ? `🚗 *Jarak Tempuh:* ${formData.distanceKm} km (Pulang Pergi)\n💰 *Biaya Transport:* ${transportInfoText}\n` : `🏡 *Lokasi Terapi:* Rumah Terapis (Sesuai Titik Google Maps)\n`}
-📦 *Paket Terapi:* ${selectedPackage.name} (Rp ${selectedPackage.price.toLocaleString('id-ID')})
-💵 *TOTAL BIAYA:* Rp ${totalCost.toLocaleString('id-ID')}
+*Nama Pasien:* 
+${formData.fullName.trim()}
 
-🩺 *Kondisi Kesehatan:* ${conditionsText}
-📝 *Catatan Keluhan:* ${formData.healthNotes.trim() || 'Ingin bekam rutin sunnah & kebugaran tubuh'}
+*Usia Pasien:* ${formData.age.trim()} tahun
+
+*No. WhatsApp:* ${formData.phone.trim()}
+
+ *Tipe Layanan:*
+${formData.serviceType === 'panggilan' ? 'Bekam Panggilan (Ke Rumah Pasien)' : 'Terapi di Rumah Terapis'}
+
+*Alamat Pasien:*
+${formData.serviceType === 'panggilan' ? formData.address.trim() : (formData.address.trim() || THERAPIST_INFO.address)}
+
+*Jarak Tempuh:*
+${formData.serviceType === 'panggilan' ? `${formData.distanceKm} km (Pulang Pergi)` : '0 km (Di Rumah Terapis)'}
+
+*Biaya Transport:*
+${formData.serviceType === 'panggilan' ? `Rp ${transportCost.toLocaleString('id-ID')} (${formData.distanceKm} km x Rp 2.500)` : 'Rp 0 (Datang ke Rumah Terapis)'}
+
+*Paket Terapi:*
+${selectedPackage.name} (Rp ${selectedPackage.price.toLocaleString('id-ID')})
+
+*TOTAL BIAYA:*
+Rp ${totalCost.toLocaleString('id-ID')}
+
+*Kondisi Kesehatan:* ${conditionsText}
+
+*Catatan Keluhan:* ${formData.healthNotes.trim() ? formData.healthNotes.trim() : 'Tidak ada'}
 ---------------------------------------
 Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
 
-    const waLink = `${THERAPIST_INFO.whatsappUrl}?text=${encodeURIComponent(message)}`;
+    const cleanTherapistPhone = getCleanWhatsAppNumber(THERAPIST_INFO.phone);
+    const waLink = `https://wa.me/${cleanTherapistPhone}?text=${encodeURIComponent(message)}`;
     setGeneratedWaUrl(waLink);
     setBookingSubmitted(true);
 
@@ -267,7 +407,7 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
               </div>
               <h3 className="text-xl sm:text-2xl font-black">Formulir Booking Jadwal Bekam</h3>
               <p className="text-xs text-emerald-100 mt-0.5">
-                {THERAPIST_INFO.tagline} • Standar Higienis SOP Medis &amp; Sanad Thibbun Nabawi
+                {THERAPIST_INFO.tagline} • Standar Higienis SOP Medis &amp; Sanad Bekam Aswaja
               </p>
             </div>
           </div>
@@ -482,28 +622,145 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
                 )}
               </div>
 
-              {/* Distance Slider (Only for Panggilan) */}
+              {/* Automatic Location & Locked Distance (Only for Panggilan) */}
               {formData.serviceType === 'panggilan' && (
-                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                  <div className="flex justify-between items-center text-xs">
-                    <label htmlFor="booking-distance-slider" className="font-bold text-slate-700 cursor-pointer">
-                      Perkiraan Jarak Tempuh:
-                    </label>
-                    <span className="font-extrabold text-emerald-700">{formData.distanceKm} km (PP: {formData.distanceKm * 2} km)</span>
+                <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/90 space-y-3">
+                  
+                  {/* Header with Locked Status */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+                      <Lock className="w-4 h-4 text-emerald-700" />
+                      <span>Jarak Tempuh Otomatis:</span>
+                    </div>
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-700 text-white text-xs font-black shadow-xs">
+                      {formData.distanceKm} km (PP: {formData.distanceKm * 2} km)
+                    </span>
                   </div>
-                  <input
-                    id="booking-distance-slider"
-                    type="range"
-                    min="1"
-                    max="50"
-                    aria-label="Perkiraan Jarak Tempuh Panggilan (km)"
-                    value={formData.distanceKm}
-                    onChange={(e) => setFormData({ ...formData, distanceKm: Number(e.target.value) })}
-                    className="w-full accent-emerald-600 h-2 bg-slate-200 rounded-lg cursor-pointer"
-                  />
-                  <div className="text-[11px] text-slate-500 flex justify-between">
-                    <span>Biaya Transport: Rp {transportCost.toLocaleString('id-ID')}</span>
-                    <span>(Rp 2.500/km PP)</span>
+
+                  {/* Locked Visual Meter - Non-Draggable */}
+                  <div className="space-y-1">
+                    <div className="w-full h-3 bg-slate-200 rounded-full overflow-hidden p-0.5 border border-slate-300 relative select-none">
+                      <div
+                        className="h-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 rounded-full transition-all duration-300 shadow-xs"
+                        style={{ width: `${Math.min(100, Math.max(5, (formData.distanceKm / 50) * 100))}%` }}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between text-[10px] text-slate-500 font-medium">
+                      <span>0 km (Rumah Terapis)</span>
+                      <span className="font-bold text-emerald-800 flex items-center gap-1">
+                        <Lock className="w-3 h-3 text-emerald-600 inline" />
+                        Jarak Terkunci Otomatis (Tidak Bisa Digeser Manual)
+                      </span>
+                      <span>50 km</span>
+                    </div>
+                  </div>
+
+                  {/* Transport Fee Calculation */}
+                  <div className="p-3 rounded-xl bg-white border border-emerald-200/80 flex items-center justify-between text-xs">
+                    <div>
+                      <span className="text-slate-500 text-[11px] block">Biaya Transport (Pulang-Pergi):</span>
+                      <span className="font-black text-emerald-800 text-sm sm:text-base">
+                        Rp {transportCost.toLocaleString('id-ID')}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg">
+                        {formData.distanceKm} km x Rp 2.500
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Location Detection Tools: GPS & Quick Area Selector */}
+                  <div className="pt-1 space-y-2">
+                    <div className="text-[11px] font-bold text-slate-700 flex items-center justify-between">
+                      <span>Tentukan Lokasi &amp; Jarak Otomatis:</span>
+                      <button
+                        type="button"
+                        onClick={() => setShowAreaPicker(!showAreaPicker)}
+                        className="text-emerald-700 hover:text-emerald-800 underline font-bold text-[11px] cursor-pointer"
+                      >
+                        {showAreaPicker ? 'Tutup Pilihan Wilayah' : 'Pilih Wilayah / Kecamatan'}
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={handleDetectGps}
+                        disabled={isGpsDetecting}
+                        className="w-full py-2.5 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer active:scale-95 disabled:opacity-60"
+                      >
+                        {isGpsDetecting ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin text-white" />
+                            <span>Mencari Titik GPS...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Crosshair className="w-4 h-4 text-emerald-200" />
+                            <span>📍 Deteksi Lokasi Otomatis (GPS)</span>
+                          </>
+                        )}
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setShowAreaPicker(!showAreaPicker)}
+                        className="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <MapPin className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>Pilih Wilayah ({formData.distanceKm} km)</span>
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showAreaPicker ? 'rotate-180' : ''}`} />
+                      </button>
+                    </div>
+
+                    {/* GPS Alert Notice */}
+                    {gpsModalNotice && (
+                      <div
+                        className={`p-2.5 rounded-xl text-xs flex items-start gap-2 animate-in fade-in duration-200 ${
+                          gpsModalNotice.type === 'success'
+                            ? 'bg-emerald-100/90 text-emerald-900 border border-emerald-300'
+                            : 'bg-rose-50 text-rose-800 border border-rose-200'
+                        }`}
+                      >
+                        {gpsModalNotice.type === 'success' ? (
+                          <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                        ) : (
+                          <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                        )}
+                        <span className="font-semibold text-[11px] leading-tight">{gpsModalNotice.text}</span>
+                      </div>
+                    )}
+
+                    {/* Quick Area Picker Grid */}
+                    {showAreaPicker && (
+                      <div className="p-3 bg-white rounded-2xl border border-slate-200 shadow-md space-y-2 animate-in fade-in zoom-in-95 duration-150">
+                        <div className="flex items-center justify-between pb-1 border-b border-slate-100">
+                          <span className="text-[11px] font-bold text-slate-700">
+                            Pilih Kecamatan / Wilayah Pasien:
+                          </span>
+                          <span className="text-[10px] text-slate-400 font-medium">Jarak Otomatis</span>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 max-h-44 overflow-y-auto pr-1">
+                          {POPULAR_AREAS.map((area) => (
+                            <button
+                              key={area.name}
+                              type="button"
+                              onClick={() => handleSelectArea(area.name, area.roadKm)}
+                              className={`p-2 rounded-xl text-left text-xs border transition-all cursor-pointer ${
+                                formData.distanceKm === area.roadKm
+                                  ? 'border-emerald-600 bg-emerald-50/90 font-bold text-emerald-950 ring-1 ring-emerald-500'
+                                  : 'border-slate-200 hover:border-emerald-300 hover:bg-slate-50 text-slate-700'
+                              }`}
+                            >
+                              <div className="font-bold line-clamp-1">{area.name}</div>
+                              <div className="text-[10px] text-emerald-700 font-semibold">{area.roadKm} km</div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                   </div>
                 </div>
               )}
