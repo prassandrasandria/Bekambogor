@@ -14,7 +14,8 @@ import {
   ExternalLink,
   UserCheck,
   ShoppingBag,
-  ArrowLeftRight
+  ArrowLeftRight,
+  Store
 } from 'lucide-react';
 import { THERAPIST_INFO } from '../data/treatments';
 
@@ -62,6 +63,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       label: 'Toko Herbal & Madu',
       icon: <ShoppingBag className="w-4 h-4 text-emerald-600" />,
       badge: cartCount > 0 ? `${cartCount} item` : undefined
+    },
+    {
+      id: 'toko-alat-terapi',
+      label: 'Toko Alat Terapi',
+      icon: <Store className="w-4 h-4 text-emerald-600" />,
+      href: 'https://collshp.com/bekamaswaja',
+      isExternal: true,
+      badge: 'Lengkap ↗'
     },
     {
       id: 'testimoni-bukti',
@@ -208,6 +217,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
           {navMenuItems.map((item) => {
             const isActive = activeSection === item.id;
+
+            if ('isExternal' in item && item.isExternal && 'href' in item && item.href) {
+              return (
+                <a
+                  key={item.id}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 group"
+                  title={`${item.label} (Buka di tab baru)`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-emerald-600 group-hover:scale-110 transition-transform">{item.icon}</span>
+                    <span className="group-hover:text-emerald-900 font-bold">{item.label}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    {item.badge && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 group-hover:bg-emerald-200">
+                        {item.badge}
+                      </span>
+                    )}
+                    <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-700" />
+                  </div>
+                </a>
+              );
+            }
+
             return (
               <button
                 key={item.id}
@@ -243,6 +280,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <div className="text-xs font-bold text-slate-400 uppercase tracking-wider px-2 pb-1">
               Info &amp; Lokasi
             </div>
+
+            <a
+              href="https://collshp.com/bekamaswaja"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 hover:from-emerald-100 hover:to-teal-100 text-slate-800 text-sm font-bold border border-emerald-200/90 transition-all shadow-2xs group"
+              title="Kunjungi Toko Alat Terapi Lengkap (collshp.com/bekamaswaja)"
+            >
+              <div className="flex items-center gap-2.5 truncate">
+                <Store className="w-4 h-4 text-emerald-700 shrink-0" />
+                <span className="truncate text-xs sm:text-sm text-emerald-950">Toko Alat Terapi Lengkap</span>
+              </div>
+              <ExternalLink className="w-4 h-4 text-emerald-600 group-hover:translate-x-0.5 transition-transform shrink-0" />
+            </a>
             
             <a
               href={THERAPIST_INFO.gmapsUrl}

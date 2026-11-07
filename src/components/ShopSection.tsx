@@ -8,7 +8,9 @@ import {
   ShieldCheck,
   Truck,
   CheckCircle2,
-  ChevronRight
+  ChevronRight,
+  Store,
+  ExternalLink
 } from 'lucide-react';
 import { SHOP_PRODUCTS, formatRupiah } from '../data/shopProducts';
 import { ShopProduct, CartItem } from '../types';
@@ -86,14 +88,28 @@ Bisa dibawakan saat sesi terapi bekam panggilan atau dikirim via kurir? Terima k
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={onViewAllProducts}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm shadow-sm transition-all cursor-pointer self-start sm:self-auto shrink-0"
-          >
-            <span>Lihat Semua Produk ({SHOP_PRODUCTS.length})</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          <div className="flex flex-wrap items-center gap-2.5 self-start sm:self-auto shrink-0">
+            <a
+              href="https://collshp.com/bekamaswaja"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 font-bold text-xs sm:text-sm border border-emerald-300 shadow-2xs hover:shadow-xs transition-all cursor-pointer group"
+              title="Kunjungi Toko Alat Terapi Lengkap (collshp.com/bekamaswaja)"
+            >
+              <Store className="w-4 h-4 text-emerald-600 group-hover:scale-105 transition-transform" />
+              <span>Toko Alat Terapi Lengkap</span>
+              <ExternalLink className="w-3.5 h-3.5 text-emerald-600 group-hover:translate-x-0.5 transition-transform" />
+            </a>
+
+            <button
+              type="button"
+              onClick={onViewAllProducts}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm shadow-sm transition-all cursor-pointer"
+            >
+              <span>Lihat Semua Herbal ({SHOP_PRODUCTS.length})</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* 2-Column Grid on Mobile (Row 1: Prod 1 & 2, Row 2: Prod 3 & See All Button Card), 4-col on desktop */}

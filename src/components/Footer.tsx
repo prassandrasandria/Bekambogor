@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Clock, ShieldCheck, ExternalLink, Sparkles } from 'lucide-react';
+import { MapPin, Clock, ShieldCheck, ExternalLink, Sparkles, Store } from 'lucide-react';
 import { THERAPIST_INFO, servicePackages } from '../data/treatments';
 import { WhatsAppIcon } from './WhatsAppIcon';
 
@@ -51,6 +51,18 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
                 <a href="#kalkulator-transport" className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                   <span>Hitung Biaya Transport (Otomatis)</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://collshp.com/bekamaswaja"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-amber-300 hover:text-amber-200 font-bold transition-colors flex items-center gap-1.5"
+                  title="Buka Toko Alat Terapi Lengkap di collshp.com/bekamaswaja"
+                >
+                  <Store className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Toko Alat Terapi Lengkap ↗</span>
                 </a>
               </li>
               <li>

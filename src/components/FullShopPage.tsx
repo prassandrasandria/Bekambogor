@@ -12,7 +12,9 @@ import {
   ShieldCheck,
   Truck,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Store,
+  ExternalLink
 } from 'lucide-react';
 import { SHOP_PRODUCTS, formatRupiah } from '../data/shopProducts';
 import { ShopProduct, ProductCategory, CartItem } from '../types';
@@ -123,6 +125,19 @@ Bisa dibawakan saat terapi bekam atau dikirim via kurir ke alamat saya? Terima k
           </button>
 
           <div className="flex items-center gap-2">
+            <a
+              href="https://collshp.com/bekamaswaja"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-300 font-bold text-xs sm:text-sm transition-colors cursor-pointer group"
+              title="Kunjungi Toko Alat Terapi Lengkap di collshp.com/bekamaswaja"
+            >
+              <Store className="w-4 h-4 text-teal-700 group-hover:scale-105 transition-transform" />
+              <span className="hidden sm:inline">Toko Alat Terapi</span>
+              <span className="sm:hidden">Alat Terapi</span>
+              <ExternalLink className="w-3.5 h-3.5 text-teal-600 group-hover:translate-x-0.5 transition-transform" />
+            </a>
+
             <button
               type="button"
               onClick={onOpenCart}
