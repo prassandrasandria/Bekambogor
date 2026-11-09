@@ -82,7 +82,7 @@ export function getDynamicSunnahDates(limit = 6): DynamicSunnahDate[] {
 
   // Scan up to 120 days ahead to find all 17, 19, 21 dates
   for (let i = 0; i < 120 && results.length < limit; i++) {
-    const testDate = new Date(today.getTime() + i * 86400000);
+    const testDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i, 12, 0, 0);
     try {
       const parts = islamicFormatter.formatToParts(testDate);
       const dayPart = parts.find(p => p.type === 'day')?.value;
@@ -96,7 +96,12 @@ export function getDynamicSunnahDates(limit = 6): DynamicSunnahDate[] {
         const isToday = i === 0;
         const isNext = results.length === 0;
         const dayName = testDate.toLocaleDateString('id-ID', { weekday: 'long' });
-        const dateString = testDate.toISOString().split('T')[0];
+        
+        // Exact local calendar YYYY-MM-DD format (avoids UTC offset shifts in GMT+7 / positive timezones)
+        const localYear = testDate.getFullYear();
+        const localMonth = String(testDate.getMonth() + 1).padStart(2, '0');
+        const localDay = String(testDate.getDate()).padStart(2, '0');
+        const dateString = `${localYear}-${localMonth}-${localDay}`;
 
         const hijriMonthName = (monthNum >= 1 && monthNum <= 12)
           ? HIJRI_MONTH_NAMES_ID[monthNum - 1]

@@ -5,14 +5,12 @@ import { TherapyEquipmentBanner } from './components/TherapyEquipmentBanner';
 import { RunningTextBanner } from './components/RunningTextBanner';
 import { TransportCalculator } from './components/TransportCalculator';
 import { PhotoCarousel } from './components/PhotoCarousel';
-import { ServicesSection } from './components/ServicesSection';
 import { ShopSection } from './components/ShopSection';
 import { FullShopPage } from './components/FullShopPage';
 import { CartModal } from './components/CartModal';
 import { ProfileModal } from './components/ProfileModal';
 import { TestimonialsModal } from './components/TestimonialsModal';
 import { MobileBottomNav } from './components/MobileBottomNav';
-import { SunnahScheduleBanner } from './components/SunnahScheduleBanner';
 import { TherapistLocation } from './components/TherapistLocation';
 import { InteractiveBodyMap } from './components/InteractiveBodyMap';
 import { HygieneProtocols } from './components/HygieneProtocols';
@@ -191,10 +189,6 @@ export function App() {
     setIsBookingOpen(true);
   };
 
-  const handleSelectPackage = (pkg: ServicePackage) => {
-    setBookingPackageId(pkg.id);
-    setIsBookingOpen(true);
-  };
 
   const handleSelectDateToBook = (dateStr: string) => {
     setBookingDate(dateStr);
@@ -277,10 +271,11 @@ export function App() {
               {/* Banner Toko Alat Terapi Lengkap */}
               <TherapyEquipmentBanner />
 
-              {/* Hero Section */}
+              {/* Hero Section with Sunnah Schedule Card */}
               <Hero
                 onOpenBooking={handleOpenBooking}
                 onExploreCalculator={handleExploreCalculator}
+                onSelectDateToBook={handleSelectDateToBook}
               />
 
               {/* Transport & Distance Calculator Section */}
@@ -291,10 +286,6 @@ export function App() {
                 />
               </div>
 
-              {/* Services & Exact 3 Packages */}
-              <div className="scroll-reveal">
-                <ServicesSection onSelectPackage={handleSelectPackage} />
-              </div>
 
               {/* Homepage 3 Featured Products + See All Card in 2-Column Mobile Grid */}
               <div className="scroll-reveal">
@@ -315,10 +306,6 @@ export function App() {
                 <PhotoCarousel />
               </div>
 
-              {/* Automatic Dynamic Monthly Hijri Sunnah Dates */}
-              <div className="scroll-reveal">
-                <SunnahScheduleBanner onSelectDateToBook={handleSelectDateToBook} />
-              </div>
 
               {/* Dedicated Therapist Home Location Section with Embedded Map */}
               <div className="scroll-reveal">

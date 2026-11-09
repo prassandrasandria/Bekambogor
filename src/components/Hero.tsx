@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { ShieldCheck, Sparkles, CheckCircle2, Calculator, ArrowRight, UserCheck } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { ShieldCheck, Sparkles, CheckCircle2, Calculator, ArrowRight, UserCheck, Calendar, Moon } from 'lucide-react';
 import { THERAPIST_INFO } from '../data/treatments';
-import { sunnahHadiths } from '../data/sunnahCalendar';
+import { sunnahHadiths, getDynamicSunnahDates } from '../data/sunnahCalendar';
 import { WhatsAppIcon } from './WhatsAppIcon';
 
 interface HeroProps {
   onOpenBooking: () => void;
   onExploreCalculator: () => void;
+  onSelectDateToBook?: (dateStr: string) => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }) => {
+export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator, onSelectDateToBook }) => {
   const [currentHadithIndex, setCurrentHadithIndex] = useState(0);
 
   // Auto-slide Hadith every 3 seconds (3000ms)
@@ -21,6 +22,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }
   }, []);
 
   const activeHadith = sunnahHadiths[currentHadithIndex];
+  const dynamicDates = useMemo(() => getDynamicSunnahDates(3), []);
 
   return (
     <section id="beranda" className="relative overflow-hidden bg-gradient-to-b from-emerald-50/70 via-white to-slate-50 pt-8 pb-14 lg:pt-12 lg:pb-20">
@@ -100,11 +102,12 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }
             </div>
           </div>
 
-          {/* Right Column: Pricing & Hadith Card with Official Logo */}
-          <div className="lg:col-span-5 hero-fade-card">
-            <div className="bg-white rounded-3xl border border-emerald-200/90 shadow-xl p-6 sm:p-7 space-y-5 relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-emerald-600 text-white text-xs font-black px-4 py-1 rounded-bl-xl tracking-wider uppercase">
-                TARIF RESMI
+          {/* Right Column: Jadwal Tanggal Sunnah & Hadith Card */}
+          <div id="jadwal-sunnah" className="lg:col-span-5 hero-fade-card scroll-mt-24">
+            <div className="bg-white rounded-3xl border border-emerald-200/90 shadow-xl p-5 sm:p-7 space-y-4 sm:space-y-5 relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-emerald-700 text-white text-[11px] font-black px-3.5 py-1 rounded-bl-xl tracking-wider uppercase flex items-center gap-1.5 shadow-2xs">
+                <Moon className="w-3 h-3 text-amber-300" />
+                <span>HARI SUNNAH</span>
               </div>
 
               {/* Logo & Brand preview */}
@@ -157,56 +160,97 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }
                 </div>
               </div>
 
-              {/* 3 Packages Highlights */}
-              <div className="space-y-3">
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-                  <div>
-                    <h4 className="font-bold text-sm text-slate-900">Bekam Kering + Seluncur</h4>
-                    <p className="text-xs text-slate-500">Pijat pemanasan, tanpa sayatan jarum</p>
+              {/* 3 Tanggal Sunnah Terdekat (17, 19, 21 Hijriyyah) */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+                    <Calendar className="w-4 h-4 text-emerald-600" />
+                    <span>Jadwal Hari Sunnah Bekam</span>
                   </div>
-                  <div className="text-right">
-                    <span className="font-black text-base text-emerald-800">Rp 65.000</span>
-                    <span className="text-[11px] text-slate-400 block">+ transport</span>
-                  </div>
+                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                    17, 19, 21 Hijriyyah
+                  </span>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-emerald-50/50 border border-emerald-300 flex items-center justify-between ring-1 ring-emerald-500/20">
-                  <div>
-                    <div className="flex items-center gap-1.5">
-                      <h4 className="font-bold text-sm text-slate-900">Bekam Basah Punggung</h4>
-                      <span className="text-[10px] font-extrabold bg-emerald-600 text-white px-1.5 py-0.2 rounded">FAVORIT</span>
+                {dynamicDates.map((item, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => {
+                      if (onSelectDateToBook) {
+                        onSelectDateToBook(item.dateString);
+                      } else {
+                        onOpenBooking();
+                      }
+                    }}
+                    className={`w-full p-2.5 sm:p-3 rounded-2xl border text-left transition-all cursor-pointer flex items-center justify-between group ${
+                      item.isNext
+                        ? 'bg-gradient-to-r from-emerald-50 via-teal-50/50 to-white border-emerald-400 shadow-xs ring-1 ring-emerald-500/30'
+                        : 'bg-slate-50/90 border-slate-200/80 hover:bg-emerald-50/40 hover:border-emerald-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5 sm:gap-3">
+                      <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex flex-col items-center justify-center shrink-0 border ${
+                        item.isNext
+                          ? 'bg-emerald-700 text-amber-300 border-emerald-600 shadow-2xs'
+                          : 'bg-white text-emerald-800 border-slate-200'
+                      }`}>
+                        <span className="text-sm sm:text-base font-black leading-none">{item.hijriDay}</span>
+                        <span className="text-[8px] font-extrabold uppercase tracking-tight">HIJRI</span>
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-1.5 sm:gap-2">
+                          <h4 className="font-extrabold text-xs sm:text-sm text-slate-900 group-hover:text-emerald-800 transition-colors">
+                            {item.gregorianDate.toLocaleDateString('id-ID', {
+                              weekday: 'short',
+                              day: 'numeric',
+                              month: 'short',
+                              year: 'numeric'
+                            })}
+                          </h4>
+                          {item.isNext && (
+                            <span className="text-[9px] font-black bg-amber-400 text-slate-950 px-1.5 py-0.2 rounded uppercase">
+                              {item.daysUntil === 0 ? 'Hari Ini' : `${item.daysUntil} hari lagi`}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-[11px] text-slate-500 mt-0.5">
+                          {item.dayName}, {item.hijriDay} {item.hijriMonthName} {item.hijriYear} H
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-xs text-slate-500">7 - 11 titik sunnah Al-Kahil &amp; belikat</p>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-xs text-slate-400 line-through block leading-tight">Rp 150.000</span>
-                    <span className="font-black text-base text-emerald-800">Rp 100.000</span>
-                    <span className="text-[11px] text-slate-400 block">+ transport</span>
-                  </div>
-                </div>
 
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-                  <div>
-                    <h4 className="font-bold text-sm text-slate-900">Bekam Basah Full Body</h4>
-                    <p className="text-xs text-slate-500">15 - 17 titik full body hingga kaki</p>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-xs text-slate-400 line-through block leading-tight">Rp 200.000</span>
-                    <span className="font-black text-base text-emerald-800">Rp 125.000</span>
-                    <span className="text-[11px] text-slate-400 block">+ transport</span>
-                  </div>
-                </div>
+                    <div className="text-right shrink-0">
+                      <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-emerald-700 group-hover:text-white bg-white group-hover:bg-emerald-700 px-2 sm:px-2.5 py-1 rounded-lg border border-emerald-200 group-hover:border-emerald-700 shadow-2xs transition-all">
+                        <span>Pilih</span>
+                        <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                      </span>
+                    </div>
+                  </button>
+                ))}
               </div>
 
-              {/* Reservasi Terapi Bekam Button */}
+              {/* Booking Button for Sunnah Schedule */}
               <button
                 type="button"
-                onClick={onOpenBooking}
-                className="w-full py-3.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-sm sm:text-base font-bold shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                onClick={() => {
+                  const nextDate = dynamicDates.find((d) => d.isNext) || dynamicDates[0];
+                  if (onSelectDateToBook && nextDate) {
+                    onSelectDateToBook(nextDate.dateString);
+                  } else {
+                    onOpenBooking();
+                  }
+                }}
+                className="w-full py-3.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-sm sm:text-base font-bold shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01]"
               >
-                <span>Reservasi Terapi Bekam</span>
+                <Calendar className="w-4 h-4 text-amber-300" />
+                <span>Booking Tanggal Sunnah Terdekat</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
+
+              <p className="text-[11px] text-slate-500 text-center leading-relaxed">
+                *Keluhan mendadak (masuk angin, migrain, pegal linu berat) boleh dibekam kapan saja tanpa harus menunggu tanggal sunnah.
+              </p>
 
             </div>
           </div>

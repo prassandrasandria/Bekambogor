@@ -835,7 +835,7 @@ export const TransportCalculator: React.FC<TransportCalculatorProps> = ({
             )}
 
             {/* Step 3: Package Selector */}
-            <div>
+            <div id="paket-layanan" className="scroll-mt-24">
               <label className="block text-sm sm:text-base font-bold text-slate-900 uppercase tracking-wider mb-3.5">
                 3. Pilih Paket Bekam
               </label>
