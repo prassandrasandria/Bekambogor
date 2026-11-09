@@ -9,7 +9,7 @@
 - Alamat Rumah Terapis: Kp. Leuwisadeng RT 01 RW 03, Kec. Leuwisadeng, Kab. Bogor, Jawa Barat 16640
 - Titik Koordinat: -6.570797, 106.606424
 - Jam Operasional: Setiap Hari (Senin - Ahad), Pukul 08.00 - 21.00 WIB
-- No. WhatsApp Resmi: 085163518070 (+62 851-6351-8070)
+- No. WhatsApp Resmi: 085158399889 (+62 851-5839-9889)
 - Website Resmi: https://bekambogor.my.id
 
 ## Daftar Paket & Tarif Layanan
@@ -30,4 +30,4 @@
 ## Alur Reservasi Pasien
 1. Pasien membuka formulir reservasi atau kalkulator transport di https://bekambogor.my.id
 2. Memasukkan data wajib: Nama Pasien (Ikhwan), Usia, No. WhatsApp, Alamat Lengkap/Link Maps, dan Pilihan Paket.
-3. Menekan tombol "Kirim Reservasi via WhatsApp" yang otomatis membuka chat WA ke 085163518070 dengan format pendaftaran terisi rapi.
+3. Menekan tombol "Kirim Reservasi via WhatsApp" yang otomatis membuka chat WA ke 085158399889 dengan format pendaftaran terisi rapi.

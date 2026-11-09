@@ -30,13 +30,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
           <div className="flex items-center gap-4 text-[11px]">
             <span className="hidden md:inline">🕒 Setiap Hari 08.00 - 21.00 WIB</span>
             <a 
-              href="https://wa.me/6285163518070?text=Assalamu%27alaikum%20Admin%20Bekam%20Bogor%2C%20saya%20ingin%20konsultasi%20jadwal%20bekam."
+              href="https://wa.me/6285158399889?text=Assalamu%27alaikum%20Admin%20Bekam%20Bogor%2C%20saya%20ingin%20konsultasi%20jadwal%20bekam."
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium text-emerald-200 hover:text-white flex items-center gap-1 transition-colors"
             >
               <MessageCircle className="w-3.5 h-3.5 text-emerald-300" />
-              <span>WhatsApp CS: 0851-6351-8070</span>
+              <span>WhatsApp CS: 0851-5839-9889</span>
             </a>
           </div>
         </div>
@@ -85,7 +85,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
           {/* Action Buttons */}
           <div className="hidden sm:flex items-center gap-3">
             <a
-              href="https://wa.me/6285163518070?text=Assalamu%27alaikum%20Admin%20Bekam%20Bogor%2C%20saya%20ingin%20tanya-tanya%20terapi%20bekam."
+              href="https://wa.me/6285158399889?text=Assalamu%27alaikum%20Admin%20Bekam%20Bogor%2C%20saya%20ingin%20tanya-tanya%20terapi%20bekam."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors"
@@ -149,7 +149,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
               <span>Jadwalkan Terapi Bekam Sekarang</span>
             </button>
             <a
-              href="https://wa.me/6285163518070?text=Assalamu%27alaikum%20Admin%20Bekam%20Bogor%2C%20saya%20ingin%20konsultasi."
+              href="https://wa.me/6285158399889?text=Assalamu%27alaikum%20Admin%20Bekam%20Bogor%2C%20saya%20ingin%20konsultasi."
               target="_blank"
               rel="noopener noreferrer"
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 text-sm"

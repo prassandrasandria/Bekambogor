@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Hero } from './components/Hero';
+import { TherapyEquipmentBanner } from './components/TherapyEquipmentBanner';
 import { TransportCalculator } from './components/TransportCalculator';
 import { PhotoCarousel } from './components/PhotoCarousel';
 import { ServicesSection } from './components/ServicesSection';
@@ -327,6 +328,9 @@ export function App() {
 
             {/* Main Body Content Sections */}
             <main className="flex-1">
+              {/* Banner Toko Alat Terapi Lengkap */}
+              <TherapyEquipmentBanner />
+
               {/* Hero Section */}
               <Hero
                 onOpenBooking={handleOpenBooking}

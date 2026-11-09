@@ -57,9 +57,9 @@ export const THERAPIST_INFO = {
   tagline: 'Spesialis Bekam Panggilan',
   description: 'Menghidupkan Thibbun Nabawi untuk kebugaran tubuh, meredakan migrain, kolesterol, pegal pundak & pinggang. Melayani panggilan Home Care untuk wilayah Bogor dan Sekitarnya, dan jika ingin datang langsung ke rumah terapis sangat dipersilakan.',
   address: 'Kp. Leuwisadeng RT 01 RW 03 Kec. Leuwisadeng Kab.Bogor',
-  phone: '085163518070',
-  phoneClean: '6285163518070',
-  whatsappUrl: 'https://wa.me/6285163518070',
+  phone: '085158399889',
+  phoneClean: '6285158399889',
+  whatsappUrl: 'https://wa.me/6285158399889',
   gmapsUrl: 'https://maps.app.goo.gl/zCZNsTtXu6BtTctv7',
   mapCoordinates: { lat: -6.5707973, lng: 106.6064241 },
   transportRatePerKm: 2500, // Rp 2.500 / km (Pulang Pergi: jarak x 2.500)
