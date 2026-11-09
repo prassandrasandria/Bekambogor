@@ -35,13 +35,13 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }
           <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
             
             {/* Tagline Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-900 text-xs sm:text-sm font-bold shadow-2xs">
+            <div className="hero-fade-1 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-900 text-xs sm:text-sm font-bold shadow-2xs">
               <Sparkles className="w-4 h-4 text-emerald-600 animate-spin" style={{ animationDuration: '6s' }} />
               <span>{THERAPIST_INFO.tagline} • Bogor dan Sekitarnya</span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.15]">
+            <h1 className="hero-fade-2 text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.15]">
               Terapi Bekam Steril &amp; Sunnah{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-700">
                 Panggilan di Bogor
@@ -49,12 +49,12 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }
             </h1>
 
             {/* Description */}
-            <p className="text-base sm:text-lg text-slate-700 leading-relaxed max-w-xl mx-auto lg:mx-0">
+            <p className="hero-fade-3 text-base sm:text-lg text-slate-700 leading-relaxed max-w-xl mx-auto lg:mx-0">
               Menghidupkan Thibbun Nabawi untuk kebugaran tubuh, meredakan migrain, kolesterol, pegal pundak &amp; pinggang. Kami melayani panggilan <strong>Home Care</strong> untuk wilayah <strong>Bogor dan Sekitarnya</strong>, dan jika ingin <strong>datang langsung ke rumah terapis sangat dipersilakan</strong>.
             </p>
 
             {/* Gender restriction alert (temporary status until akhwat therapist available) */}
-            <div className="inline-flex items-start gap-2.5 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-amber-900 shadow-2xs text-left">
+            <div className="hero-fade-3 inline-flex items-start gap-2.5 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-amber-900 shadow-2xs text-left">
               <UserCheck className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
               <div>
                 <span className="font-bold block text-sm">Khusus Pasien Ikhwan (Laki-laki)</span>
@@ -63,23 +63,23 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }
             </div>
 
             {/* Key Trust Guarantees */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-              <div className="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+            <div className="hero-fade-4 grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+              <div className="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-200 shadow-2xs hover:border-emerald-300 transition-colors">
                 <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
                 <span className="text-xs sm:text-sm font-bold text-slate-800 text-left">Jarum 1x Pakai Steril</span>
               </div>
-              <div className="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+              <div className="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-200 shadow-2xs hover:border-emerald-300 transition-colors">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
                 <span className="text-xs sm:text-sm font-bold text-slate-800 text-left">Praktisi Berpengalaman &amp; Bersanad</span>
               </div>
-              <div className="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-200 shadow-2xs col-span-2 sm:col-span-1">
+              <div className="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-200 shadow-2xs col-span-2 sm:col-span-1 hover:border-emerald-300 transition-colors">
                 <Calculator className="w-5 h-5 text-emerald-600 shrink-0" />
                 <span className="text-xs sm:text-sm font-bold text-slate-800 text-left">Hitung Transport Transparan</span>
               </div>
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-2">
+            <div className="hero-fade-5 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-2">
               <button
                 type="button"
                 onClick={onExploreCalculator}
@@ -101,7 +101,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }
           </div>
 
           {/* Right Column: Pricing & Hadith Card with Official Logo */}
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 hero-fade-card">
             <div className="bg-white rounded-3xl border border-emerald-200/90 shadow-xl p-6 sm:p-7 space-y-5 relative overflow-hidden">
               <div className="absolute top-0 right-0 bg-emerald-600 text-white text-xs font-black px-4 py-1 rounded-bl-xl tracking-wider uppercase">
                 TARIF RESMI
@@ -179,6 +179,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }
                     <p className="text-xs text-slate-500">7 - 11 titik sunnah Al-Kahil &amp; belikat</p>
                   </div>
                   <div className="text-right">
+                    <span className="text-xs text-slate-400 line-through block leading-tight">Rp 150.000</span>
                     <span className="font-black text-base text-emerald-800">Rp 100.000</span>
                     <span className="text-[11px] text-slate-400 block">+ transport</span>
                   </div>
@@ -190,6 +191,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator }
                     <p className="text-xs text-slate-500">15 - 17 titik full body hingga kaki</p>
                   </div>
                   <div className="text-right">
+                    <span className="text-xs text-slate-400 line-through block leading-tight">Rp 200.000</span>
                     <span className="font-black text-base text-emerald-800">Rp 125.000</span>
                     <span className="text-[11px] text-slate-400 block">+ transport</span>
                   </div>

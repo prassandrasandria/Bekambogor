@@ -43,7 +43,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
               {servicePackages.map(pkg => (
                 <li key={pkg.id}>
                   <a href="#paket-layanan" className="hover:text-emerald-400 transition-colors">
-                    {pkg.name} (Rp {pkg.price.toLocaleString('id-ID')})
+                    {pkg.name} ({pkg.originalPrice ? <span className="line-through text-slate-500 mr-1">Rp {pkg.originalPrice.toLocaleString('id-ID')}</span> : null}Rp {pkg.price.toLocaleString('id-ID')})
                   </a>
                 </li>
               ))}

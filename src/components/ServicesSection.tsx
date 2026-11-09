@@ -72,6 +72,16 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectPackag
 
                 {/* Price Display */}
                 <div className="bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-100">
+                  {pkg.originalPrice && (
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="text-sm sm:text-base text-slate-400 line-through font-semibold">
+                        {formatRupiah(pkg.originalPrice)}
+                      </span>
+                      <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider bg-rose-100 text-rose-700 px-2 py-0.5 rounded-md">
+                        Hemat {formatRupiah(pkg.originalPrice - pkg.price)}
+                      </span>
+                    </div>
+                  )}
                   <div className="flex items-baseline gap-2">
                     <span className="text-3xl sm:text-4xl font-black text-slate-900">
                       {formatRupiah(pkg.price)}

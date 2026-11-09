@@ -113,6 +113,7 @@ export const servicePackages: ServicePackage[] = [
     tagline: 'Detoksifikasi darah kotor pada titik inti sunnah Nabawi di area punggung & pundak',
     description: 'Terapi bekam basah steril berstandar medis pada area punggung utama (Al-Kahil, Al-Katifain, pinggang). Menggunakan jarum lancet steril sekali pakai yang dibuka di hadapan pasien.',
     price: 100000,
+    originalPrice: 150000,
     durationMinutes: 50,
     cupCount: '7 - 11 Titik Punggung',
     isPopular: true,
@@ -138,6 +139,7 @@ export const servicePackages: ServicePackage[] = [
     tagline: 'Perawatan menyeluruh titik sunnah & keluhan anatomi full body hingga kaki',
     description: 'Paket terlengkap untuk detoksifikasi total. Meliputi titik leher, punggung, pinggang, betis/kaki, serta kepala (jika diperlukan) untuk memulihkan stamina secara menyeluruh.',
     price: 125000,
+    originalPrice: 200000,
     durationMinutes: 75,
     cupCount: '15 - 17 Titik Lengkap',
     features: [

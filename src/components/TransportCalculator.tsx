@@ -870,7 +870,14 @@ export const TransportCalculator: React.FC<TransportCalculatorProps> = ({
 
                       <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
                         <span className="text-xs sm:text-sm text-slate-500">Tarif Paket:</span>
-                        <span className="font-black text-base text-emerald-800">{formatRupiah(pkg.price)}</span>
+                        <div className="text-right">
+                          {pkg.originalPrice && (
+                            <span className="text-xs text-slate-400 line-through mr-1.5 font-medium">
+                              {formatRupiah(pkg.originalPrice)}
+                            </span>
+                          )}
+                          <span className="font-black text-base text-emerald-800">{formatRupiah(pkg.price)}</span>
+                        </div>
                       </div>
                     </button>
                   );

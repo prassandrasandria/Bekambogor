@@ -555,9 +555,16 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
                   </div>
 
                   <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                    <span className="font-black text-xs sm:text-sm text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 sm:px-2.5 py-1 rounded-lg whitespace-nowrap">
-                      Rp {selectedPackage.price.toLocaleString('id-ID')}
-                    </span>
+                    <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-2 sm:px-2.5 py-1 rounded-lg">
+                      {selectedPackage.originalPrice && (
+                        <span className="text-[10px] text-slate-400 line-through font-medium">
+                          Rp {selectedPackage.originalPrice.toLocaleString('id-ID')}
+                        </span>
+                      )}
+                      <span className="font-black text-xs sm:text-sm text-emerald-800 whitespace-nowrap">
+                        Rp {selectedPackage.price.toLocaleString('id-ID')}
+                      </span>
+                    </div>
                     <ChevronDown
                       className={`w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0 ${
                         isPackageDropdownOpen ? 'rotate-180 text-emerald-600' : ''
@@ -604,9 +611,16 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
                           </div>
 
                           <div className="flex items-center gap-2 shrink-0 self-center">
-                            <span className="font-black text-xs text-emerald-800">
-                              Rp {pkg.price.toLocaleString('id-ID')}
-                            </span>
+                            <div className="text-right">
+                              {pkg.originalPrice && (
+                                <span className="block text-[10px] text-slate-400 line-through">
+                                  Rp {pkg.originalPrice.toLocaleString('id-ID')}
+                                </span>
+                              )}
+                              <span className="font-black text-xs text-emerald-800 whitespace-nowrap">
+                                Rp {pkg.price.toLocaleString('id-ID')}
+                              </span>
+                            </div>
                             {isSelected ? (
                               <div className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center">
                                 <Check className="w-3.5 h-3.5" />

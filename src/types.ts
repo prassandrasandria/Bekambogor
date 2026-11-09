@@ -5,6 +5,7 @@ export interface ServicePackage {
   tagline: string;
   description: string;
   price: number;
+  originalPrice?: number;
   durationMinutes: number;
   cupCount: string;
   features: string[];
