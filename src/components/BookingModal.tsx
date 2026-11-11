@@ -87,7 +87,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     distanceKm: initialDistanceKm,
     transportCost: calculateTransportCost(initialDistanceKm, initialServiceType),
     totalCost: 0,
-    selectedDate: initialDate || new Date(Date.now() + 86400000).toISOString().split('T')[0],
+    selectedDate: initialDate || (() => {
+      const d = new Date();
+      d.setDate(d.getDate() + 1);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    })(),
     selectedTimeSlot: 'Pagi (08:30 - 10:30 WIB)',
     address: initialAddress || '',
     healthNotes: initialSymptom ? `Keluhan: ${initialSymptom}` : '',
@@ -131,8 +138,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         servicePackageId: initialPackageId || prev.servicePackageId,
         serviceType: initialServiceType || prev.serviceType,
         distanceKm: initialDistanceKm !== undefined ? initialDistanceKm : prev.distanceKm,
-        address: initialAddress !== undefined && initialAddress !== '' ? initialAddress : prev.address,
-        selectedDate: initialDate || prev.selectedDate,
+        selectedDate: initialDate ? initialDate : prev.selectedDate,
         healthNotes: initialSymptom ? (initialSymptom.startsWith('Keluhan:') ? initialSymptom : `Keluhan: ${initialSymptom}`) : prev.healthNotes
       }));
     }
@@ -382,7 +388,10 @@ Mohon konfirmasi ketersediaan jadwal tersebut. Terima kasih.`;
   const handleQuickDateSelect = (daysAhead: number) => {
     const d = new Date();
     d.setDate(d.getDate() + daysAhead);
-    const dateStr = d.toISOString().split('T')[0];
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const dateStr = `${y}-${m}-${day}`;
     setFormData(prev => ({ ...prev, selectedDate: dateStr }));
   };
 

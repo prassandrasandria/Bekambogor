@@ -60,7 +60,7 @@ export const TherapistProfile: React.FC<TherapistProfileProps> = ({ onOpenBookin
                 />
                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent p-4 text-center">
                   <p className="text-white font-black text-lg sm:text-xl tracking-tight">Praktisi Bekam Profesional</p>
-                  <p className="text-emerald-300 text-xs sm:text-sm font-semibold">Terapis Bekam Aswaja &amp; Thibbun Nabawi</p>
+                  <p className="text-emerald-300 text-xs sm:text-sm font-semibold">Terapis Bekam Aswaja Bersertifikat</p>
                 </div>
               </div>
             </div>
@@ -104,7 +104,7 @@ export const TherapistProfile: React.FC<TherapistProfileProps> = ({ onOpenBookin
                 <FileCheck2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-bold text-xs text-slate-900">SK Kemenkumham Resmi</h4>
-                  <p className="text-[11px] text-slate-500">Al-Hijamah Thibbun Nabawi Training Center</p>
+                  <p className="text-[11px] text-slate-500">Al-Hijamah Training Center</p>
                 </div>
               </div>
 

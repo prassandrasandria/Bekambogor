@@ -19,7 +19,7 @@ export const carouselSlidesData: CarouselSlide[] = [
     id: 'slide-3',
     imageSrc: '/assets/aistudio/IMG_20250218_111803_5d131879.webp',
     title: 'Titik Bekam Sunnah Al-Kahil & Belikat',
-    subtitle: 'Fokus pada titik-titik thibbun nabawi yang dianjurkan Rasulullah ﷺ untuk menjaga vitalitas tubuh, mengurangi kolesterol, dan meredakan sakit kepala.',
+    subtitle: 'Fokus pada titik-titik bekam sunnah yang dianjurkan Rasulullah ﷺ untuk menjaga vitalitas tubuh, mengurangi kolesterol, dan meredakan sakit kepala.',
     badge: 'Sunnah Nabawiyyah'
   },
   {
@@ -40,7 +40,7 @@ export const carouselSlidesData: CarouselSlide[] = [
     id: 'slide-6',
     imageSrc: '/assets/aistudio/IMG_20250720_104235_1ac8a704.webp',
     title: 'Perawatan Bekam Sunnah',
-    subtitle: 'Pelaksanaan terapi thibbun nabawi yang tertib dan sesuai protokol kesehatan.',
+    subtitle: 'Pelaksanaan terapi bekam sunnah yang tertib dan sesuai protokol kesehatan.',
     badge: 'Sunnah Nabawi'
   },
   {
@@ -110,7 +110,7 @@ export const carouselSlidesData: CarouselSlide[] = [
     id: 'slide-16',
     imageSrc: '/assets/aistudio/IMG_20260708_111908_f68c83b9.webp',
     title: 'Terapi Bekam Rutin Pasien',
-    subtitle: 'Membantu menjaga stamina dan daya tahan tubuh secara optimal melalui thibbun nabawi.',
+    subtitle: 'Membantu menjaga stamina dan daya tahan tubuh secara optimal melalui terapi sunnah bekam.',
     badge: 'Stamina Alami'
   },
   {
@@ -287,7 +287,7 @@ export const faqData: FaqItem[] = [
   },
   {
     question: 'Bagaimana cara menghitung biaya transport untuk bekam panggilan?',
-    answer: 'Biaya transport sangat transparan: Rp 2.500 per kilometer (sudah mencakup Pulang-Pergi). Rumusnya langsung jarak (km) x Rp 2.500 agar praktis dan tidak ribet. Contoh: jika jarak dari rumah terapis ke rumah Anda adalah 5 km, maka biayanya: 5 km x Rp 2.500 = Rp 12.500. Anda bisa menggunakan fitur Hitung Biaya Transport di website ini untuk menghitung total biaya secara otomatis sebelum melakukan reservasi terapi bekam.',
+    answer: 'Biaya transport sangat transparan: Rp 2.500 per kilometer (sudah mencakup Pulang-Pergi). Rumusnya langsung jarak (km) x Rp 2.500 agar praktis dan tidak ribet. Contoh: jika jarak dari rumah terapis ke rumah Anda adalah 5 km, maka biayanya: 5 km x Rp 2.500 = Rp 12.500. Anda bisa menggunakan fitur Rincian Biaya Terapi di website ini untuk menghitung total biaya secara otomatis sebelum melakukan reservasi terapi bekam.',
     category: 'layanan'
   },
   {

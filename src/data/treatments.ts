@@ -10,12 +10,12 @@ export const THERAPIST_CERTIFICATES: TherapistCertificate[] = [
     recipient: 'Praktisi Bekam Bersertifikat',
     badge: 'Bekam Aswaja',
     imageUrl: '/assets/aistudio/Ali_Asadallah_12.pdf_20260605_010819_0000_7690982a.png',
-    description: 'Sertifikasi kompetensi pelatihan kilat bekam berstandar keilmuan dan kaidah syariah Thibbun Nabawi Aswaja Surabaya.'
+    description: 'Sertifikasi kompetensi pelatihan kilat bekam berstandar keilmuan dan kaidah syariah Aswaja Surabaya.'
   },
   {
-    id: 'cert-thibbun-nabawi',
+    id: 'cert-sinergi-bekam',
     title: 'Seminar Reguler Sinergi Bekam Sunnah & Herbal Nusantara',
-    institution: 'Al-Hijamah Thibbun Nabawi Training Center (Yayasan Rumah Tarbiyah Indonesia)',
+    institution: 'Al-Hijamah Training Center (Yayasan Rumah Tarbiyah Indonesia)',
     credentialNumber: '4391/TNTR/Al-Hijamah/VI/2025 (SK Kemenkumham: No. AHU-005048.AH.01.04.Tahun 2019)',
     date: '01 Juni 2025',
     recipient: 'Praktisi Bekam Bersertifikat',
@@ -51,11 +51,11 @@ export const THERAPIST_INFO = {
   name: 'Bekam Bogor - Spesialis Bekam Panggilan',
   therapistName: 'Praktisi Bekam',
   formalName: 'Praktisi Bekam Bersertifikat',
-  experienceYears: 'Praktisi bekam bersertifikat resmi Thibbun Nabawi',
+  experienceYears: 'Praktisi bekam bersertifikat resmi',
   experienceSince: '',
   photoUrl: '/assets/aistudio/file_00000000a9bc8211944e9f5c8e0e4fb4_9ca2b26c.png',
   tagline: 'Spesialis Bekam Panggilan',
-  description: 'Menghidupkan Thibbun Nabawi untuk kebugaran tubuh, meredakan migrain, kolesterol, pegal pundak & pinggang. Melayani panggilan Home Care untuk wilayah Bogor dan Sekitarnya, dan jika ingin datang langsung ke rumah terapis sangat dipersilakan.',
+  description: 'Menghidupkan terapi sunnah bekam untuk kebugaran tubuh, meredakan migrain, kolesterol, pegal pundak & pinggang. Melayani panggilan Home Care untuk wilayah Bogor dan Sekitarnya, dan jika ingin datang langsung ke rumah terapis sangat dipersilakan.',
   address: 'Kp. Leuwisadeng RT 01 RW 03 Kec. Leuwisadeng Kab.Bogor',
   phone: '085158399889',
   phoneClean: '6285158399889',
@@ -63,7 +63,7 @@ export const THERAPIST_INFO = {
   gmapsUrl: 'https://maps.app.goo.gl/zCZNsTtXu6BtTctv7',
   mapCoordinates: { lat: -6.5707973, lng: 106.6064241 },
   transportRatePerKm: 2500, // Rp 2.500 / km (Pulang Pergi: jarak x 2.500)
-  certification: 'Praktisi Bersertifikat Resmi Thibbun Nabawi',
+  certification: 'Praktisi Bekam Bersertifikat Resmi',
   genderRestriction: 'Khusus Ikhwan (Laki-laki) *sementara waktu, insya Allah ke depan tersedia terapis akhwat',
   genderNote: 'Sementara khusus ikhwan / pria, insya Allah ke depan tersedia terapis akhwat (perempuan)',
   clinicStatus: 'Melayani panggilan Home Care & terapi langsung di rumah terapis.',

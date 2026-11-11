@@ -15,7 +15,8 @@ import {
   UserCheck,
   ShoppingBag,
   ArrowLeftRight,
-  Store
+  Store,
+  ClipboardList
 } from 'lucide-react';
 import { THERAPIST_INFO } from '../data/treatments';
 
@@ -54,7 +55,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'beranda', label: 'Beranda', icon: <Home className="w-4 h-4" /> },
     {
       id: 'kalkulator-transport',
-      label: 'Hitung Biaya Transport',
+      label: 'Rincian Biaya Terapi',
       icon: <Calculator className="w-4 h-4 text-emerald-600" />
     },
     { id: 'paket-layanan', label: 'Biaya & Paket Bekam', icon: <Layers className="w-4 h-4" /> },
@@ -85,6 +86,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       icon: <Calendar className="w-4 h-4 text-amber-600" />
     },
     { id: 'lokasi-rumah', label: 'Lokasi & Peta Rumah', icon: <MapPin className="w-4 h-4 text-emerald-600" /> },
+    {
+      id: 'panduan-bekam',
+      label: 'Panduan Sebelum & Sesudah',
+      icon: <ClipboardList className="w-4 h-4 text-emerald-600" />
+    },
     { id: 'sterilitas', label: 'Standar Steril & Sanad', icon: <ShieldCheck className="w-4 h-4" /> },
     { id: 'faq', label: 'Tanya Jawab (FAQ)', icon: <HelpCircle className="w-4 h-4" /> }
   ];

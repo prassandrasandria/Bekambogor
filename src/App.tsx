@@ -14,6 +14,7 @@ import { MobileBottomNav } from './components/MobileBottomNav';
 import { TherapistLocation } from './components/TherapistLocation';
 import { InteractiveBodyMap } from './components/InteractiveBodyMap';
 import { HygieneProtocols } from './components/HygieneProtocols';
+import { CuppingGuidelines } from './components/CuppingGuidelines';
 import { TestimonialsFaq } from './components/TestimonialsFaq';
 import { Footer } from './components/Footer';
 import { TherapistProfile } from './components/TherapistProfile';
@@ -118,18 +119,24 @@ export function App() {
         });
       },
       {
-        threshold: 0.08,
+        threshold: 0.05,
         rootMargin: '0px 0px -40px 0px'
       }
     );
 
     const elements = document.querySelectorAll('.scroll-reveal');
-    elements.forEach((el) => observer.observe(el));
+    elements.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 50) {
+        el.classList.add('is-visible');
+      }
+      observer.observe(el);
+    });
 
     return () => {
       elements.forEach((el) => observer.unobserve(el));
     };
-  }, []);
+  }, [currentView]);
 
   const handleScrollToTop = () => {
     window.scrollTo({
@@ -322,6 +329,11 @@ export function App() {
                 <HygieneProtocols />
               </div>
 
+              {/* Practical Pre & Post Cupping Guidelines */}
+              <div className="scroll-reveal">
+                <CuppingGuidelines onOpenBooking={handleOpenBooking} />
+              </div>
+
               {/* Testimonials & FAQs */}
               <div className="scroll-reveal">
                 <TestimonialsFaq />
@@ -329,7 +341,9 @@ export function App() {
             </main>
 
             {/* Footer */}
-            <Footer onOpenBooking={handleOpenBooking} />
+            <div className="scroll-reveal">
+              <Footer onOpenBooking={handleOpenBooking} />
+            </div>
           </>
         )}
 
@@ -338,7 +352,11 @@ export function App() {
       {/* Booking Modal (Mandatory validation: Nama, Usia, Phone, Alamat) */}
       <BookingModal
         isOpen={isBookingOpen}
-        onClose={() => setIsBookingOpen(false)}
+        onClose={() => {
+          setIsBookingOpen(false);
+          setBookingDate(undefined);
+          setBookingSymptom(undefined);
+        }}
         initialPackageId={bookingPackageId}
         initialServiceType={bookingServiceType}
         initialDistanceKm={bookingDistanceKm}

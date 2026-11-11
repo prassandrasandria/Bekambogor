@@ -41,7 +41,7 @@ export const TestimonialsFaq: React.FC = () => {
               Pertanyaan yang Sering Diajukan
             </h2>
             <p className="text-slate-600 text-base leading-relaxed">
-              Pelajari aturan thibbun nabawi, kebersihan sterilisasi, serta panduan praktis sebelum dan sesudah berbekam.
+              Pelajari aturan terapi bekam sunnah, kebersihan sterilisasi, serta panduan praktis sebelum dan sesudah berbekam.
             </p>
 
             {/* Category Filter Pills */}

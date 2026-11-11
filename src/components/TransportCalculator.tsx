@@ -480,10 +480,10 @@ export const TransportCalculator: React.FC<TransportCalculatorProps> = ({
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-800 text-sm font-bold uppercase tracking-wider mb-3">
             <Calculator className="w-4 h-4 text-emerald-600" />
-            Hitung Biaya Transport
+            Rincian Biaya Terapi
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-            Kalkulator Biaya Transport
+            Rincian Biaya Terapi
           </h2>
         </div>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { ShieldCheck, Sparkles, CheckCircle2, Calculator, ArrowRight, UserCheck, Calendar, Moon } from 'lucide-react';
+import { ShieldCheck, Sparkles, CheckCircle2, Calculator, ArrowRight, UserCheck, Calendar, Moon, ClipboardList } from 'lucide-react';
 import { THERAPIST_INFO } from '../data/treatments';
 import { sunnahHadiths, getDynamicSunnahDates } from '../data/sunnahCalendar';
 import { WhatsAppIcon } from './WhatsAppIcon';
@@ -13,11 +13,11 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator, onSelectDateToBook }) => {
   const [currentHadithIndex, setCurrentHadithIndex] = useState(0);
 
-  // Auto-slide Hadith every 3 seconds (3000ms)
+  // Auto-slide Hadith every 7 seconds for comfortable reading
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentHadithIndex((prev) => (prev + 1) % sunnahHadiths.length);
-    }, 3000);
+    }, 7000);
     return () => clearInterval(timer);
   }, []);
 
@@ -52,7 +52,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator, 
 
             {/* Description */}
             <p className="hero-fade-3 text-base sm:text-lg text-slate-700 leading-relaxed max-w-xl mx-auto lg:mx-0">
-              Menghidupkan Thibbun Nabawi untuk kebugaran tubuh, meredakan migrain, kolesterol, pegal pundak &amp; pinggang. Kami melayani panggilan <strong>Home Care</strong> untuk wilayah <strong>Bogor dan Sekitarnya</strong>, dan jika ingin <strong>datang langsung ke rumah terapis sangat dipersilakan</strong>.
+              Menghidupkan terapi sunnah bekam untuk kebugaran tubuh, meredakan migrain, kolesterol, pegal pundak &amp; pinggang. Kami melayani panggilan <strong>Home Care</strong> untuk wilayah <strong>Bogor dan Sekitarnya</strong>, dan jika ingin <strong>datang langsung ke rumah terapis sangat dipersilakan</strong>.
             </p>
 
             {/* Gender restriction alert (temporary status until akhwat therapist available) */}
@@ -88,7 +88,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator, 
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-xl text-base font-bold text-white bg-slate-900 hover:bg-slate-800 shadow-md active:scale-98 transition-all cursor-pointer"
               >
                 <Calculator className="w-5 h-5" />
-                <span>Hitung Biaya Transport Otomatis</span>
+                <span>Rincian Biaya Terapi</span>
               </button>
               
               <button
@@ -130,22 +130,22 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator, 
                 </div>
               </div>
 
-              {/* Hadith - Fixed Height (h-[185px]) to ELIMINATE ANY LAYOUT SHIFT OR JUMPING */}
-              <div className="bg-emerald-50/80 border border-emerald-200/80 rounded-2xl p-4 text-center relative overflow-hidden h-[185px] flex flex-col justify-between">
-                <div key={currentHadithIndex} className="animate-in fade-in duration-300 flex-1 flex flex-col justify-center">
-                  <p className="font-arabic text-lg sm:text-xl text-emerald-950 font-semibold mb-1 dir-rtl line-clamp-2 leading-relaxed tracking-wide" dir="rtl">
+              {/* Hadith Box - Full Complete Display (No line-clamp, flexible height) */}
+              <div className="bg-emerald-50/90 border border-emerald-200/90 rounded-2xl p-4 sm:p-5 text-center relative overflow-hidden min-h-[195px] flex flex-col justify-between shadow-2xs">
+                <div key={currentHadithIndex} className="animate-in fade-in duration-300 flex-1 flex flex-col justify-center my-auto py-1">
+                  <p className="font-arabic text-lg sm:text-xl text-emerald-950 font-semibold mb-2.5 dir-rtl leading-loose tracking-wide" dir="rtl">
                     {activeHadith.textArabic}
                   </p>
-                  <p className="text-xs sm:text-sm text-emerald-900 font-medium italic leading-relaxed line-clamp-2">
+                  <p className="text-xs sm:text-sm text-emerald-900 font-medium italic leading-relaxed">
                     "{activeHadith.translation}"
                   </p>
-                  <p className="text-xs text-emerald-700 font-bold mt-1">
+                  <p className="text-xs text-emerald-700 font-bold mt-2">
                     ({activeHadith.narrator})
                   </p>
                 </div>
 
-                {/* Hadith Slider Indicators (Every 3s) */}
-                <div className="flex items-center justify-center gap-1.5 pt-1">
+                {/* Hadith Slider Indicators */}
+                <div className="flex items-center justify-center gap-1.5 pt-3">
                   {sunnahHadiths.map((_, idx) => (
                     <button
                       key={idx}
@@ -153,7 +153,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator, 
                       onClick={() => setCurrentHadithIndex(idx)}
                       aria-label={`Slide Hadits ${idx + 1}`}
                       className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                        currentHadithIndex === idx ? 'w-6 bg-emerald-600' : 'w-2 bg-emerald-300/80'
+                        currentHadithIndex === idx ? 'w-6 bg-emerald-600' : 'w-2 bg-emerald-300/80 hover:bg-emerald-400'
                       }`}
                     />
                   ))}
@@ -248,9 +248,18 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreCalculator, 
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <p className="text-[11px] text-slate-500 text-center leading-relaxed">
-                *Keluhan mendadak (masuk angin, migrain, pegal linu berat) boleh dibekam kapan saja tanpa harus menunggu tanggal sunnah.
-              </p>
+              <div className="pt-1 flex flex-col items-center gap-1.5">
+                <a
+                  href="#panduan-bekam"
+                  className="w-full py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200 transition-colors flex items-center justify-center gap-2 shadow-2xs"
+                >
+                  <ClipboardList className="w-4 h-4 text-emerald-600" />
+                  <span>Lihat Panduan Sebelum &amp; Sesudah Bekam</span>
+                </a>
+                <p className="text-[11px] text-slate-500 text-center leading-relaxed">
+                  *Keluhan mendadak (masuk angin, migrain, pegal linu berat) boleh dibekam kapan saja tanpa harus menunggu tanggal sunnah.
+                </p>
+              </div>
 
             </div>
           </div>
