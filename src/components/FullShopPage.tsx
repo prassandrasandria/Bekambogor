@@ -14,7 +14,8 @@ import {
   ChevronDown,
   ChevronUp,
   Store,
-  ExternalLink
+  ExternalLink,
+  ShoppingCartPlus
 } from 'lucide-react';
 import { SHOP_PRODUCTS, formatRupiah } from '../data/shopProducts';
 import { ShopProduct, ProductCategory, CartItem } from '../types';
@@ -28,6 +29,7 @@ interface FullShopPageProps {
   onAddToCart: (product: ShopProduct) => void;
   onUpdateQuantity: (productId: string, quantity: number) => void;
   onOpenCart: () => void;
+  onDirectBuy: (product: ShopProduct) => void;
 }
 
 export const FullShopPage: React.FC<FullShopPageProps> = ({
@@ -35,7 +37,8 @@ export const FullShopPage: React.FC<FullShopPageProps> = ({
   cartItems,
   onAddToCart,
   onUpdateQuantity,
-  onOpenCart
+  onOpenCart,
+  onDirectBuy
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>('semua');
   const [searchQuery, setSearchQuery] = useState('');
@@ -349,49 +352,61 @@ Bisa dibawakan saat terapi bekam atau dikirim via kurir ke alamat saya? Terima k
                         </div>
                       </div>
 
-                      {/* Add to Cart or Stepper */}
+                      {/* Action Buttons: ShoppingCartPlus icon button & Beli */}
                       {qtyInCart === 0 ? (
-                        <div className="grid grid-cols-4 gap-1">
+                        <div className="flex items-center gap-1.5 pt-1">
                           <button
                             type="button"
                             onClick={() => onAddToCart(product)}
-                            className="col-span-3 py-2 px-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] sm:text-xs flex items-center justify-center gap-1 shadow-xs cursor-pointer active:scale-95 transition-all"
+                            className="h-9 w-10 sm:w-11 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center justify-center shrink-0 shadow-2xs transition-all cursor-pointer active:scale-95"
+                            title="Masukkan ke Keranjang"
+                            aria-label="Tambah ke Keranjang"
                           >
-                            <Plus className="w-3.5 h-3.5" />
-                            <span>Beli</span>
+                            <ShoppingCartPlus className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-emerald-700" />
                           </button>
                           
                           <button
                             type="button"
-                            onClick={() => handleDirectWhatsAppBuy(product)}
-                            title="Pesan via WhatsApp"
-                            className="col-span-1 py-2 px-1 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-800 flex items-center justify-center border border-emerald-300 transition-colors cursor-pointer"
+                            onClick={() => onDirectBuy(product)}
+                            className="flex-1 h-9 py-2 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center shadow-xs transition-all cursor-pointer active:scale-95"
                           >
-                            <WhatsAppIcon className="w-3.5 h-3.5 fill-current text-emerald-800" />
+                            <span>Beli</span>
                           </button>
                         </div>
                       ) : (
-                        <div className="flex items-center justify-between bg-emerald-50 rounded-xl p-1 border border-emerald-300">
-                          <div className="flex items-center gap-1">
-                            <button
-                              type="button"
-                              onClick={() => onUpdateQuantity(product.id, qtyInCart - 1)}
-                              className="w-6 h-6 rounded-lg bg-white text-slate-700 hover:bg-emerald-100 flex items-center justify-center shadow-2xs font-bold cursor-pointer"
-                            >
-                              <Minus className="w-3 h-3" />
-                            </button>
-                            <span className="px-1.5 text-xs font-black text-emerald-900">
-                              {qtyInCart}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => onUpdateQuantity(product.id, qtyInCart + 1)}
-                              className="w-6 h-6 rounded-lg bg-emerald-700 text-white hover:bg-emerald-800 flex items-center justify-center shadow-2xs font-bold cursor-pointer"
-                            >
-                              <Plus className="w-3 h-3" />
-                            </button>
+                        <div className="space-y-1.5 pt-1">
+                          <div className="flex items-center justify-between bg-emerald-50 rounded-xl p-1 border border-emerald-300">
+                            <div className="flex items-center gap-1">
+                              <button
+                                type="button"
+                                onClick={() => onUpdateQuantity(product.id, qtyInCart - 1)}
+                                className="w-6 h-6 rounded-lg bg-white text-slate-700 hover:bg-emerald-100 flex items-center justify-center shadow-2xs font-bold cursor-pointer"
+                                aria-label="Kurangi jumlah"
+                              >
+                                <Minus className="w-3 h-3" />
+                              </button>
+                              <span className="px-1 text-xs font-black text-emerald-900">
+                                {qtyInCart}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => onUpdateQuantity(product.id, qtyInCart + 1)}
+                                className="w-6 h-6 rounded-lg bg-emerald-700 text-white hover:bg-emerald-800 flex items-center justify-center shadow-2xs font-bold cursor-pointer"
+                                aria-label="Tambah jumlah"
+                              >
+                                <Plus className="w-3 h-3" />
+                              </button>
+                            </div>
+                            <span className="text-[10px] font-bold text-emerald-800 pr-1">Di Keranjang</span>
                           </div>
-                          <span className="text-[10px] font-bold text-emerald-800 pr-1">Di Keranjang</span>
+
+                          <button
+                            type="button"
+                            onClick={() => onDirectBuy(product)}
+                            className="w-full py-1.5 px-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] sm:text-xs flex items-center justify-center gap-1 shadow-xs cursor-pointer active:scale-95 transition-all"
+                          >
+                            <span>Beli Sekarang</span>
+                          </button>
                         </div>
                       )}
                     </div>
@@ -483,24 +498,24 @@ Bisa dibawakan saat terapi bekam atau dikirim via kurir ke alamat saya? Terima k
                   type="button"
                   onClick={() => {
                     onAddToCart(previewProduct);
-                    setPreviewProduct(null);
                   }}
-                  className="py-2.5 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-md cursor-pointer"
+                  className="h-10 w-11 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center justify-center shrink-0 cursor-pointer shadow-2xs transition-all active:scale-95"
+                  title="Tambah ke Keranjang"
+                  aria-label="Tambah ke Keranjang"
                 >
-                  <Plus className="w-4 h-4" />
-                  <span>Beli</span>
+                  <ShoppingCartPlus className="w-5 h-5 text-emerald-700" />
                 </button>
 
                 <button
                   type="button"
                   onClick={() => {
-                    handleDirectWhatsAppBuy(previewProduct);
+                    const prod = previewProduct;
                     setPreviewProduct(null);
+                    onDirectBuy(prod);
                   }}
-                  className="py-2.5 px-3 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-300 font-bold text-xs sm:text-sm flex items-center gap-1.5 cursor-pointer"
+                  className="flex-1 h-10 py-2.5 px-5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md cursor-pointer active:scale-95 transition-all"
                 >
-                  <WhatsAppIcon className="w-4 h-4 fill-current" />
-                  <span>Pesan via WA</span>
+                  <span>Beli Sekarang</span>
                 </button>
               </div>
             </div>

@@ -121,6 +121,15 @@ export function App() {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
+  const handleDirectBuy = (product: ShopProduct) => {
+    setCartItems((prev) => {
+      const existing = prev.find((item) => item.product.id === product.id);
+      if (existing) return prev;
+      return [...prev, { product, quantity: 1 }];
+    });
+    setIsCartOpen(true);
+  };
+
   const handleUpdateQuantity = (productId: string, quantity: number) => {
     if (quantity <= 0) {
       handleRemoveFromCart(productId);
@@ -315,6 +324,7 @@ export function App() {
             onAddToCart={handleAddToCart}
             onUpdateQuantity={handleUpdateQuantity}
             onOpenCart={() => setIsCartOpen(true)}
+            onDirectBuy={handleDirectBuy}
           />
         ) : (
           <>
@@ -349,6 +359,7 @@ export function App() {
                   onAddToCart={handleAddToCart}
                   onUpdateQuantity={handleUpdateQuantity}
                   onOpenCart={() => setIsCartOpen(true)}
+                  onDirectBuy={handleDirectBuy}
                   onViewAllProducts={() => {
                     setCurrentView('shop');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
