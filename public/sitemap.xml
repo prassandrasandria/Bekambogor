@@ -28,12 +28,20 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Toko Herbal Alami & Madu Pilihan Terapis -->
+  <!-- Halaman Khusus Toko Produk Herbal & Madu Alami -->
+  <url>
+    <loc>https://bekambogor.my.id/produkherbal</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Toko Herbal Alami & Madu Pilihan Terapis (Anchor) -->
   <url>
     <loc>https://bekambogor.my.id/#toko-herbal</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
 
   <!-- Jadwal Bekam Sunnah Nabawi -->

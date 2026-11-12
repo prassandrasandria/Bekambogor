@@ -25,8 +25,16 @@ import { THERAPIST_INFO } from './data/treatments';
 import { formatRupiah } from './data/shopProducts';
 import { Calendar, UserCheck, ChevronUp, ShoppingBag, CheckCircle } from 'lucide-react';
 
+const isShopPath = () => {
+  if (typeof window === 'undefined') return false;
+  const path = window.location.pathname.toLowerCase().replace(/\/+$/, '');
+  return path === '/produkherbal' || path === '/produk-herbal' || path.endsWith('/produkherbal');
+};
+
 export function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'shop'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'shop'>(() => {
+    return isShopPath() ? 'shop' : 'home';
+  });
   const [activeSection, setActiveSection] = useState('beranda');
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -50,6 +58,46 @@ export function App() {
   });
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Listen to browser Back / Forward buttons (popstate)
+  useEffect(() => {
+    const handlePopState = () => {
+      if (isShopPath()) {
+        setCurrentView('shop');
+      } else {
+        setCurrentView('home');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Sync browser URL (/produkherbal vs /) and page metadata dynamically
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const pathname = window.location.pathname.toLowerCase().replace(/\/+$/, '');
+    const canonicalLink = document.querySelector('link[rel="canonical"]');
+
+    if (currentView === 'shop') {
+      if (pathname !== '/produkherbal') {
+        window.history.pushState({ view: 'shop' }, '', '/produkherbal');
+      }
+      document.title = 'Toko Herbal & Madu Alami - Bekam Bogor | Madu Murni & Herbal Pilihan';
+      if (canonicalLink) {
+        canonicalLink.setAttribute('href', 'https://bekambogor.my.id/produkherbal');
+      }
+    } else {
+      if (pathname === '/produkherbal' || pathname === '/produk-herbal') {
+        window.history.pushState({ view: 'home' }, '', '/');
+      }
+      document.title = 'Bekam Bogor - Spesialis Bekam Panggilan';
+      if (canonicalLink) {
+        canonicalLink.setAttribute('href', 'https://bekambogor.my.id/');
+      }
+    }
+  }, [currentView]);
 
   useEffect(() => {
     try {
